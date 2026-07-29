@@ -13,6 +13,12 @@
       "skillPath": "skills/adme-prediction/SKILL.md",
       "computedHash": "dbca4eb5c0e7f8cdb22e7ca042aa36c1cae8c958645d7985ae81f486aa250269"
     },
+    "analytical-method-validation": {
+      "source": "K-Dense-AI/scientific-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/analytical-method-validation/SKILL.md",
+      "computedHash": "502ab06fbab7f617374ce10403490385401e9a6d99b020e4e7dfb34f2ea65839"
+    },
     "boron-nmr-predict": {
       "source": "InternScience/ChemClaw",
       "sourceType": "github",
@@ -30,6 +36,18 @@
       "sourceType": "github",
       "skillPath": "skills/chemical-file-converter/SKILL.md",
       "computedHash": "21f4291f35bec5ee554f3fc805e1158f4374c22398fe0296e6ef13a1817a7cf3"
+    },
+    "datamol": {
+      "source": "K-Dense-AI/scientific-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/datamol/SKILL.md",
+      "computedHash": "c03db1f438549fb1cb7f9e8f343060a76b440dc57f6ada87a732dbb043785bdb"
+    },
+    "deepchem": {
+      "source": "K-Dense-AI/scientific-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/deepchem/SKILL.md",
+      "computedHash": "8f877fd5736220e33fa81c2239acde05159d759d77eaec9cd83c1b7619e00567"
     },
     "geometry-optimizer": {
       "source": "InternScience/ChemClaw",
@@ -61,11 +79,23 @@
       "skillPath": "skills/literature-parsing/SKILL.md",
       "computedHash": "3f20b3255982238a7a7c6fec8376e664c97d242a36513a081892a3f4e88ffcd5"
     },
+    "matchms": {
+      "source": "K-Dense-AI/scientific-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/matchms/SKILL.md",
+      "computedHash": "826cd3520c8e7c314c8b5c73fee444701abb797e4a45bae4c798a6b6875d8bd0"
+    },
     "md-vib-spectra-simulation": {
       "source": "InternScience/ChemClaw",
       "sourceType": "github",
       "skillPath": "skills/md-vib-spectra-simulation/SKILL.md",
       "computedHash": "972b3ef21f7b5d2be7d36fd3557a91915734b0a30595e18b135cf828e0c88cda"
+    },
+    "medchem": {
+      "source": "K-Dense-AI/scientific-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/medchem/SKILL.md",
+      "computedHash": "7f24e7a1e3c3c92ce7b1879761f6bf1ffe5e23ce5d469658253d36796708f11d"
     },
     "mineru-pdf-converter": {
       "source": "InternScience/ChemClaw",
@@ -103,6 +133,12 @@
       "skillPath": "skills/molecular-properties-predictor/SKILL.md",
       "computedHash": "d0678ae3b744da7d667d15078b9afbe41d1a7fa6a2e0d14eaaa178b202d3bc40"
     },
+    "molfeat": {
+      "source": "K-Dense-AI/scientific-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/molfeat/SKILL.md",
+      "computedHash": "c20f3014e61999939260f59e8b7b32992d044bb9a48f746ce2528abeca8de60c"
+    },
     "ms-spectra-simulation": {
       "source": "InternScience/ChemClaw",
       "sourceType": "github",
@@ -127,17 +163,35 @@
       "skillPath": "skills/pka-predictor/SKILL.md",
       "computedHash": "4d50fef6e3283ce43e1dc8c9a70988ab4abe9488ce4f211895779fbb10cb4685"
     },
+    "pymatgen": {
+      "source": "K-Dense-AI/scientific-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/pymatgen/SKILL.md",
+      "computedHash": "fcf7891c70532592ad06d746374536857a582708c0d803498654f2fae1224cce"
+    },
     "raman-spectra-simulation": {
       "source": "InternScience/ChemClaw",
       "sourceType": "github",
       "skillPath": "skills/raman-spectra-simulation/SKILL.md",
       "computedHash": "3dcfd5b88727e2305117e098d05317c4c471e93e2a1906a1126394976292322e"
     },
+    "rdkit": {
+      "source": "K-Dense-AI/scientific-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/rdkit/SKILL.md",
+      "computedHash": "5973fa484dc49103b318e7698210974fa04be46091380340d3df1a5f3e6a4a16"
+    },
     "reaction-data-extraction": {
       "source": "InternScience/ChemClaw",
       "sourceType": "github",
       "skillPath": "skills/reaction-data-extraction/SKILL.md",
       "computedHash": "64000b5f6744553c7609cb6dd3f03364ecf9fd1a73359a7803edb62b0fd63726"
+    },
+    "rowan": {
+      "source": "K-Dense-AI/scientific-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/rowan/SKILL.md",
+      "computedHash": "7c30654ac13d1de09dd8d4485bef123696d6da387b55accded02e0d7fe3f1fe7"
     },
     "smiles-to-iupac": {
       "source": "InternScience/ChemClaw",
@@ -150,6 +204,12 @@
       "sourceType": "github",
       "skillPath": "skills/surface-tension-predictor/SKILL.md",
       "computedHash": "95957592d47008c7bae740fc82d4e2b7c372067d34e9d4219e24884da851b202"
+    },
+    "torchdrug": {
+      "source": "K-Dense-AI/scientific-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/torchdrug/SKILL.md",
+      "computedHash": "55ebea230f77b7e4a3a3975c8886b6df5697cb807b8bc61abc92343d410fbc4f"
     },
     "uv-vis-spectrum-simulation": {
       "source": "InternScience/ChemClaw",
