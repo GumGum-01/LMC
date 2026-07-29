@@ -14,6 +14,10 @@ A continuation of the index and structure of the educational and research resour
 
 **Reflection** on the “indivisibility” of the atom, **basic chemical reactions**, **the nucleus**, its particles, and the relationship between the number of protons (atomic number) in defining the identity of the element and why the element depends on the number of protons (atomic number) from a logical perspective, **Electron** from a logical and philosophical perspective, and finally, *“the entire chain of thought”* that humanity had, from philosophers, scientists, and researchers throughout history that led to the discovery of the atom as we know it today. [Atom Level 1](subtopics/atom-level-1.md)
 
+### 1.2 Reaction mechanism notation
+
+A symbol glossary for **arrow-pushing notation** used to depict electron movement in reaction mechanisms: the **full arrow** (two-electron shift) vs. the **fish hook** (one-electron shift, radical/SET), **lone-pair dots**, **formal charge** (⊕/⊖), the **radical dot** (unpaired electron), and the **resonance double arrow** (↔, mesomerism — not a reaction). [Reaction Mechanism Notation](subtopics/reaction-mechanism-notation.md)
+
 ## 2.0 Chemical Formula Script
 The project includes a Python script to execute chemical and physical formulas related to the skill.
 
