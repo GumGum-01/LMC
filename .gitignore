@@ -1,2 +1,7 @@
 __pycache__/
 *.pyc
+
+# ChemClaw large model weights / trajectory data (kept locally, not in git history)
+.agents/skills/ms-spectra-simulation/assets/fiora/models/*.pt
+.agents/skills/md-vib-spectra-simulation/assets/ethanol_traj.xyz
+.agents/skills/adme-prediction/models/*.pkl

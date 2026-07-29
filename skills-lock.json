@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "skills": {
+    "adme-prediction": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/adme-prediction/SKILL.md",
+      "computedHash": "dbca4eb5c0e7f8cdb22e7ca042aa36c1cae8c958645d7985ae81f486aa250269"
+    },
+    "boron-nmr-predict": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/boron-nmr-predict/SKILL.md",
+      "computedHash": "356eba89dbc640d485fb689643da340f07a4c2e975b2469e139a996526c4bf3c"
+    },
+    "chem-data-extractor": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/chem-data-extractor/SKILL.md",
+      "computedHash": "bc5aa3aaa6e097b96d8315b847e221f57c5f031733edb0ceb3ee69e059d47e5f"
+    },
+    "chemical-file-converter": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/chemical-file-converter/SKILL.md",
+      "computedHash": "21f4291f35bec5ee554f3fc805e1158f4374c22398fe0296e6ef13a1817a7cf3"
+    },
+    "geometry-optimizer": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/geometry-optimizer/SKILL.md",
+      "computedHash": "4c340fcaf539150135132ccc5f9d0e99024afe68889c6f31be9b792b28e41da1"
+    },
+    "gjf-to-xyz": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/gjf-to-xyz/SKILL.md",
+      "computedHash": "2be0070e634fb372d44fd97e9fe72c1ab490b181761b00ca591174640f87100a"
+    },
+    "ir-spectra-simulation": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/ir-spectra-simulation/SKILL.md",
+      "computedHash": "8fcc79adeca444677ae792edf9960dd01cf055abbd050d463108f8cc139d4f95"
+    },
+    "iupac-to-smiles": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/iupac-to-smiles/SKILL.md",
+      "computedHash": "a03fee3eab9daf8d2c86fd1315e6626a347d5384ba910e0470f5c3ed97131cf2"
+    },
+    "literature-parsing": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/literature-parsing/SKILL.md",
+      "computedHash": "3f20b3255982238a7a7c6fec8376e664c97d242a36513a081892a3f4e88ffcd5"
+    },
+    "md-vib-spectra-simulation": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/md-vib-spectra-simulation/SKILL.md",
+      "computedHash": "972b3ef21f7b5d2be7d36fd3557a91915734b0a30595e18b135cf828e0c88cda"
+    },
+    "mineru-pdf-converter": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/mineru-pdf-converter/SKILL.md",
+      "computedHash": "e3be62d0303dac9f617e4a1c240328454e6b5d42d4a7826af938a037a39504ea"
+    },
+    "mol-2d-viewer": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/mol-2d-viewer/SKILL.md",
+      "computedHash": "db1e2d5c1f688ba5448371fbb17e325532889d9045af0db07ebb8d2542a4c3ba"
+    },
+    "mol-3d-viewer": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/mol-3d-viewer/SKILL.md",
+      "computedHash": "a036deec4d3a61d607ec1ba6bae20a7778b0f76549ed23e848a2b54f0986aeb5"
+    },
+    "mol-image-to-smiles": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/mol-image-to-smiles/SKILL.md",
+      "computedHash": "f0c9e6b0ab6304006507b7bc1b004afa5a4c0a4310d47d2faa2d11742c85f267"
+    },
+    "mol-paper-renderer": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/mol-paper-renderer/SKILL.md",
+      "computedHash": "01e192e76dbd86401b92cdf4eaa0d646a0f4e9ec6f57428af1254edc98117449"
+    },
+    "molecular_properties_predictor": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/molecular-properties-predictor/SKILL.md",
+      "computedHash": "d0678ae3b744da7d667d15078b9afbe41d1a7fa6a2e0d14eaaa178b202d3bc40"
+    },
+    "ms-spectra-simulation": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/ms-spectra-simulation/SKILL.md",
+      "computedHash": "6e27fa95002106f68639bcc35534527a210c9fb97d7551cad420529349daba0c"
+    },
+    "nmr-prediction": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/nmr-prediction/SKILL.md",
+      "computedHash": "1ebc389ce57d554347fa371eedab117fb7ed10e4d60e0bd57e30024b1ba1b8e4"
+    },
+    "pdf-dft-extractor": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/pdf-dft-extractor/SKILL.md",
+      "computedHash": "b30499d3af24f3e267b969241c494ad8de90c47055dd0d375ac9b08241a4729b"
+    },
+    "pka_predictor": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/pka-predictor/SKILL.md",
+      "computedHash": "4d50fef6e3283ce43e1dc8c9a70988ab4abe9488ce4f211895779fbb10cb4685"
+    },
+    "raman-spectra-simulation": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/raman-spectra-simulation/SKILL.md",
+      "computedHash": "3dcfd5b88727e2305117e098d05317c4c471e93e2a1906a1126394976292322e"
+    },
+    "reaction-data-extraction": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/reaction-data-extraction/SKILL.md",
+      "computedHash": "64000b5f6744553c7609cb6dd3f03364ecf9fd1a73359a7803edb62b0fd63726"
+    },
+    "smiles-to-iupac": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/smiles-to-iupac/SKILL.md",
+      "computedHash": "46f681867e503ca98e1c0bd87f120db1862728d0a7d48c0193763d22c9dbbdb0"
+    },
+    "surface_tension_predictor": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/surface-tension-predictor/SKILL.md",
+      "computedHash": "95957592d47008c7bae740fc82d4e2b7c372067d34e9d4219e24884da851b202"
+    },
+    "uv-vis-spectrum-simulation": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/uv-vis-spectrum-simulation/SKILL.md",
+      "computedHash": "d809f90e70fd622c43a88c53e8773f8c49205320460afeb87f45c8ae9ab46600"
+    },
+    "xrd-spectra-simulation": {
+      "source": "InternScience/ChemClaw",
+      "sourceType": "github",
+      "skillPath": "skills/xrd-spectra-simulation/SKILL.md",
+      "computedHash": "05719736cea538b5fe51693401155f238b39b7794b1183cc44e740fb2920888c"
+    }
+  }
+}
