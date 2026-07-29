@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "Chemistry Skill": {
+      "source": "AmaiDonatsu/chemistry-skill",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "97018c1bd2e854d01150c0b6bb9a5b0816fcbf2fc49ded50062dbefb9e42021f"
+    },
     "adme-prediction": {
       "source": "InternScience/ChemClaw",
       "sourceType": "github",
