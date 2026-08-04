@@ -1,0 +1,576 @@
+<title>Theaflavin-Bildung — LMC StEx</title>
+<style>
+  :root{
+    --paper:#f2ecdc;
+    --paper-raised:#fbf7ea;
+    --ink:#241a10;
+    --ink-soft:#5c4a35;
+    --line:#d9c9a3;
+    --line-strong:#c2ac7c;
+    --quinone:#3d4a8a;
+    --phenol:#5f7a2e;
+    --theaflavin:#a83f1c;
+    --gold:#93691c;
+    --shadow: rgba(37,26,16,0.14);
+    --font-display: "Iowan Old Style","Palatino Linotype","URW Palladio L",Palatino,Georgia,serif;
+    --font-body: "Iowan Old Style", Palatino, Georgia, "Times New Roman", serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#181209;
+      --paper-raised:#221a10;
+      --ink:#efe4cf;
+      --ink-soft:#b9a687;
+      --line:#443320;
+      --line-strong:#5c4930;
+      --quinone:#93a2f2;
+      --phenol:#a7c469;
+      --theaflavin:#e2793f;
+      --gold:#dcb15a;
+      --shadow: rgba(0,0,0,0.45);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#181209; --paper-raised:#221a10; --ink:#efe4cf; --ink-soft:#b9a687;
+    --line:#443320; --line-strong:#5c4930; --quinone:#93a2f2; --phenol:#a7c469;
+    --theaflavin:#e2793f; --gold:#dcb15a; --shadow: rgba(0,0,0,0.45);
+  }
+  :root[data-theme="light"]{
+    --paper:#f2ecdc; --paper-raised:#fbf7ea; --ink:#241a10; --ink-soft:#5c4a35;
+    --line:#d9c9a3; --line-strong:#c2ac7c; --quinone:#3d4a8a; --phenol:#5f7a2e;
+    --theaflavin:#a83f1c; --gold:#93691c; --shadow: rgba(37,26,16,0.14);
+  }
+
+  *{box-sizing:border-box;}
+  html{background:var(--paper);}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--font-body); line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{max-width:920px; margin:0 auto; padding:2.75rem 1.5rem 6rem;}
+
+  .eyebrow{
+    font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--gold); margin:0 0 0.6rem;
+  }
+  h1{
+    font-family:var(--font-display); font-weight:600; font-size:clamp(2rem,4.5vw,2.7rem);
+    margin:0 0 0.35rem; text-wrap:balance; color:var(--ink);
+  }
+  .subtitle{color:var(--ink-soft); font-size:1.05rem; margin:0 0 1.6rem; max-width:60ch;}
+
+  .balance{
+    font-family:var(--font-mono); font-size:0.98rem; background:var(--paper-raised);
+    border:1px solid var(--line); border-radius:10px; padding:0.9rem 1.15rem;
+    display:inline-flex; flex-wrap:wrap; gap:0.4em; align-items:baseline;
+    box-shadow:0 1px 0 var(--shadow);
+  }
+  .balance b{color:var(--theaflavin); font-weight:700;}
+  .balance .plus{color:var(--ink-soft);}
+
+  .legend{
+    display:flex; gap:1.4rem; flex-wrap:wrap; margin:1.5rem 0 0;
+    font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-soft);
+  }
+  .legend span{display:inline-flex; align-items:center; gap:0.45em;}
+  .swatch{width:0.85em; height:0.85em; border-radius:2px; display:inline-block;}
+
+  section{margin-top:3.2rem;}
+  h2{
+    font-family:var(--font-display); font-weight:600; font-size:1.5rem;
+    border-bottom:1px solid var(--line); padding-bottom:0.5rem; margin:0 0 1.1rem;
+  }
+  h3{font-family:var(--font-display); font-size:1.15rem; margin:1.6rem 0 0.6rem; color:var(--ink);}
+  p{margin:0 0 1rem; max-width:68ch;}
+
+  .card{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:12px;
+    padding:1.2rem 1.4rem; box-shadow:0 1px 0 var(--shadow);
+  }
+
+  .sprint-card{display:flex; gap:1.3rem; align-items:flex-start;}
+  .sprint-badge{
+    font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase;
+    background:var(--theaflavin); color:var(--paper); border-radius:6px; padding:0.3rem 0.55rem;
+    flex:none; white-space:nowrap;
+  }
+  .sprint-card .body{flex:1;}
+  .sprint-card .floor{
+    margin-top:0.7rem; padding-top:0.7rem; border-top:1px dashed var(--line-strong);
+    font-size:0.94rem; color:var(--ink-soft);
+  }
+  .sprint-card .floor b{color:var(--ink);}
+
+  figure{margin:1.4rem 0 0.4rem;}
+  .fig-wrap{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:12px;
+    padding:1rem 1rem 0.4rem; overflow-x:auto; box-shadow:0 1px 0 var(--shadow);
+  }
+  figure svg{display:block; max-width:100%; height:auto; margin:0 auto;}
+  figcaption{
+    font-size:0.82rem; color:var(--ink-soft); margin:0.7rem 0.2rem 0;
+    font-family:var(--font-mono);
+  }
+  .fig-number{color:var(--gold); font-weight:600;}
+
+  table{border-collapse:collapse; width:100%; margin:0.6rem 0 1.2rem; font-size:0.95rem;}
+  th,td{border-bottom:1px solid var(--line); padding:0.55rem 0.8rem; text-align:left;}
+  th{font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); font-weight:600;}
+  td b{color:var(--ink);}
+
+  .merk{
+    border-left:3px solid var(--theaflavin); padding:0.15rem 0 0.15rem 1rem; margin:1.3rem 0;
+    font-style:italic; color:var(--ink-soft); max-width:64ch;
+  }
+  .merk b{color:var(--ink); font-style:normal;}
+
+  .steplist{padding-left:0; list-style:none; margin:0.8rem 0 0;}
+  .steplist li{
+    display:grid; grid-template-columns:2.1rem 1fr; gap:0.7rem; margin-bottom:0.55rem;
+    align-items:baseline; font-size:0.94rem;
+  }
+  .steplist .n{font-family:var(--font-mono); color:var(--gold); font-weight:700; text-align:right;}
+
+  ul.crosslinks{padding-left:1.1rem; margin:0.6rem 0;}
+  ul.crosslinks li{margin-bottom:0.45rem; max-width:66ch;}
+
+  .quote{
+    font-family:var(--font-display); font-size:1.02rem; color:var(--ink-soft);
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    padding:1rem 0; margin:1.6rem 0; font-style:italic;
+  }
+  .quote span{display:block; text-align:right; font-family:var(--font-mono); font-size:0.72rem; font-style:normal; margin-top:0.4rem; color:var(--gold); text-transform:uppercase; letter-spacing:0.06em;}
+
+  footer{margin-top:3.5rem; padding-top:1.2rem; border-top:1px solid var(--line); font-size:0.82rem; color:var(--ink-soft); font-family:var(--font-mono);}
+
+  @media (max-width:600px){
+    .sprint-card{flex-direction:column;}
+  }
+</style>
+
+<div class="page">
+
+  <p class="eyebrow">LMC StEx · Prof. LebCHE — Lebensmittelchemie</p>
+  <h1>Die Bildung des Theaflavins</h1>
+  <p class="subtitle">Zwei farblose Catechine, drei Oxidationen, ein verlorenes Kohlenstoffatom — und am Ende Kupferrot. Der Weg von Epicatechin &amp; Epigallocatechin zum Benzotropolon.</p>
+
+  <div class="balance">
+    <span>EC</span><span class="plus">+</span><span>EGC</span><span class="plus">+</span><span>1,5 O₂</span>
+    <span class="plus">→</span><b>Theaflavin</b><span class="plus">+</span><span>CO₂</span><span class="plus">+</span><span>2 H₂O</span>
+  </div>
+
+  <div class="legend">
+    <span><i class="swatch" style="background:var(--phenol)"></i>Phenol / Nucleophil (reduziert)</span>
+    <span><i class="swatch" style="background:var(--quinone)"></i>o-Chinon / Elektrophil (oxidiert)</span>
+    <span><i class="swatch" style="background:var(--theaflavin)"></i>Benzotropolon-Chromophor (Theaflavin)</span>
+  </div>
+
+  <!-- ===================== SPRINT ===================== -->
+  <section>
+    <h2>5-Minuten-Sprint</h2>
+    <div class="card sprint-card">
+      <span class="sprint-badge">Mr. Edu · Timer läuft</span>
+      <div class="body">
+        <p style="margin-bottom:0;">Blatt quer. Links Epicatechin, rechts Epigallocatechin. Nur die B-Ringe, mit Nummerierung 1′–6′. Nicht schön. Nur da. — Genau das ist unten vorgezeichnet, als Vorlage zum Nachzeichnen von Hand.</p>
+        <div class="floor">Floor für heute Vormittag = <b>Schritt 0 bis Schritt 4 verstanden + einmal selbst gezeichnet.</b> Alles darüber ist Bonus.</div>
+      </div>
+    </div>
+
+    <figure>
+      <div class="fig-wrap">
+        <svg viewBox="0 0 1000 480" role="img" aria-label="B-Ringe im Vergleich: links Epicatechin mit Brenzcatechin-Muster (3′,4′-diOH), rechts Epigallocatechin mit Pyrogallol-Muster (3′,4′,5′-triOH), beide Ringe von 1′ bis 6′ nummeriert.">
+          <g style="color:var(--ink)" font-family="var(--font-body)">
+
+            <!-- ============ LEFT RING: EPICATECHIN (Brenzcatechin) ============ -->
+            <g stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round">
+              <polygon points="260,160 346.6,210 346.6,310 260,360 173.4,310 173.4,210"/>
+              <line x1="271.6" y1="175.9" x2="327" y2="207.9"/>
+              <line x1="327" y1="312.1" x2="271.6" y2="344.1"/>
+              <line x1="181.4" y1="292" x2="181.4" y2="228"/>
+              <!-- flavan stub -->
+              <line x1="260" y1="160" x2="260" y2="108"/>
+              <!-- OH stubs -->
+              <line x1="346.6" y1="310" x2="389.9" y2="335"/>
+              <line x1="260" y1="360" x2="260" y2="410"/>
+            </g>
+            <rect x="205" y="66" width="110" height="34" rx="8" fill="none" stroke="var(--ink-soft)" stroke-width="1.6"/>
+            <text x="260" y="88" text-anchor="middle" font-size="14" fill="var(--ink-soft)" font-family="var(--font-mono)">Flavan · C-2</text>
+
+            <text x="398" y="342" font-size="19" font-weight="700" fill="var(--ink)">OH</text>
+            <text x="260" y="430" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">OH</text>
+
+            <g font-family="var(--font-mono)" font-size="15" fill="var(--gold)">
+              <text x="284" y="148">1′</text>
+              <text x="372" y="203">2′</text>
+              <text x="374" y="298">3′</text>
+              <text x="282" y="390">4′</text>
+              <text x="146" y="298">5′</text>
+              <text x="122" y="203">6′</text>
+            </g>
+
+            <text x="260" y="456" text-anchor="middle" font-size="17" font-weight="600" fill="var(--ink)">(−)-Epicatechin (EC)</text>
+            <text x="260" y="474" text-anchor="middle" font-size="13" fill="var(--ink-soft)" font-family="var(--font-mono)">Brenzcatechin-B-Ring · 3′,4′-diOH · 2 O</text>
+
+            <!-- ============ RIGHT RING: EPIGALLOCATECHIN (Pyrogallol) ============ -->
+            <g stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round">
+              <polygon points="740,160 826.6,210 826.6,310 740,360 653.4,310 653.4,210"/>
+              <line x1="751.6" y1="175.9" x2="807" y2="207.9"/>
+              <line x1="807" y1="312.1" x2="751.6" y2="344.1"/>
+              <line x1="661.4" y1="292" x2="661.4" y2="228"/>
+              <!-- flavan stub -->
+              <line x1="740" y1="160" x2="740" y2="108"/>
+              <!-- OH stubs -->
+              <line x1="826.6" y1="310" x2="869.9" y2="335"/>
+              <line x1="740" y1="360" x2="740" y2="410"/>
+              <line x1="653.4" y1="310" x2="610.1" y2="335"/>
+            </g>
+            <rect x="685" y="66" width="110" height="34" rx="8" fill="none" stroke="var(--ink-soft)" stroke-width="1.6"/>
+            <text x="740" y="88" text-anchor="middle" font-size="14" fill="var(--ink-soft)" font-family="var(--font-mono)">Flavan · C-2</text>
+
+            <text x="878" y="342" font-size="19" font-weight="700" fill="var(--ink)">OH</text>
+            <text x="740" y="430" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">OH</text>
+            <text x="562" y="342" font-size="19" font-weight="700" fill="var(--ink)" text-anchor="end">OH</text>
+
+            <g font-family="var(--font-mono)" font-size="15" fill="var(--gold)">
+              <text x="764" y="148">1′</text>
+              <text x="852" y="203">2′</text>
+              <text x="854" y="298">3′</text>
+              <text x="762" y="390">4′</text>
+              <text x="612" y="298">5′</text>
+              <text x="600" y="203">6′</text>
+            </g>
+
+            <text x="740" y="456" text-anchor="middle" font-size="17" font-weight="600" fill="var(--ink)">(−)-Epigallocatechin (EGC)</text>
+            <text x="740" y="474" text-anchor="middle" font-size="13" fill="var(--ink-soft)" font-family="var(--font-mono)">Pyrogallol-B-Ring · 3′,4′,5′-triOH · 3 O</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption><span class="fig-number">Abb. 1</span> — Die Sprint-Vorlage: nur die B-Ringe, Blatt quer, EC links (Catechol-Typ, 2 O) gegen EGC rechts (Pyrogallol-Typ, 3 O). Der dritte Sauerstoff rechts ist der ganze Grund, warum überhaupt ein Benzotropolon entstehen kann.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ===================== VORFRAGE ===================== -->
+  <section>
+    <h2>Die Vorfrage: welche zwei Catechine?</h2>
+    <p>Nicht zwei beliebige. Glomb im Skript wörtlich: <em>„Edukte zur Bildung der Theaflavine sind Catechine und Gallocatechine.“</em> Es braucht zwingend einen Partner von jedem B-Ring-Typ:</p>
+    <table>
+      <thead><tr><th>Partner</th><th>B-Ring-Typ</th><th>O-Atome am Ring</th></tr></thead>
+      <tbody>
+        <tr><td><b>(−)-Epicatechin (EC)</b></td><td>Brenzcatechin (3′,4′-diOH)</td><td>2</td></tr>
+        <tr><td><b>(−)-Epigallocatechin (EGC)</b></td><td>Pyrogallol (3′,4′,5′-triOH)</td><td>3</td></tr>
+      </tbody>
+    </table>
+    <p>Der Ring, der beim Aufbrechen des Tricyclus einen Kohlenstoff verliert und trotzdem zwei Sauerstoffe behalten muss, braucht drei O-Atome am Start — das kann nur der Pyrogallol-Ring. Zwei Catechol-Ringe ergeben kein Benzotropolon (nur Bisflavanole), zwei Pyrogallol-Ringe auch nicht (nur Theasinensine, reine Biaryl-Kupplung).</p>
+  </section>
+
+  <!-- ===================== BILANZ ===================== -->
+  <section>
+    <h2>Die Bilanz: 12 C rein → 11 C im Ring → 1 C als CO₂ raus</h2>
+    <p>Drei Zwei-Elektronen-Oxidationen (die 1,5 O₂) — zwei am Anfang, eine in der Mitte — und ein Kohlenstoff, der als CO₂ entkommt. Das ist der Schlüssel zum ganzen Mechanismus.</p>
+    <figure>
+      <div class="fig-wrap">
+        <svg viewBox="0 0 760 130" role="img" aria-label="Massenbilanz: zwölf Kohlenstoffatome aus den beiden B-Ringen gehen hinein, elf bleiben im Benzotropolon-Kern, eines verlässt das Molekül als CO2.">
+          <g font-family="var(--font-mono)" font-size="13">
+            <text x="10" y="30" fill="var(--ink-soft)">12 C</text>
+            <g fill="var(--phenol)">
+              <circle cx="70" cy="24" r="8"/><circle cx="90" cy="24" r="8"/><circle cx="110" cy="24" r="8"/><circle cx="130" cy="24" r="8"/><circle cx="150" cy="24" r="8"/><circle cx="170" cy="24" r="8"/>
+              <circle cx="70" cy="44" r="8"/><circle cx="90" cy="44" r="8"/><circle cx="110" cy="44" r="8"/><circle cx="130" cy="44" r="8"/><circle cx="150" cy="44" r="8"/><circle cx="170" cy="44" r="8"/>
+            </g>
+            <line x1="200" y1="34" x2="250" y2="34" stroke="currentColor" stroke-width="2" marker-end="url(#arrM)"/>
+            <text x="225" y="18" text-anchor="middle" fill="var(--ink-soft)" font-size="11">3 × Oxidation</text>
+
+            <text x="270" y="30" fill="var(--ink-soft)">11 C</text>
+            <g fill="var(--theaflavin)">
+              <circle cx="320" cy="24" r="8"/><circle cx="340" cy="24" r="8"/><circle cx="360" cy="24" r="8"/><circle cx="380" cy="24" r="8"/><circle cx="400" cy="24" r="8"/><circle cx="420" cy="24" r="8"/>
+              <circle cx="320" cy="44" r="8"/><circle cx="340" cy="44" r="8"/><circle cx="360" cy="44" r="8"/><circle cx="380" cy="44" r="8"/><circle cx="400" cy="44" r="8"/>
+            </g>
+            <text x="320" y="76" fill="var(--ink-soft)" font-size="11">Benzotropolon-Kern</text>
+
+            <line x1="270" y1="90" x2="270" y2="110" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#arrS)"/>
+            <text x="278" y="116" fill="var(--ink-soft)" font-size="11">+</text>
+            <circle cx="300" cy="112" r="8" fill="var(--quinone)"/>
+            <text x="316" y="117" fill="var(--ink-soft)" font-size="12">1 C — als CO₂ entkommen</text>
+          </g>
+          <defs>
+            <marker id="arrM" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+            </marker>
+            <marker id="arrS" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+      <figcaption><span class="fig-number">Abb. 2</span> — Massenbilanz statt Prosa: 12 Kohlenstoffe gehen in die Kupplung, 11 bleiben im Ring, 1 verlässt das Molekül als CO₂.</figcaption>
+    </figure>
+    <div class="quote">„…kann sich jetzt das aromatische System durch Zuhilfenahme dieser Elektronenpaare […] zurückführen, sodass Sie eine stabile kovalente Vernetzung dieser phenolischen Strukturen haben.“<span>Glomb, Vorlesung</span></div>
+  </section>
+
+  <!-- ===================== OXIDATION CLOSE-UP ===================== -->
+  <section>
+    <h2>Schritt 0 — PPO oxidiert den Ring: das wiederverwendbare Prinzip</h2>
+    <p>Typ-3-Kupferzentrum, zwei Cu, verbrückt durch μ-η²:η²-Peroxo aus O₂. Ein Phenol ist elektronenreich und will geben; ein Chinon ist elektronenarm und will nehmen — dieselbe Struktur, zwei Elektronen Unterschied. Das brauchst du wieder bei Ellagsäure, Melanin/Tyrosinase, Kakao-Bräunung.</p>
+    <figure>
+      <div class="fig-wrap">
+        <svg viewBox="0 0 620 320" role="img" aria-label="Elektronenschema der PPO-Oxidation: ein Brenzcatechin-Ring wird über drei gebogene Pfeile zum ortho-Chinon oxidiert, die letzten zwei Elektronen fließen auf das Cu2-Peroxo-Zentrum.">
+          <defs>
+            <marker id="arrC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="var(--theaflavin)"/>
+            </marker>
+          </defs>
+          <g font-family="var(--font-body)">
+
+            <!-- reactant: catechol -->
+            <g style="color:var(--phenol)" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round">
+              <polygon points="150,95 214.95,132.5 214.95,207.5 150,245 85.05,207.5 85.05,132.5"/>
+              <line x1="158.7" y1="107" x2="200.25" y2="131"/>
+              <line x1="200.25" y1="209" x2="158.7" y2="233"/>
+              <line x1="91.05" y1="194" x2="91.05" y2="146"/>
+              <line x1="150" y1="95" x2="150" y2="60"/>
+              <line x1="214.95" y1="207.5" x2="253.95" y2="230"/>
+              <line x1="150" y1="245" x2="150" y2="290"/>
+            </g>
+            <text x="150" y="50" text-anchor="middle" font-size="13" fill="var(--ink-soft)" font-family="var(--font-mono)">Flavan</text>
+            <text x="262" y="236" font-size="17" font-weight="700" fill="var(--ink)">OH</text>
+            <text x="150" y="308" text-anchor="middle" font-size="17" font-weight="700" fill="var(--ink)">OH</text>
+
+            <!-- arrows -->
+            <path d="M150,282 C118,270 118,240 145,222" fill="none" stroke="var(--theaflavin)" stroke-width="2" marker-end="url(#arrC)"/>
+            <text x="88" y="258" font-size="12" fill="var(--theaflavin)">1</text>
+
+            <path d="M182,226 C205,205 222,214 234,222" fill="none" stroke="var(--theaflavin)" stroke-width="2" marker-end="url(#arrC)"/>
+            <text x="205" y="240" font-size="12" fill="var(--theaflavin)">2</text>
+
+            <path d="M182,114 C230,92 300,80 335,75" fill="none" stroke="var(--theaflavin)" stroke-width="2" marker-end="url(#arrC)"/>
+            <text x="250" y="90" font-size="12" fill="var(--theaflavin)">3</text>
+
+            <rect x="335" y="55" width="120" height="40" rx="9" fill="none" stroke="var(--quinone)" stroke-width="1.6"/>
+            <text x="395" y="80" text-anchor="middle" font-size="13" fill="var(--quinone)" font-family="var(--font-mono)">Cu(II)₂–O₂²⁻</text>
+
+            <!-- reaction arrow -->
+            <line x1="262" y1="170" x2="368" y2="170" stroke="currentColor" stroke-width="2" marker-end="url(#arrM2)"/>
+            <text x="315" y="155" text-anchor="middle" font-size="13" fill="var(--ink-soft)" font-family="var(--font-mono)">PPO · ½ O₂</text>
+            <text x="315" y="197" text-anchor="middle" font-size="11" fill="var(--ink-soft)" font-family="var(--font-mono)">Cu(I)₂ + H₂O</text>
+            <defs>
+              <marker id="arrM2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+              </marker>
+            </defs>
+
+            <!-- product: quinone -->
+            <g style="color:var(--quinone)" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round">
+              <polygon points="470,95 534.95,132.5 534.95,207.5 470,245 405.05,207.5 405.05,132.5"/>
+              <line x1="478.7" y1="107" x2="520.25" y2="131"/>
+              <line x1="411.05" y1="194" x2="411.05" y2="146"/>
+              <line x1="470" y1="95" x2="470" y2="60"/>
+              <line x1="534.95" y1="207.5" x2="569.55" y2="227.5"/>
+              <line x1="532.95" y1="211" x2="567.55" y2="231"/>
+              <line x1="470" y1="245" x2="470" y2="285"/>
+              <line x1="474" y1="245" x2="474" y2="285"/>
+            </g>
+            <text x="470" y="50" text-anchor="middle" font-size="13" fill="var(--ink-soft)" font-family="var(--font-mono)">Flavan</text>
+            <text x="581" y="238" font-size="17" font-weight="700" fill="var(--ink)">O</text>
+            <text x="470" y="304" text-anchor="middle" font-size="17" font-weight="700" fill="var(--ink)">O</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption><span class="fig-number">Abb. 3</span> — Drei Pfeile: (1) Phenolat-O klappt ins π-System, (2) die Ringbindung schiebt weiter zum zweiten O, (3) zwei Elektronen fließen auf das Cu₂-Peroxo. Aus Brenzcatechin wird ein Dien-dion — die Aromatizität ist das Pfand.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ===================== MECHANISM FLOW ===================== -->
+  <section>
+    <h2>Der ganze Weg: Schritt 0 bis Schritt 7</h2>
+    <p>Grün = Phenol/Nucleophil, Blau = Chinon/Elektrophil, Kupferrot = der fertige Chromophor. Verfolge, wie EC (links in jedem Paar) durchgehend grün bleibt, während EGC (rechts) zweimal oxidiert wird — und am Ende seinen dritten Sauerstoff-Kohlenstoff verliert.</p>
+
+    <figure>
+      <div class="fig-wrap">
+        <svg viewBox="0 0 1860 250" role="img" aria-label="Reaktionsfluss von EC und EGC über sieben Stufen zum Benzotropolon: Oxidation, Michael-Addition, Rearomatisierung, zweite Oxidation, intramolekulare Kupplung, Decarboxylierung.">
+          <defs>
+            <symbol id="hex22" viewBox="-24 -24 48 48">
+              <polygon points="0,-22 19.05,-11 19.05,11 0,22 -19.05,11 -19.05,-11"/>
+            </symbol>
+            <marker id="arrF" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"/>
+            </marker>
+          </defs>
+          <g font-family="var(--font-mono)" font-size="11" fill="var(--ink-soft)" stroke-linecap="round">
+
+            <!-- connecting arrows + labels -->
+            <g stroke="var(--ink-soft)" stroke-width="1.5">
+              <line x1="170" y1="120" x2="300" y2="120" marker-end="url(#arrF)"/>
+              <line x1="430" y1="120" x2="560" y2="120" marker-end="url(#arrF)"/>
+              <line x1="690" y1="120" x2="820" y2="120" marker-end="url(#arrF)"/>
+              <line x1="950" y1="120" x2="1080" y2="120" marker-end="url(#arrF)"/>
+              <line x1="1210" y1="120" x2="1340" y2="120" marker-end="url(#arrF)"/>
+              <line x1="1470" y1="120" x2="1600" y2="120" marker-end="url(#arrF)"/>
+            </g>
+            <text x="235" y="108" text-anchor="middle">PPO, ½ O₂</text>
+            <text x="495" y="108" text-anchor="middle">Michael, C2′→C6′</text>
+            <text x="755" y="108" text-anchor="middle">Rearomatis.</text>
+            <text x="1015" y="108" text-anchor="middle">2. Oxidation</text>
+            <text x="1275" y="108" text-anchor="middle">1,2-Add. C5′→C4′</text>
+            <text x="1535" y="108" text-anchor="middle">Retro-Aldol, −CO₂</text>
+
+            <!-- C0: start -->
+            <g transform="translate(110,120)">
+              <use href="#hex22" transform="translate(-40,0)" style="color:var(--phenol)" fill="none" stroke="currentColor" stroke-width="2.4"/>
+              <use href="#hex22" transform="translate(40,0)" style="color:var(--phenol)" fill="none" stroke="currentColor" stroke-width="2.4"/>
+              <text x="0" y="52" text-anchor="middle" fill="var(--ink)">EC + EGC</text>
+              <text x="0" y="68" text-anchor="middle" font-size="10">beide reduziert</text>
+            </g>
+
+            <!-- C1: oxidation -->
+            <g transform="translate(370,120)">
+              <use href="#hex22" transform="translate(-40,0)" style="color:var(--quinone)" fill="none" stroke="currentColor" stroke-width="2.4"/>
+              <use href="#hex22" transform="translate(40,0)" style="color:var(--phenol)" fill="none" stroke="currentColor" stroke-width="2.4"/>
+              <text x="-40" y="-30" text-anchor="middle" fill="var(--quinone)" font-size="10">O   O</text>
+              <text x="0" y="52" text-anchor="middle" fill="var(--ink)">EC-Chinon (E⁺) + EGC (Nu)</text>
+              <text x="0" y="68" text-anchor="middle" font-size="10">Redox-Austausch</text>
+            </g>
+
+            <!-- C2: coupling -->
+            <g transform="translate(630,120)">
+              <use href="#hex22" transform="translate(-40,0)" style="color:var(--quinone)" fill="none" stroke="currentColor" stroke-width="2.4"/>
+              <use href="#hex22" transform="translate(40,0)" style="color:var(--phenol)" fill="none" stroke="currentColor" stroke-width="2.4"/>
+              <line x1="-20.95" y1="0" x2="20.95" y2="0" stroke="var(--ink)" stroke-width="2.6"/>
+              <text x="-40" y="-30" text-anchor="middle" fill="var(--quinone)" font-size="10">O⁻</text>
+              <text x="40" y="-30" text-anchor="middle" fill="var(--phenol)" font-size="10">＋</text>
+              <text x="0" y="52" text-anchor="middle" fill="var(--ink)">Biaryl</text>
+              <text x="0" y="68" text-anchor="middle" font-size="10">Enolat / Arenium</text>
+            </g>
+
+            <!-- C3: rearomatized -->
+            <g transform="translate(890,120)">
+              <use href="#hex22" transform="translate(-40,0)" style="color:var(--phenol)" fill="none" stroke="currentColor" stroke-width="2.4"/>
+              <use href="#hex22" transform="translate(40,0)" style="color:var(--phenol)" fill="none" stroke="currentColor" stroke-width="2.4"/>
+              <line x1="-20.95" y1="0" x2="20.95" y2="0" stroke="var(--ink)" stroke-width="2.6"/>
+              <text x="0" y="52" text-anchor="middle" fill="var(--ink)">Biaryl, farblos</text>
+              <text x="0" y="68" text-anchor="middle" font-size="10">beide Ringe aromatisch</text>
+            </g>
+
+            <!-- C4: second oxidation -->
+            <g transform="translate(1150,120)">
+              <use href="#hex22" transform="translate(-40,0)" style="color:var(--phenol)" fill="none" stroke="currentColor" stroke-width="2.4"/>
+              <use href="#hex22" transform="translate(40,0)" style="color:var(--quinone)" fill="none" stroke="currentColor" stroke-width="2.4"/>
+              <line x1="-20.95" y1="0" x2="20.95" y2="0" stroke="var(--ink)" stroke-width="2.6"/>
+              <text x="40" y="-30" text-anchor="middle" fill="var(--quinone)" font-size="10">O  O</text>
+              <text x="40" y="34" text-anchor="middle" fill="var(--quinone)" font-size="10">OH</text>
+              <text x="0" y="52" text-anchor="middle" fill="var(--ink)">Hydroxy-o-chinon</text>
+              <text x="0" y="68" text-anchor="middle" font-size="10">an EGC-Rest</text>
+            </g>
+
+            <!-- C5: tricyclus -->
+            <g transform="translate(1410,120)">
+              <use href="#hex22" transform="translate(-40,0)" style="color:var(--phenol)" fill="none" stroke="currentColor" stroke-width="2.4"/>
+              <use href="#hex22" transform="translate(40,0)" style="color:var(--quinone)" fill="none" stroke="currentColor" stroke-width="2.4"/>
+              <line x1="-20.95" y1="0" x2="20.95" y2="0" stroke="var(--ink)" stroke-width="2.6"/>
+              <path d="M-20.95,-11 Q0,-30 20.95,-11" fill="none" stroke="var(--ink)" stroke-width="2.2"/>
+              <text x="0" y="52" text-anchor="middle" fill="var(--ink)">Tricyclus</text>
+              <text x="0" y="68" text-anchor="middle" font-size="10">5-Ring-Brücke</text>
+            </g>
+
+            <!-- C6: benzotropolone -->
+            <g transform="translate(1670,120)">
+              <use href="#hex22" transform="translate(-14,0)" style="color:var(--theaflavin)" fill="none" stroke="currentColor" stroke-width="2.6"/>
+              <path d="M4.5,-11 L26,-20 L40,0 L26,20 L4.5,11" fill="none" stroke="var(--theaflavin)" stroke-width="2.6" stroke-linejoin="round"/>
+              <path d="M40,-8 C58,-24 66,-34 62,-46" fill="none" stroke="var(--ink-soft)" stroke-width="1.6" stroke-dasharray="3,3" marker-end="url(#arrF)"/>
+              <text x="68" y="-48" font-size="10" fill="var(--ink-soft)">CO₂</text>
+              <text x="6" y="52" text-anchor="middle" fill="var(--ink)">Benzotropolon</text>
+              <text x="6" y="68" text-anchor="middle" font-size="10">→ Theaflavin, Abb. 4</text>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <figcaption><span class="fig-number">Abb. 4</span> — Sieben Stufen, ein Faden: EC (links, immer grün nach der Rearomatisierung) liefert am Ende nur noch die Brücke; EGC (rechts) wird zweimal oxidiert und verliert C-3′ als CO₂.</figcaption>
+    </figure>
+
+    <ol class="steplist">
+      <li><span class="n">1</span><span>Redox-Austausch: EC-Chinon + EGC ⇌ EC + EGC-Chinon — im Gemisch liegt immer ein oxidiert/reduziert-Paar vor, nie zwei Chinone oder zwei Phenole zusammen.</span></li>
+      <li><span class="n">2</span><span>Michael-analoge Kupplung: C-2′ von EGC (aktiviert von zwei OH gleichzeitig) greift C-6′ des EC-Chinons an (die einzige freie β-Position).</span></li>
+      <li><span class="n">3</span><span>Rearomatisierung: −H⁺/+H⁺ an beiden Ringen — Triebkraft ist die zurückgewonnene Aromatizität. Noch farblos, identisch zu Gallussäure → Ellagsäure.</span></li>
+      <li><span class="n">4</span><span>Dritte Oxidation, diesmal am Pyrogallol-Rest des Biaryls — er trägt jetzt einen zusätzlichen Aryl-Substituenten und ist der leichter oxidierbare Ring.</span></li>
+      <li><span class="n">5</span><span>Zweite, intramolekulare Kupplung: C-5′(EC) greift 1,2 auf die Carbonylgruppe C-4′ des Chinons — Nucleophil und Elektrophil sitzen jetzt im selben Molekül.</span></li>
+      <li><span class="n">6</span><span>Retro-Aldol öffnet den Pyrogallol-Ring, β-Ketosäure-Decarboxylierung stößt CO₂ ab — übrig bleiben 5 + 2 = 7 Kohlenstoffe: der Siebenring.</span></li>
+    </ol>
+  </section>
+
+  <!-- ===================== THEAFLAVIN CORE ===================== -->
+  <section>
+    <h2>Warum kupferrot: der fertige Chromophor</h2>
+    <p>Ein Tropolon ist aromatisch, aber nicht benzoid — die OH-Gruppe schiebt Elektronendichte hinein, die C=O zieht sie heraus. Zusammen mit dem anellierten Benzolring aus dem Rest des EC-Rings entsteht ein durchkonjugiertes 11-C-System mit eingebautem Donor (phenolische OH) und Akzeptor (Tropolon-Carbonyl).</p>
+    <figure>
+      <div class="fig-wrap" style="display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center;">
+        <svg viewBox="-30 60 600 340" width="420" role="img" aria-label="Benzotropolon-Kern des Theaflavins: ein Benzolring aus dem EC-Rest, fusioniert mit einem siebengliedrigen Tropolonring aus dem geöffneten Pyrogallolring von EGC, mit Carbonyl- und Hydroxylgruppe in Nachbarschaft.">
+          <g style="color:var(--theaflavin)" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <!-- benzo ring -->
+            <polygon points="170,130 239.3,170 239.3,250 170,290 100.7,250 100.7,170"/>
+            <line x1="231.3" y1="186" x2="231.3" y2="234"/>
+            <line x1="160.78" y1="277.17" x2="116.44" y2="251.57"/>
+            <line x1="116.44" y1="168.43" x2="160.78" y2="142.83"/>
+            <!-- heptagon (shares Fa-Fb edge) -->
+            <polyline points="239.3,170 301.8,120.1 379.9,137.9 414.6,210 379.9,282.1 301.8,299.9 239.3,250"/>
+            <line x1="380.53" y1="264.64" x2="401.35" y2="221.38"/>
+            <line x1="362.73" y1="141.17" x2="315.87" y2="130.49"/>
+            <!-- exocyclic OH / O bonds -->
+            <line x1="170" y1="130" x2="170" y2="90"/>
+            <line x1="170" y1="290" x2="170" y2="330"/>
+            <line x1="100.7" y1="170" x2="60" y2="148"/>
+            <line x1="379.9" y1="137.9" x2="414.2" y2="94.9"/>
+            <line x1="379.9" y1="282.1" x2="407.9" y2="317.3"/>
+            <line x1="301.8" y1="299.9" x2="291.75" y2="343.77"/>
+            <line x1="305.7" y1="300.79" x2="295.65" y2="344.66"/>
+          </g>
+          <g font-family="var(--font-body)" font-size="18" font-weight="700" fill="var(--ink)">
+            <text x="170" y="76" text-anchor="middle">OH</text>
+            <text x="170" y="350" text-anchor="middle">OH</text>
+            <text x="416" y="332">OH</text>
+            <text x="283" y="368">O</text>
+          </g>
+          <g font-family="var(--font-mono)" font-size="13" fill="var(--ink-soft)">
+            <text x="30" y="132">Flavan-C₂</text>
+            <text x="430" y="86">Flavan-C₂</text>
+          </g>
+        </svg>
+        <svg viewBox="0 0 300 170" width="260" role="img" aria-label="Absorptionsspektrum von Theaflavin mit zwei Banden bei 380 und 460 nm im blauvioletten Bereich; die wahrgenommene Komplementärfarbe ist Kupferrot.">
+          <g font-family="var(--font-mono)" font-size="10" fill="var(--ink-soft)">
+            <line x1="30" y1="120" x2="280" y2="120" stroke="var(--ink-soft)" stroke-width="1.2"/>
+            <line x1="30" y1="120" x2="30" y2="20" stroke="var(--ink-soft)" stroke-width="1.2"/>
+            <text x="30" y="134">300</text>
+            <text x="150" y="134">450</text>
+            <text x="265" y="134">600 nm</text>
+            <path d="M30,118 C70,116 90,40 110,32 C125,26 140,60 150,90 C165,60 180,35 200,30 C220,26 240,70 280,118"
+                  fill="var(--quinone)" fill-opacity="0.28" stroke="var(--quinone)" stroke-width="2"/>
+            <text x="100" y="20" text-anchor="middle" fill="var(--quinone)">380</text>
+            <text x="205" y="18" text-anchor="middle" fill="var(--quinone)">460</text>
+          </g>
+          <rect x="235" y="55" width="34" height="34" rx="4" fill="var(--theaflavin)"/>
+          <text x="252" y="102" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--ink-soft)">Kupferrot</text>
+        </svg>
+      </div>
+      <figcaption><span class="fig-number">Abb. 4</span> — Der Benzotropolon-Kern (links) und sein Absorptionsverhalten (rechts): Theaflavin absorbiert bei ~380 und ~460 nm — Blau/Blauviolett wird verschluckt, die Komplementärfarbe Kupferrot bleibt übrig. Catechin selbst absorbiert bei ~280 nm, im UV, weil A- und B-Ring dort noch durch sp³-C-2 entkoppelt sind.</figcaption>
+    </figure>
+    <div class="merk"><b>Der Chromophor wird nicht vererbt. Er wird gebaut.</b> Zwei kleine, isolierte, UV-aktive Systeme verschmelzen zu einem großen, durchkonjugierten, nicht-benzoiden Aromaten — und dieses neue Ringsystem ist der Farbstoff.</div>
+  </section>
+
+  <!-- ===================== CROSS-LINKS ===================== -->
+  <section>
+    <h2>Querverbindungen</h2>
+    <ul class="crosslinks">
+      <li><b>Gallussäure → Ellagsäure:</b> identisches Prinzip, nur ohne Ringerweiterung.</li>
+      <li><b>Theaflavinsäure:</b> Catechin + Gallussäure statt Gallocatechin.</li>
+      <li><b>Bisflavanole → Thearubigine:</b> ~10 % Theaflavine/Bisflavanole, ~75 % Thearubigine, ~15 % unverändert.</li>
+      <li><b>Melanin/Tyrosinase:</b> dasselbe Chinon-Prinzip in der Haut.</li>
+      <li><b>Strecker-Abbau im Tee:</b> ausgelöst durch o-Chinone — genau die aus Schritt 0.</li>
+      <li><b>Adstringenz:</b> die Produkte sind tanninähnlich → H-Brücken mit prolinreichen Speichelproteinen.</li>
+      <li><b>Grüner Tee:</b> Dämpfen inaktiviert PPO sofort → Schritt 0 findet nie statt → keine Farbe.</li>
+    </ul>
+  </section>
+
+  <footer>
+    Verbindlich ist Glombs Bild, Skript S. 62 (<code>LMC_I_Skript187_Seite_p062.jpeg</code>). Bei Locanten der zweiten Kupplung und der genauen CO₂-Pfeilchoreographie kursieren in der Literatur abweichende Zeichnungen — wo seine Version abweicht, gilt seine.
+  </footer>
+
+</div>
