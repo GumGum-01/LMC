@@ -1,0 +1,1097 @@
+<title>Block 2 — Die Gabelung: 1,2- vs. 2,3-Enolisierung</title>
+
+<style>
+:root{
+  --bg:#F4F6FB; --surface:#FFFFFF; --surface-2:#EAEDF5;
+  --ink:#151827; --ink-2:#39405A; --muted:#68708A; --line:#D9DEEB;
+  --acid:#B4400C; --base:#3E34B4;
+  --body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0E1016; --surface:#161A24; --surface-2:#1D2231; --ink:#E9ECF4;
+    --ink-2:#C4CADA; --muted:#969FB6; --line:#293040;
+    --acid:#FF8B4D; --base:#9E8FFF;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1016; --surface:#161A24; --surface-2:#1D2231; --ink:#E9ECF4;
+  --ink-2:#C4CADA; --muted:#969FB6; --line:#293040;
+  --acid:#FF8B4D; --base:#9E8FFF;
+}
+:root[data-theme="light"]{
+  --bg:#F4F6FB; --surface:#FFFFFF; --surface-2:#EAEDF5; --ink:#151827;
+  --ink-2:#39405A; --muted:#68708A; --line:#D9DEEB;
+  --acid:#B4400C; --base:#3E34B4;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink-2);
+  font-family:var(--body); font-size:16.5px; line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:980px; margin:0 auto; padding:clamp(24px,5vw,64px) clamp(16px,4vw,32px) 96px}
+
+h1,h2,h3,h4{font-family:var(--display); color:var(--ink); text-wrap:balance; margin:0}
+h1{font-size:clamp(30px,5vw,46px); line-height:1.1; letter-spacing:-.01em}
+h2{font-size:clamp(23px,3.4vw,31px); line-height:1.18}
+h3{font-size:19px; line-height:1.3}
+p{margin:0}
+strong{color:var(--ink); font-weight:640}
+em{color:var(--ink); font-style:italic}
+
+.eyebrow{
+  font-family:var(--mono); font-size:11.5px; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--muted);
+}
+.lede{font-size:18.5px; color:var(--ink-2); max-width:64ch}
+.stack{display:flex; flex-direction:column; gap:18px}
+.stack-s{display:flex; flex-direction:column; gap:10px}
+.stack-l{display:flex; flex-direction:column; gap:38px}
+
+/* ---- header ---- */
+header.top{display:flex; flex-direction:column; gap:16px; padding-bottom:26px; border-bottom:1px solid var(--line)}
+.meta{display:flex; flex-wrap:wrap; gap:8px 18px; font-family:var(--mono); font-size:12px; color:var(--muted)}
+
+/* ---- sections ---- */
+section{margin-top:56px; display:flex; flex-direction:column; gap:22px}
+.sec-head{display:flex; flex-direction:column; gap:7px; padding-left:14px; border-left:3px solid var(--accent,var(--line))}
+.weg-a{--accent:var(--acid)}
+.weg-b{--accent:var(--base)}
+.tag{
+  display:inline-flex; align-items:center; gap:8px; align-self:flex-start;
+  font-family:var(--mono); font-size:11.5px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--accent,var(--muted));
+}
+.tag::before{content:""; width:9px; height:9px; border-radius:50%; background:var(--accent,var(--muted))}
+
+/* ---- step card ---- */
+.step{
+  background:var(--surface); border:1px solid var(--line); border-radius:4px;
+  padding:clamp(16px,3vw,26px); display:flex; flex-direction:column; gap:18px;
+}
+.step-head{display:flex; gap:14px; align-items:baseline}
+.step-n{
+  font-family:var(--mono); font-size:12px; font-weight:600; color:var(--accent,var(--muted));
+  border:1px solid var(--accent,var(--line)); border-radius:3px;
+  padding:2px 8px; white-space:nowrap; flex:none;
+}
+.step-sub{font-family:var(--mono); font-size:12.5px; color:var(--muted); margin-top:4px}
+
+/* ---- figures ---- */
+figure{margin:0; display:flex; flex-direction:column; gap:10px}
+.fig-scroll{overflow-x:auto; background:var(--surface-2); border-radius:3px; padding:6px 4px}
+.fig-scroll svg{display:block; width:100%; height:auto; min-width:660px}
+figcaption{font-size:13.5px; color:var(--muted); max-width:70ch}
+
+.at{font-family:var(--body); font-size:17px; fill:var(--ink); text-anchor:middle}
+.at-s{font-family:var(--body); font-size:14px; fill:var(--ink); text-anchor:middle}
+.idx{font-family:var(--mono); font-size:10.5px; fill:var(--muted); text-anchor:start}
+.bond{stroke:var(--ink); stroke-width:1.6; stroke-linecap:round; fill:none}
+.arw{fill:none; stroke:var(--accent); stroke-width:2.2; stroke-linecap:round}
+.deloc{fill:none; stroke:var(--accent); stroke-width:1.5; stroke-dasharray:5 4; opacity:.8}
+.hl{fill:none; stroke:var(--accent); stroke-width:1.6; opacity:.6}
+.rxn{stroke:var(--muted); stroke-width:1.8; fill:none}
+.cond{font-family:var(--mono); font-size:12px; fill:var(--muted); text-anchor:middle}
+.pcap{font-family:var(--mono); font-size:12.5px; fill:var(--muted); text-anchor:middle}
+.rgt{font-family:var(--body); font-size:14px; fill:var(--ink); text-anchor:middle}
+.note-svg{font-family:var(--body); font-size:12.5px; fill:var(--muted); text-anchor:middle}
+.bdg{fill:var(--surface); stroke:var(--accent); stroke-width:1.4}
+.bdgt{font-family:var(--mono); font-size:11px; font-weight:600; fill:var(--accent); text-anchor:middle}
+.mk-acid{fill:var(--acid)} .mk-base{fill:var(--base)} .mk-ink{fill:var(--muted)}
+
+/* ---- arrow list ---- */
+ul.arrows{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:11px}
+ul.arrows li{display:grid; grid-template-columns:30px 1fr; gap:12px; align-items:start; font-size:15.5px}
+.n{
+  font-family:var(--mono); font-size:11.5px; font-weight:600; text-align:center;
+  color:var(--accent,var(--muted)); border:1.4px solid var(--accent,var(--line));
+  border-radius:50%; width:24px; height:24px; line-height:21px; margin-top:2px;
+}
+.n.sim{border-style:dashed}
+
+/* ---- result box ---- */
+.result{
+  border:1px solid var(--accent,var(--line)); border-radius:4px;
+  background:var(--surface); padding:clamp(16px,3vw,24px);
+  display:flex; flex-direction:column; gap:14px;
+}
+.result h3{color:var(--accent)}
+
+table{border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; font-size:15px}
+.tbl-scroll{overflow-x:auto}
+th,td{text-align:left; padding:8px 14px 8px 0; border-bottom:1px solid var(--line)}
+th{font-family:var(--mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:500}
+td:first-child{font-family:var(--mono); color:var(--ink); font-weight:600; white-space:nowrap}
+td code, p code, li code{font-family:var(--mono); font-size:.92em; color:var(--ink)}
+
+.callout{
+  background:var(--surface-2); border-radius:4px; padding:16px 20px;
+  font-size:15.5px; display:flex; flex-direction:column; gap:8px;
+}
+.callout .k{font-family:var(--mono); font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+.merksatz{
+  font-family:var(--display); font-size:clamp(19px,2.6vw,25px); line-height:1.4;
+  color:var(--ink); font-style:italic; text-wrap:balance;
+}
+.rules{display:flex; flex-direction:column; gap:16px}
+.rule{display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:start}
+.rule .rn{
+  font-family:var(--mono); font-size:11.5px; color:var(--muted);
+  border:1px solid var(--line); border-radius:3px; padding:2px 7px; white-space:nowrap; margin-top:3px;
+}
+.legend{display:flex; flex-wrap:wrap; gap:10px 26px; font-size:14px; color:var(--muted)}
+footer{margin-top:64px; padding-top:22px; border-top:1px solid var(--line); font-size:13.5px; color:var(--muted)}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <marker id="arw-acid" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="mk-acid" d="M0,1.4 L9,5 L0,8.6 z"/>
+    </marker>
+    <marker id="arw-base" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="mk-base" d="M0,1.4 L9,5 L0,8.6 z"/>
+    </marker>
+    <marker id="arw-ink" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path class="mk-ink" d="M0,1.4 L9,5 L0,8.6 z"/>
+    </marker>
+  </defs>
+</svg>
+
+<div class="wrap">
+
+<header class="top">
+  <span class="eyebrow">LMC StEx · Maillard-Kaskade · Block 2</span>
+  <h1>Die Gabelung:<br>1,2- vs. 2,3-Enolisierung</h1>
+  <p class="lede">Das Amadori-Produkt hat <strong>zwei acide Nachbarn</strong> am C2-Keton. Der pH entscheidet, welchen die Base erwischt — und damit, ob 3-Desoxyglucoson oder 1-Desoxyglucoson entsteht.</p>
+  <div class="meta">
+    <span>Jeder Pfeil einzeln gezeichnet</span>
+    <span>Weg A: 14 Pfeile</span>
+    <span>Weg B: 8 Pfeile</span>
+  </div>
+</header>
+
+<!-- ============ AUSGANGSPUNKT ============ -->
+<section>
+  <div class="sec-head">
+    <span class="eyebrow">Ausgangspunkt</span>
+    <h2>Das Amadori-Produkt (ARP)</h2>
+  </div>
+
+  <div class="tbl-scroll">
+  <table>
+    <thead><tr><th>C</th><th>Gruppe</th><th>Rolle</th></tr></thead>
+    <tbody>
+      <tr><td>C1</td><td>CH₂–NHR</td><td>α-ständig — <strong>acide H</strong>, trägt die Aminosäure</td></tr>
+      <tr><td>C2</td><td>C=O (Keton)</td><td><strong>Elektronensenke</strong> in der Mitte</td></tr>
+      <tr><td>C3</td><td>CH–OH</td><td>α-ständig — <strong>acide H</strong>, trägt die spätere Abgangsgruppe</td></tr>
+      <tr><td>C4–C6</td><td>CH–OH, CH–OH, CH₂OH</td><td>unverändert — in allen Zeichnungen als <code>R</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <figure>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 700 350" role="img" aria-label="Amadori-Produkt mit den beiden aciden Wasserstoffatomen an C1 und C3; von C1 zweigt Weg A bei pH kleiner 7 ab, von C3 Weg B bei pH größer 7.">
+        <!-- backbone -->
+        <line class="bond" x1="204" y1="120" x2="270" y2="120"/>
+        <line class="bond" x1="310" y1="120" x2="380" y2="120"/>
+        <line class="bond" x1="420" y1="120" x2="480" y2="120"/>
+        <text class="at" x="180" y="126">CH</text>
+        <text class="at" x="290" y="126">C</text>
+        <text class="at" x="400" y="126">C</text>
+        <text class="at" x="500" y="126">R</text>
+        <text class="idx" x="195" y="141">1</text>
+        <text class="idx" x="303" y="141">2</text>
+        <text class="idx" x="413" y="141">3</text>
+        <!-- upper substituents -->
+        <line class="bond" x1="180" y1="110" x2="180" y2="88"/>
+        <text class="at" x="180" y="82">NHR</text>
+        <line class="bond" x1="286" y1="110" x2="286" y2="88"/>
+        <line class="bond" x1="294" y1="110" x2="294" y2="88"/>
+        <text class="at" x="290" y="82">O</text>
+        <line class="bond" x1="400" y1="110" x2="400" y2="88"/>
+        <text class="at" x="400" y="82">OH</text>
+        <!-- lower H's -->
+        <line class="bond" x1="180" y1="132" x2="180" y2="152"/>
+        <text class="at" x="180" y="172">H</text>
+        <line class="bond" x1="400" y1="132" x2="400" y2="152"/>
+        <text class="at" x="400" y="172">H</text>
+        <!-- highlights -->
+        <circle class="hl" cx="180" cy="166" r="15" style="stroke:var(--acid)"/>
+        <circle class="hl" cx="400" cy="166" r="15" style="stroke:var(--base)"/>
+        <!-- fork arrows -->
+        <path class="arw" style="stroke:var(--acid)" d="M 168 180 C 148 208 142 230 140 248" marker-end="url(#arw-acid)"/>
+        <path class="arw" style="stroke:var(--base)" d="M 414 180 C 442 208 472 228 496 246" marker-end="url(#arw-base)"/>
+        <!-- labels -->
+        <text class="at-s" x="140" y="276" style="fill:var(--acid); font-weight:600">pH &lt; 7 · sauer</text>
+        <text class="note-svg" x="140" y="298" style="fill:var(--ink)">Weg A — 1,2-Enolisierung</text>
+        <text class="note-svg" x="140" y="318">→ 3-Desoxyglucoson</text>
+        <text class="at-s" x="524" y="276" style="fill:var(--base); font-weight:600">pH &gt; 7 · alkalisch</text>
+        <text class="note-svg" x="524" y="298" style="fill:var(--ink)">Weg B — 2,3-Enolisierung</text>
+        <text class="note-svg" x="524" y="318">→ 1-Desoxyglucoson</text>
+        <!-- side note -->
+        <text class="note-svg" x="600" y="126" style="text-anchor:start">R = C4–C6</text>
+      </svg>
+    </div>
+    <figcaption>Rechts und links vom C2-Keton sitzt je ein α-ständiges, acides H. Zieht die Base das an C1 → Weg A. Zieht sie das an C3 → Weg B. <strong>Das ist die ganze Gabelung.</strong></figcaption>
+  </figure>
+
+  <div class="callout">
+    <span class="k">Zeichenkonvention</span>
+    <div class="legend">
+      <span><strong>Gebogener Pfeil</strong> = Bewegung eines Elektronenpaars, vom Ursprung zum Ziel.</span>
+      <span><code>R</code> = –CH(OH)–CH(OH)–CH₂OH (C4–C6)</span>
+      <span><code>NHR</code> = Aminosäure-Stickstoff</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WEG A ============ -->
+<section class="weg-a">
+  <div class="sec-head">
+    <span class="tag">Weg A · pH &lt; 7</span>
+    <h2>1,2-Enolisierung → 3-Desoxyglucoson</h2>
+    <p class="step-sub">Abgangsgruppe = Wasser am C3. Das Amin bleibt bis zum Schluss dran.</p>
+  </div>
+
+  <!-- A1 -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-n">Schritt 1</span>
+      <div>
+        <h3>Enolisierung zum 1,2-Enaminol</h3>
+        <div class="step-sub">Pfeile 1–3 · alle simultan</div>
+      </div>
+    </div>
+
+    <figure>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 1040 320" role="img" aria-label="Base abstrahiert das H an C1; die C1-H-Elektronen bilden die C1=C2-Doppelbindung, die C2=O-Pi-Elektronen wandern auf den Sauerstoff. Es entsteht das 1,2-Enaminol.">
+          <!-- ---- Panel L: Amadori ---- -->
+          <line class="bond" x1="114" y1="170" x2="180" y2="170"/>
+          <line class="bond" x1="220" y1="170" x2="290" y2="170"/>
+          <line class="bond" x1="330" y1="170" x2="390" y2="170"/>
+          <text class="at" x="90" y="176">CH</text>
+          <text class="at" x="200" y="176">C</text>
+          <text class="at" x="310" y="176">C</text>
+          <text class="at" x="410" y="176">R</text>
+          <text class="idx" x="105" y="191">1</text>
+          <text class="idx" x="213" y="191">2</text>
+          <text class="idx" x="323" y="191">3</text>
+          <line class="bond" x1="90" y1="160" x2="90" y2="138"/>
+          <text class="at" x="90" y="132">NHR</text>
+          <line class="bond" x1="196" y1="160" x2="196" y2="138"/>
+          <line class="bond" x1="204" y1="160" x2="204" y2="138"/>
+          <text class="at" x="200" y="132">O</text>
+          <line class="bond" x1="310" y1="160" x2="310" y2="138"/>
+          <text class="at" x="310" y="132">OH</text>
+          <line class="bond" x1="90" y1="182" x2="90" y2="204"/>
+          <text class="at" x="90" y="222">H</text>
+          <line class="bond" x1="310" y1="182" x2="310" y2="204"/>
+          <text class="at" x="310" y="222">H</text>
+          <!-- base -->
+          <text class="rgt" x="36" y="256">B:</text>
+          <!-- arrows -->
+          <path class="arw" d="M 52 246 C 66 246 76 238 82 228" marker-end="url(#arw-acid)"/>
+          <circle class="bdg" cx="58" cy="224" r="9"/><text class="bdgt" x="58" y="228">1</text>
+          <path class="arw" d="M 90 196 C 110 204 134 194 144 178" marker-end="url(#arw-acid)"/>
+          <circle class="bdg" cx="124" cy="207" r="9"/><text class="bdgt" x="124" y="211">2</text>
+          <path class="arw" d="M 208 150 C 228 146 232 126 210 119" marker-end="url(#arw-acid)"/>
+          <circle class="bdg" cx="236" cy="140" r="9"/><text class="bdgt" x="236" y="144">3</text>
+          <text class="pcap" x="250" y="296">Amadori-Produkt</text>
+
+          <!-- ---- reaction arrow ---- -->
+          <line class="rxn" x1="470" y1="170" x2="566" y2="170" marker-end="url(#arw-ink)"/>
+          <text class="cond" x="516" y="156">− H⁺ (C1)</text>
+          <text class="cond" x="516" y="192">+ H⁺ (O)</text>
+
+          <!-- ---- Panel R: Enaminol ---- -->
+          <line class="bond" x1="654" y1="166" x2="720" y2="166"/>
+          <line class="bond" x1="654" y1="174" x2="720" y2="174"/>
+          <line class="bond" x1="760" y1="170" x2="830" y2="170"/>
+          <line class="bond" x1="870" y1="170" x2="930" y2="170"/>
+          <text class="at" x="630" y="176">CH</text>
+          <text class="at" x="740" y="176">C</text>
+          <text class="at" x="850" y="176">C</text>
+          <text class="at" x="950" y="176">R</text>
+          <text class="idx" x="645" y="191">1</text>
+          <text class="idx" x="753" y="191">2</text>
+          <text class="idx" x="863" y="191">3</text>
+          <line class="bond" x1="630" y1="160" x2="630" y2="138"/>
+          <text class="at" x="630" y="132">NHR</text>
+          <line class="bond" x1="740" y1="160" x2="740" y2="138"/>
+          <text class="at" x="740" y="132">OH</text>
+          <line class="bond" x1="850" y1="160" x2="850" y2="138"/>
+          <text class="at" x="850" y="132">OH</text>
+          <line class="bond" x1="850" y1="182" x2="850" y2="204"/>
+          <text class="at" x="850" y="222">H</text>
+          <text class="pcap" x="790" y="296">1,2-Enaminol</text>
+        </svg>
+      </div>
+      <figcaption>Die C1=C2-Doppelbindung entsteht, der Carbonyl-Sauerstoff wird zum Alkohol. <strong>Das ist die Zwischenstufe der Amadori-Umlagerung — nur rückwärts durchlaufen.</strong> Deshalb ist das ARP die zentrale Verzweigungsstelle.</figcaption>
+    </figure>
+
+    <ul class="arrows">
+      <li><span class="n">1</span><span>Die <strong>Base</strong> greift mit ihrem freien Elektronenpaar das <strong>H am C1</strong> an → die C1–H-Bindung bricht.</span></li>
+      <li><span class="n sim">2</span><span>Die <strong>C1–H-Bindungselektronen</strong> schieben in die C1–C2-Bindung → <strong>C1=C2</strong> bildet sich.</span></li>
+      <li><span class="n sim">3</span><span>Das <strong>π-Elektronenpaar der C2=O</strong> klappt hoch auf den Sauerstoff → C2–O⁻, nach Protonierung <strong>C2–OH</strong>.</span></li>
+    </ul>
+  </div>
+
+  <!-- A2a -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-n">Schritt 2a</span>
+      <div>
+        <h3>Protonierung der C3-OH — hier entscheidet der pH</h3>
+        <div class="step-sub">Pfeil 4</div>
+      </div>
+    </div>
+
+    <figure>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 1040 320" role="img" aria-label="Das freie Elektronenpaar des C3-Sauerstoffs greift ein Proton an; aus der OH-Gruppe wird OH2-plus, eine gute Abgangsgruppe.">
+          <!-- Panel L: Enaminol -->
+          <line class="bond" x1="114" y1="166" x2="180" y2="166"/>
+          <line class="bond" x1="114" y1="174" x2="180" y2="174"/>
+          <line class="bond" x1="220" y1="170" x2="290" y2="170"/>
+          <line class="bond" x1="330" y1="170" x2="390" y2="170"/>
+          <text class="at" x="90" y="176">CH</text>
+          <text class="at" x="200" y="176">C</text>
+          <text class="at" x="310" y="176">C</text>
+          <text class="at" x="410" y="176">R</text>
+          <text class="idx" x="105" y="191">1</text>
+          <text class="idx" x="213" y="191">2</text>
+          <text class="idx" x="323" y="191">3</text>
+          <line class="bond" x1="90" y1="160" x2="90" y2="138"/>
+          <text class="at" x="90" y="132">NHR</text>
+          <line class="bond" x1="200" y1="160" x2="200" y2="138"/>
+          <text class="at" x="200" y="132">OH</text>
+          <line class="bond" x1="310" y1="160" x2="310" y2="138"/>
+          <text class="at" x="310" y="132">OH</text>
+          <line class="bond" x1="310" y1="182" x2="310" y2="204"/>
+          <text class="at" x="310" y="222">H</text>
+          <!-- proton -->
+          <text class="rgt" x="382" y="102">H⁺</text>
+          <path class="arw" d="M 328 122 C 346 108 356 100 366 96" marker-end="url(#arw-acid)"/>
+          <circle class="bdg" cx="330" cy="100" r="9"/><text class="bdgt" x="330" y="104">4</text>
+          <text class="pcap" x="250" y="296">1,2-Enaminol</text>
+
+          <line class="rxn" x1="470" y1="170" x2="566" y2="170" marker-end="url(#arw-ink)"/>
+          <text class="cond" x="516" y="156">H⁺</text>
+          <text class="cond" x="516" y="192">pH &lt; 7</text>
+
+          <!-- Panel R -->
+          <line class="bond" x1="654" y1="166" x2="720" y2="166"/>
+          <line class="bond" x1="654" y1="174" x2="720" y2="174"/>
+          <line class="bond" x1="760" y1="170" x2="830" y2="170"/>
+          <line class="bond" x1="870" y1="170" x2="930" y2="170"/>
+          <text class="at" x="630" y="176">CH</text>
+          <text class="at" x="740" y="176">C</text>
+          <text class="at" x="850" y="176">C</text>
+          <text class="at" x="950" y="176">R</text>
+          <text class="idx" x="645" y="191">1</text>
+          <text class="idx" x="753" y="191">2</text>
+          <text class="idx" x="863" y="191">3</text>
+          <line class="bond" x1="630" y1="160" x2="630" y2="138"/>
+          <text class="at" x="630" y="132">NHR</text>
+          <line class="bond" x1="740" y1="160" x2="740" y2="138"/>
+          <text class="at" x="740" y="132">OH</text>
+          <line class="bond" x1="850" y1="160" x2="850" y2="138"/>
+          <text class="at" x="850" y="132" style="fill:var(--acid); font-weight:600">OH₂⁺</text>
+          <line class="bond" x1="850" y1="182" x2="850" y2="204"/>
+          <text class="at" x="850" y="222">H</text>
+          <text class="pcap" x="790" y="296">gute Abgangsgruppe am C3</text>
+        </svg>
+      </div>
+      <figcaption><strong>Warum pH &lt; 7?</strong> OH⁻ ist eine miserable Abgangsgruppe. Erst im Sauren wird sie zu H₂O protoniert — genau deshalb braucht Weg A saure Bedingungen.</figcaption>
+    </figure>
+
+    <ul class="arrows">
+      <li><span class="n">4</span><span>Das freie Elektronenpaar am <strong>C3-OH-Sauerstoff</strong> greift ein <strong>Proton</strong> an → <strong>C3–OH₂⁺</strong>.</span></li>
+    </ul>
+  </div>
+
+  <!-- A2b -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-n">Schritt 2b</span>
+      <div>
+        <h3>β-Eliminierung — die Elektronenwelle</h3>
+        <div class="step-sub">Pfeile 5–7 · alle simultan · N → C1 → C2 → C3 → H₂O fliegt</div>
+      </div>
+    </div>
+
+    <figure>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 1040 320" role="img" aria-label="Das Stickstoff-Elektronenpaar schiebt in die N-C1-Bindung, die C1=C2-Pi-Elektronen wandern in die C2-C3-Bindung, und Wasser tritt am C3 aus.">
+          <!-- Panel L -->
+          <line class="bond" x1="114" y1="166" x2="180" y2="166"/>
+          <line class="bond" x1="114" y1="174" x2="180" y2="174"/>
+          <line class="bond" x1="220" y1="170" x2="290" y2="170"/>
+          <line class="bond" x1="330" y1="170" x2="390" y2="170"/>
+          <text class="at" x="90" y="176">CH</text>
+          <text class="at" x="200" y="176">C</text>
+          <text class="at" x="310" y="176">C</text>
+          <text class="at" x="410" y="176">R</text>
+          <text class="idx" x="105" y="191">1</text>
+          <text class="idx" x="213" y="191">2</text>
+          <text class="idx" x="323" y="191">3</text>
+          <line class="bond" x1="90" y1="160" x2="90" y2="138"/>
+          <text class="at" x="90" y="132">NHR</text>
+          <line class="bond" x1="200" y1="160" x2="200" y2="138"/>
+          <text class="at" x="200" y="132">OH</text>
+          <line class="bond" x1="310" y1="160" x2="310" y2="138"/>
+          <text class="at" x="310" y="132">OH₂⁺</text>
+          <line class="bond" x1="310" y1="182" x2="310" y2="204"/>
+          <text class="at" x="310" y="222">H</text>
+          <!-- arrow 5: N lone pair into N-C1 -->
+          <path class="arw" d="M 66 124 C 50 132 54 148 78 152" marker-end="url(#arw-acid)"/>
+          <circle class="bdg" cx="50" cy="114" r="9"/><text class="bdgt" x="50" y="118">5</text>
+          <!-- arrow 6: C1=C2 pi into C2-C3 (below) -->
+          <path class="arw" d="M 147 184 C 170 216 232 216 254 184" marker-end="url(#arw-acid)"/>
+          <circle class="bdg" cx="200" cy="216" r="9"/><text class="bdgt" x="200" y="220">6</text>
+          <!-- arrow 7: C3-O bond breaks -->
+          <path class="arw" d="M 320 154 C 344 152 352 134 336 122" marker-end="url(#arw-acid)"/>
+          <circle class="bdg" cx="356" cy="156" r="9"/><text class="bdgt" x="356" y="160">7</text>
+          <text class="pcap" x="250" y="296">Enaminol mit OH₂⁺ am C3</text>
+
+          <line class="rxn" x1="470" y1="170" x2="566" y2="170" marker-end="url(#arw-ink)"/>
+          <text class="cond" x="516" y="156">− H₂O</text>
+
+          <!-- Panel R: iminium / enol -->
+          <line class="bond" x1="654" y1="170" x2="720" y2="170"/>
+          <line class="bond" x1="760" y1="166" x2="826" y2="166"/>
+          <line class="bond" x1="760" y1="174" x2="826" y2="174"/>
+          <line class="bond" x1="874" y1="170" x2="930" y2="170"/>
+          <text class="at" x="630" y="176">CH</text>
+          <text class="at" x="740" y="176">C</text>
+          <text class="at" x="850" y="176">CH</text>
+          <text class="at" x="950" y="176">R</text>
+          <text class="idx" x="645" y="191">1</text>
+          <text class="idx" x="753" y="191">2</text>
+          <text class="idx" x="866" y="191">3</text>
+          <line class="bond" x1="626" y1="160" x2="626" y2="138"/>
+          <line class="bond" x1="634" y1="160" x2="634" y2="138"/>
+          <text class="at" x="630" y="132">N⁺HR</text>
+          <line class="bond" x1="740" y1="160" x2="740" y2="138"/>
+          <text class="at" x="740" y="132">OH</text>
+          <circle class="hl" cx="850" cy="176" r="20"/>
+          <text class="note-svg" x="850" y="228">kein O mehr am C3</text>
+          <text class="pcap" x="790" y="296">konjugiertes Iminium-Enol</text>
+        </svg>
+      </div>
+      <figcaption><strong>Bild:</strong> Eine Elektronenwelle rollt vom Stickstoff durch die Kette und wirft das Wasser am C3 raus. Drei Pfeile, eine einzige Bewegung. <em>Hier wird das Molekül desoxy — und zwar am C3.</em></figcaption>
+    </figure>
+
+    <ul class="arrows">
+      <li><span class="n">5</span><span>Das <strong>freie Elektronenpaar am Stickstoff</strong> schiebt in die N–C1-Bindung → <strong>C1=N⁺</strong> (Iminium).</span></li>
+      <li><span class="n sim">6</span><span>Die <strong>π-Elektronen der C1=C2</strong> schieben weiter in die C2–C3-Bindung → <strong>C2=C3</strong>.</span></li>
+      <li><span class="n sim">7</span><span>Die <strong>C3–OH₂⁺-Bindung bricht heterolytisch</strong>, das Elektronenpaar geht zum Sauerstoff → <strong>Wasser tritt aus</strong>.</span></li>
+    </ul>
+  </div>
+
+  <!-- A3 -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-n">Schritt 3</span>
+      <div>
+        <h3>Tautomerisierung zur Schiff-Base des 3-DG</h3>
+        <div class="step-sub">Pfeile 8–9 · simultan</div>
+      </div>
+    </div>
+
+    <figure>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 1040 320" role="img" aria-label="Die C2=C3-Pi-Elektronen greifen ein Proton am C3, gleichzeitig bildet der C2-Sauerstoff die Ketogruppe. Es entsteht die Schiff-Base des 3-Desoxyglucosons.">
+          <!-- Panel L -->
+          <line class="bond" x1="114" y1="170" x2="180" y2="170"/>
+          <line class="bond" x1="220" y1="166" x2="286" y2="166"/>
+          <line class="bond" x1="220" y1="174" x2="286" y2="174"/>
+          <line class="bond" x1="334" y1="170" x2="390" y2="170"/>
+          <text class="at" x="90" y="176">CH</text>
+          <text class="at" x="200" y="176">C</text>
+          <text class="at" x="310" y="176">CH</text>
+          <text class="at" x="410" y="176">R</text>
+          <text class="idx" x="105" y="191">1</text>
+          <text class="idx" x="213" y="191">2</text>
+          <text class="idx" x="326" y="191">3</text>
+          <line class="bond" x1="86" y1="160" x2="86" y2="138"/>
+          <line class="bond" x1="94" y1="160" x2="94" y2="138"/>
+          <text class="at" x="90" y="132">N⁺HR</text>
+          <line class="bond" x1="200" y1="160" x2="200" y2="138"/>
+          <text class="at" x="200" y="132">OH</text>
+          <!-- proton below C3 -->
+          <text class="rgt" x="344" y="256">H⁺</text>
+          <path class="arw" d="M 253 184 C 262 212 292 240 320 248" marker-end="url(#arw-acid)"/>
+          <circle class="bdg" cx="270" cy="216" r="9"/><text class="bdgt" x="270" y="220">8</text>
+          <path class="arw" d="M 182 126 C 162 136 166 158 188 164" marker-end="url(#arw-acid)"/>
+          <circle class="bdg" cx="158" cy="150" r="9"/><text class="bdgt" x="158" y="154">9</text>
+          <text class="pcap" x="250" y="296">Iminium-Enol</text>
+
+          <line class="rxn" x1="470" y1="170" x2="566" y2="170" marker-end="url(#arw-ink)"/>
+          <text class="cond" x="516" y="156">+ H⁺ (C3)</text>
+          <text class="cond" x="516" y="192">− H⁺ (O)</text>
+
+          <!-- Panel R -->
+          <line class="bond" x1="654" y1="170" x2="720" y2="170"/>
+          <line class="bond" x1="760" y1="170" x2="822" y2="170"/>
+          <line class="bond" x1="878" y1="170" x2="930" y2="170"/>
+          <text class="at" x="630" y="176">CH</text>
+          <text class="at" x="740" y="176">C</text>
+          <text class="at" x="850" y="176">CH₂</text>
+          <text class="at" x="950" y="176">R</text>
+          <text class="idx" x="645" y="191">1</text>
+          <text class="idx" x="753" y="191">2</text>
+          <text class="idx" x="870" y="191">3</text>
+          <line class="bond" x1="626" y1="160" x2="626" y2="138"/>
+          <line class="bond" x1="634" y1="160" x2="634" y2="138"/>
+          <text class="at" x="630" y="132">N⁺HR</text>
+          <line class="bond" x1="736" y1="160" x2="736" y2="138"/>
+          <line class="bond" x1="744" y1="160" x2="744" y2="138"/>
+          <text class="at" x="740" y="132">O</text>
+          <text class="pcap" x="790" y="296">Schiff-Base des 3-DG</text>
+        </svg>
+      </div>
+      <figcaption>Aus dem Enol wird das Keton am C2, aus der C2=C3-Doppelbindung wird die CH₂-Gruppe am C3. Das Iminium am C1 steht noch.</figcaption>
+    </figure>
+
+    <ul class="arrows">
+      <li><span class="n">8</span><span>Die <strong>π-Elektronen der C2=C3</strong> klappen zum C3 und greifen dort ein <strong>Proton</strong> aus dem Lösungsmittel → <strong>C3 wird CH₂</strong>.</span></li>
+      <li><span class="n sim">9</span><span>Das freie Elektronenpaar am <strong>C2-OH-Sauerstoff</strong> schiebt in das C2 → <strong>C2=O</strong>, das Proton geht ab.</span></li>
+    </ul>
+  </div>
+
+  <!-- A4a -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-n">Schritt 4a</span>
+      <div>
+        <h3>Hydrolyse I — Wasseraddition zum Halbaminal</h3>
+        <div class="step-sub">Pfeile 10–11 · simultan</div>
+      </div>
+    </div>
+
+    <figure>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 1040 320" role="img" aria-label="Wasser greift das Iminium-Kohlenstoffatom C1 an, die C1=N-Pi-Elektronen gehen auf den Stickstoff. Es entsteht das Halbaminal.">
+          <!-- Panel L -->
+          <line class="bond" x1="114" y1="170" x2="180" y2="170"/>
+          <line class="bond" x1="220" y1="170" x2="282" y2="170"/>
+          <line class="bond" x1="338" y1="170" x2="390" y2="170"/>
+          <text class="at" x="90" y="176">CH</text>
+          <text class="at" x="200" y="176">C</text>
+          <text class="at" x="310" y="176">CH₂</text>
+          <text class="at" x="410" y="176">R</text>
+          <text class="idx" x="105" y="191">1</text>
+          <text class="idx" x="213" y="191">2</text>
+          <text class="idx" x="330" y="191">3</text>
+          <line class="bond" x1="86" y1="160" x2="86" y2="138"/>
+          <line class="bond" x1="94" y1="160" x2="94" y2="138"/>
+          <text class="at" x="90" y="132">N⁺HR</text>
+          <line class="bond" x1="196" y1="160" x2="196" y2="138"/>
+          <line class="bond" x1="204" y1="160" x2="204" y2="138"/>
+          <text class="at" x="200" y="132">O</text>
+          <!-- water -->
+          <text class="rgt" x="34" y="258">H₂O</text>
+          <path class="arw" d="M 52 242 C 66 228 76 208 84 188" marker-end="url(#arw-acid)"/>
+          <circle class="bdg" cx="52" cy="212" r="9"/><text class="bdgt" x="52" y="216">10</text>
+          <path class="arw" d="M 100 152 C 118 146 122 128 104 118" marker-end="url(#arw-acid)"/>
+          <circle class="bdg" cx="130" cy="156" r="9"/><text class="bdgt" x="130" y="160">11</text>
+          <text class="pcap" x="250" y="296">Schiff-Base des 3-DG</text>
+
+          <line class="rxn" x1="470" y1="170" x2="566" y2="170" marker-end="url(#arw-ink)"/>
+          <text class="cond" x="516" y="156">+ H₂O</text>
+          <text class="cond" x="516" y="192">H-Transfer</text>
+
+          <!-- Panel R: Halbaminal -->
+          <line class="bond" x1="654" y1="170" x2="720" y2="170"/>
+          <line class="bond" x1="760" y1="170" x2="822" y2="170"/>
+          <line class="bond" x1="878" y1="170" x2="930" y2="170"/>
+          <text class="at" x="630" y="176">CH</text>
+          <text class="at" x="740" y="176">C</text>
+          <text class="at" x="850" y="176">CH₂</text>
+          <text class="at" x="950" y="176">R</text>
+          <text class="idx" x="645" y="191">1</text>
+          <text class="idx" x="753" y="191">2</text>
+          <text class="idx" x="870" y="191">3</text>
+          <line class="bond" x1="630" y1="160" x2="630" y2="138"/>
+          <text class="at" x="630" y="132">OH</text>
+          <line class="bond" x1="630" y1="182" x2="630" y2="204"/>
+          <text class="at" x="630" y="222">NHR</text>
+          <line class="bond" x1="736" y1="160" x2="736" y2="138"/>
+          <line class="bond" x1="744" y1="160" x2="744" y2="138"/>
+          <text class="at" x="740" y="132">O</text>
+          <text class="pcap" x="790" y="296">Halbaminal (OH und NHR am C1)</text>
+        </svg>
+      </div>
+      <figcaption>Das Iminium-C1 ist stark elektrophil — Wasser addiert. Nach Protonentransfer trägt C1 sowohl OH als auch NHR.</figcaption>
+    </figure>
+
+    <ul class="arrows">
+      <li><span class="n">10</span><span>Das freie Elektronenpaar des <strong>Wasser-Sauerstoffs</strong> greift das elektrophile <strong>Iminium-C1</strong> an.</span></li>
+      <li><span class="n sim">11</span><span>Die <strong>π-Elektronen der C1=N⁺</strong> klappen hoch auf den Stickstoff → N wird neutral. Nach Protonentransfer: <strong>Halbaminal</strong>.</span></li>
+    </ul>
+  </div>
+
+  <!-- A4b -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-n">Schritt 4b</span>
+      <div>
+        <h3>Hydrolyse II — die Aminosäure wird frei</h3>
+        <div class="step-sub">Pfeile 12–14</div>
+      </div>
+    </div>
+
+    <figure>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 1040 320" role="img" aria-label="Der Stickstoff wird protoniert, der C1-Sauerstoff bildet die Aldehydgruppe und die C1-N-Bindung bricht. Die Aminosäure wird unverändert freigesetzt, 3-Desoxyglucoson entsteht.">
+          <!-- Panel L: Halbaminal -->
+          <line class="bond" x1="114" y1="170" x2="180" y2="170"/>
+          <line class="bond" x1="220" y1="170" x2="282" y2="170"/>
+          <line class="bond" x1="338" y1="170" x2="390" y2="170"/>
+          <text class="at" x="90" y="176">CH</text>
+          <text class="at" x="200" y="176">C</text>
+          <text class="at" x="310" y="176">CH₂</text>
+          <text class="at" x="410" y="176">R</text>
+          <text class="idx" x="105" y="191">1</text>
+          <text class="idx" x="213" y="191">2</text>
+          <text class="idx" x="330" y="191">3</text>
+          <line class="bond" x1="90" y1="160" x2="90" y2="138"/>
+          <text class="at" x="90" y="132">OH</text>
+          <line class="bond" x1="90" y1="182" x2="90" y2="204"/>
+          <text class="at" x="90" y="222">NHR</text>
+          <line class="bond" x1="196" y1="160" x2="196" y2="138"/>
+          <line class="bond" x1="204" y1="160" x2="204" y2="138"/>
+          <text class="at" x="200" y="132">O</text>
+          <!-- 12: N protonation -->
+          <text class="rgt" x="26" y="272">H⁺</text>
+          <path class="arw" d="M 62 232 C 48 244 42 254 38 262" marker-end="url(#arw-acid)"/>
+          <circle class="bdg" cx="68" cy="254" r="9"/><text class="bdgt" x="68" y="258">12</text>
+          <!-- 13: O into C1 -->
+          <path class="arw" d="M 72 126 C 52 138 58 158 80 164" marker-end="url(#arw-acid)"/>
+          <circle class="bdg" cx="48" cy="152" r="9"/><text class="bdgt" x="48" y="156">13</text>
+          <!-- 14: C1-N breaks -->
+          <path class="arw" d="M 100 192 C 116 200 116 212 100 216" marker-end="url(#arw-acid)"/>
+          <circle class="bdg" cx="130" cy="194" r="9"/><text class="bdgt" x="130" y="198">14</text>
+          <text class="pcap" x="250" y="296">Halbaminal</text>
+
+          <line class="rxn" x1="470" y1="170" x2="566" y2="170" marker-end="url(#arw-ink)"/>
+          <text class="cond" x="516" y="156">− H₂N–R</text>
+          <text class="cond" x="516" y="192">Aminosäure frei</text>
+
+          <!-- Panel R: 3-DG -->
+          <line class="bond" x1="654" y1="170" x2="720" y2="170"/>
+          <line class="bond" x1="760" y1="170" x2="822" y2="170"/>
+          <line class="bond" x1="878" y1="170" x2="930" y2="170"/>
+          <text class="at" x="630" y="176">CH</text>
+          <text class="at" x="740" y="176">C</text>
+          <text class="at" x="850" y="176">CH₂</text>
+          <text class="at" x="950" y="176">R</text>
+          <text class="idx" x="645" y="191">1</text>
+          <text class="idx" x="753" y="191">2</text>
+          <text class="idx" x="870" y="191">3</text>
+          <line class="bond" x1="626" y1="160" x2="626" y2="138"/>
+          <line class="bond" x1="634" y1="160" x2="634" y2="138"/>
+          <text class="at" x="630" y="132">O</text>
+          <line class="bond" x1="736" y1="160" x2="736" y2="138"/>
+          <line class="bond" x1="744" y1="160" x2="744" y2="138"/>
+          <text class="at" x="740" y="132">O</text>
+          <text class="note-svg" x="686" y="238" style="fill:var(--acid)">α-Dicarbonyl</text>
+          <path class="deloc" d="M 630 196 C 640 214 730 214 740 196"/>
+          <text class="pcap" x="790" y="296">3-Desoxyglucoson + H₂N–R</text>
+        </svg>
+      </div>
+      <figcaption>Der Halbaminal-Stickstoff wird protoniert (gute Abgangsgruppe), der Sauerstoff schiebt die Aldehydgruppe auf, die C1–N-Bindung bricht. <strong>Die Aminosäure kommt unverändert wieder heraus.</strong></figcaption>
+    </figure>
+
+    <ul class="arrows">
+      <li><span class="n">12</span><span>Der <strong>Stickstoff wird protoniert</strong> → NH₂⁺R (jetzt gute Abgangsgruppe).</span></li>
+      <li><span class="n">13</span><span>Das freie Elektronenpaar am <strong>C1-OH-Sauerstoff</strong> schiebt in C1 → <strong>C1=O</strong> bildet sich.</span></li>
+      <li><span class="n sim">14</span><span>Die <strong>C1–N-Bindung bricht</strong>, das Elektronenpaar geht zum Stickstoff → <strong>die Aminosäure wird unverändert freigesetzt</strong>.</span></li>
+    </ul>
+  </div>
+
+  <div class="result">
+    <h3>✅ 3-Desoxyglucoson (3-DG)</h3>
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>C1</th><th>C2</th><th>C3</th><th>C4–C6</th></tr></thead>
+      <tbody><tr><td>CHO</td><td>C=O</td><td>CH₂</td><td>unverändert</td></tr></tbody>
+    </table>
+    </div>
+    <p><strong>α-Dicarbonyl an C1/C2, desoxy an C3.</strong></p>
+    <div class="callout">
+      <span class="k">Prüfungspointe</span>
+      <p>Die Aminosäure ist bei Weg A ein <strong>Katalysator</strong> — sie geht rein, sie kommt unverändert wieder raus. Sie hat den Zucker nur „aufgeschlossen".</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WEG B ============ -->
+<section class="weg-b">
+  <div class="sec-head">
+    <span class="tag">Weg B · pH &gt; 7</span>
+    <h2>2,3-Enolisierung → 1-Desoxyglucoson</h2>
+    <p class="step-sub">Dieselbe Kreuzung, andere Seite des Ketons. Abgangsgruppe = das Amin selbst.</p>
+  </div>
+
+  <!-- B1 -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-n">Schritt 1</span>
+      <div>
+        <h3>Enolisierung zum 2,3-Endiolat</h3>
+        <div class="step-sub">Pfeile 1–3 · alle simultan</div>
+      </div>
+    </div>
+
+    <figure>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 1040 320" role="img" aria-label="Hydroxid abstrahiert das H am C3; die C3-H-Elektronen bilden die C2=C3-Doppelbindung, die C2=O-Pi-Elektronen wandern auf den Sauerstoff. Es entsteht das delokalisierte 2,3-Endiolat.">
+          <!-- Panel L: Amadori -->
+          <line class="bond" x1="114" y1="170" x2="180" y2="170"/>
+          <line class="bond" x1="220" y1="170" x2="290" y2="170"/>
+          <line class="bond" x1="330" y1="170" x2="390" y2="170"/>
+          <text class="at" x="90" y="176">CH</text>
+          <text class="at" x="200" y="176">C</text>
+          <text class="at" x="310" y="176">C</text>
+          <text class="at" x="410" y="176">R</text>
+          <text class="idx" x="105" y="191">1</text>
+          <text class="idx" x="213" y="191">2</text>
+          <text class="idx" x="323" y="191">3</text>
+          <line class="bond" x1="90" y1="160" x2="90" y2="138"/>
+          <text class="at" x="90" y="132">NHR</text>
+          <line class="bond" x1="196" y1="160" x2="196" y2="138"/>
+          <line class="bond" x1="204" y1="160" x2="204" y2="138"/>
+          <text class="at" x="200" y="132">O</text>
+          <line class="bond" x1="310" y1="160" x2="310" y2="138"/>
+          <text class="at" x="310" y="132">OH</text>
+          <line class="bond" x1="90" y1="182" x2="90" y2="204"/>
+          <text class="at" x="90" y="222">H</text>
+          <line class="bond" x1="310" y1="182" x2="310" y2="204"/>
+          <text class="at" x="310" y="222">H</text>
+          <!-- hydroxide -->
+          <text class="rgt" x="392" y="258">OH⁻</text>
+          <path class="arw" d="M 366 248 C 348 242 332 234 324 228" marker-end="url(#arw-base)"/>
+          <circle class="bdg" cx="358" cy="226" r="9"/><text class="bdgt" x="358" y="230">1</text>
+          <path class="arw" d="M 310 196 C 292 204 266 194 256 178" marker-end="url(#arw-base)"/>
+          <circle class="bdg" cx="278" cy="207" r="9"/><text class="bdgt" x="278" y="211">2</text>
+          <path class="arw" d="M 192 150 C 172 146 168 126 190 119" marker-end="url(#arw-base)"/>
+          <circle class="bdg" cx="164" cy="140" r="9"/><text class="bdgt" x="164" y="144">3</text>
+          <text class="pcap" x="250" y="296">Amadori-Produkt</text>
+
+          <line class="rxn" x1="470" y1="170" x2="566" y2="170" marker-end="url(#arw-ink)"/>
+          <text class="cond" x="516" y="156">OH⁻</text>
+          <text class="cond" x="516" y="192">pH &gt; 7</text>
+
+          <!-- Panel R: endiolate -->
+          <line class="bond" x1="658" y1="170" x2="720" y2="170"/>
+          <line class="bond" x1="760" y1="166" x2="830" y2="166"/>
+          <line class="bond" x1="760" y1="174" x2="830" y2="174"/>
+          <line class="bond" x1="870" y1="170" x2="930" y2="170"/>
+          <text class="at" x="630" y="176">CH₂</text>
+          <text class="at" x="740" y="176">C</text>
+          <text class="at" x="850" y="176">C</text>
+          <text class="at" x="950" y="176">R</text>
+          <text class="idx" x="649" y="191">1</text>
+          <text class="idx" x="753" y="191">2</text>
+          <text class="idx" x="863" y="191">3</text>
+          <line class="bond" x1="630" y1="160" x2="630" y2="138"/>
+          <text class="at" x="630" y="132">NHR</text>
+          <line class="bond" x1="740" y1="160" x2="740" y2="138"/>
+          <text class="at" x="740" y="132" style="fill:var(--base); font-weight:600">O⁻</text>
+          <line class="bond" x1="850" y1="160" x2="850" y2="138"/>
+          <text class="at" x="850" y="132">OH</text>
+          <path class="deloc" d="M 740 116 C 758 88 832 88 850 116"/>
+          <text class="note-svg" x="795" y="78" style="fill:var(--base)">Ladung über O–C2=C3–O verteilt</text>
+          <text class="pcap" x="790" y="296">2,3-Endiolat</text>
+        </svg>
+      </div>
+      <figcaption><strong>Warum pH &gt; 7?</strong> Weil das Endiolat hier stehenbleibt: Die negative Ladung ist über vier Zentren delokalisiert — <em>ein flaches, ausgebreitetes Elektronenkissen</em>. Im Sauren gäbe es das nicht; dort protonierst du sofort und gehst Weg A.</figcaption>
+    </figure>
+
+    <ul class="arrows">
+      <li><span class="n">1</span><span>Ein <strong>Hydroxid-Ion</strong> greift das <strong>H am C3</strong> an — der andere α-ständige Nachbar!</span></li>
+      <li><span class="n sim">2</span><span>Die <strong>C3–H-Bindungselektronen</strong> schieben in die C2–C3-Bindung → <strong>C2=C3</strong>.</span></li>
+      <li><span class="n sim">3</span><span>Das <strong>π-Elektronenpaar der C2=O</strong> klappt hoch auf den Sauerstoff → <strong>C2–O⁻</strong>.</span></li>
+    </ul>
+
+    <div class="callout">
+      <span class="k">Feinheit fürs Nachfragen</span>
+      <p>Streng genommen ist die Verteilung über <em>beide</em> Sauerstoffe eine Kombination aus Mesomerie (O⁻–C2=C3 ⇌ O=C2–C3⁻) und schnellem <strong>Protonenaustausch zwischen den beiden O-Atomen</strong> (Endiol ⇌ Endiolat). Praktisch heißt das: Du darfst für den nächsten Schritt die Form mit dem <strong>Alkoholat am C3</strong> zeichnen.</p>
+    </div>
+  </div>
+
+  <!-- B2 -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-n">Schritt 2</span>
+      <div>
+        <h3>β-Eliminierung des Amins</h3>
+        <div class="step-sub">Pfeile 4–6 · alle simultan · O(C3) → C3 → C2 → C1 → Amin fliegt</div>
+      </div>
+    </div>
+
+    <figure>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 1040 320" role="img" aria-label="Das Alkoholat am C3 bildet die Ketogruppe, die C2=C3-Pi-Elektronen wandern in die C1-C2-Bindung, und die C1-N-Bindung bricht: die Aminosäure wird eliminiert.">
+          <!-- Panel L: endiolate, charge on O3 -->
+          <line class="bond" x1="118" y1="170" x2="180" y2="170"/>
+          <line class="bond" x1="220" y1="166" x2="290" y2="166"/>
+          <line class="bond" x1="220" y1="174" x2="290" y2="174"/>
+          <line class="bond" x1="330" y1="170" x2="390" y2="170"/>
+          <text class="at" x="90" y="176">CH₂</text>
+          <text class="at" x="200" y="176">C</text>
+          <text class="at" x="310" y="176">C</text>
+          <text class="at" x="410" y="176">R</text>
+          <text class="idx" x="109" y="191">1</text>
+          <text class="idx" x="213" y="191">2</text>
+          <text class="idx" x="323" y="191">3</text>
+          <line class="bond" x1="90" y1="160" x2="90" y2="138"/>
+          <text class="at" x="90" y="132">NHR</text>
+          <line class="bond" x1="200" y1="160" x2="200" y2="138"/>
+          <text class="at" x="200" y="132">OH</text>
+          <line class="bond" x1="310" y1="160" x2="310" y2="138"/>
+          <text class="at" x="310" y="132" style="fill:var(--base); font-weight:600">O⁻</text>
+          <!-- arrows -->
+          <path class="arw" d="M 328 124 C 348 136 344 158 324 164" marker-end="url(#arw-base)"/>
+          <circle class="bdg" cx="356" cy="142" r="9"/><text class="bdgt" x="356" y="146">4</text>
+          <path class="arw" d="M 253 184 C 230 216 170 216 148 184" marker-end="url(#arw-base)"/>
+          <circle class="bdg" cx="200" cy="216" r="9"/><text class="bdgt" x="200" y="220">5</text>
+          <path class="arw" d="M 80 152 C 60 146 60 126 78 120" marker-end="url(#arw-base)"/>
+          <circle class="bdg" cx="50" cy="140" r="9"/><text class="bdgt" x="50" y="144">6</text>
+          <text class="pcap" x="250" y="296">Endiolat — Alkoholat am C3</text>
+
+          <line class="rxn" x1="470" y1="170" x2="566" y2="170" marker-end="url(#arw-ink)"/>
+          <text class="cond" x="516" y="156">− H₂N–R</text>
+          <text class="cond" x="516" y="192">eliminiert!</text>
+
+          <!-- Panel R -->
+          <line class="bond" x1="658" y1="166" x2="720" y2="166"/>
+          <line class="bond" x1="658" y1="174" x2="720" y2="174"/>
+          <line class="bond" x1="760" y1="170" x2="830" y2="170"/>
+          <line class="bond" x1="870" y1="170" x2="930" y2="170"/>
+          <text class="at" x="630" y="176">CH₂</text>
+          <text class="at" x="740" y="176">C</text>
+          <text class="at" x="850" y="176">C</text>
+          <text class="at" x="950" y="176">R</text>
+          <text class="idx" x="649" y="191">1</text>
+          <text class="idx" x="753" y="191">2</text>
+          <text class="idx" x="863" y="191">3</text>
+          <line class="bond" x1="740" y1="160" x2="740" y2="138"/>
+          <text class="at" x="740" y="132">OH</text>
+          <line class="bond" x1="846" y1="160" x2="846" y2="138"/>
+          <line class="bond" x1="854" y1="160" x2="854" y2="138"/>
+          <text class="at" x="850" y="132">O</text>
+          <circle class="hl" cx="630" cy="176" r="22"/>
+          <text class="note-svg" x="630" y="232">kein N, kein O am C1</text>
+          <text class="pcap" x="790" y="296">Enol + freie Aminosäure</text>
+        </svg>
+      </div>
+      <figcaption><strong>Der entscheidende Unterschied:</strong> Bei Weg A war die Abgangsgruppe das Wasser am C3 — hier ist es die Aminosäure am C1. Die Welle rollt von rechts nach links, Spiegelbild zu Weg A.</figcaption>
+    </figure>
+
+    <ul class="arrows">
+      <li><span class="n">4</span><span>Das freie Elektronenpaar am <strong>C3-O⁻</strong> (bzw. C3-OH) schiebt in das C3 → <strong>C3=O</strong> bildet sich.</span></li>
+      <li><span class="n sim">5</span><span>Die <strong>π-Elektronen der C2=C3</strong> schieben in die C1–C2-Bindung → <strong>C1=C2</strong>.</span></li>
+      <li><span class="n sim">6</span><span>Die <strong>C1–N-Bindung bricht heterolytisch</strong>, das Elektronenpaar geht zum Stickstoff → <strong>die Aminosäure wird eliminiert</strong> (nach Protonierung als freies Amin).</span></li>
+    </ul>
+  </div>
+
+  <!-- B3 -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-n">Schritt 3</span>
+      <div>
+        <h3>Tautomerisierung zum 1-DG</h3>
+        <div class="step-sub">Pfeile 7–8 · simultan</div>
+      </div>
+    </div>
+
+    <figure>
+      <div class="fig-scroll">
+        <svg viewBox="0 0 1040 320" role="img" aria-label="Die C1=C2-Pi-Elektronen greifen ein Proton am C1, gleichzeitig bildet der C2-Sauerstoff die Ketogruppe. Es entsteht 1-Desoxyglucoson mit einer Methylgruppe am C1.">
+          <!-- Panel L -->
+          <line class="bond" x1="118" y1="166" x2="180" y2="166"/>
+          <line class="bond" x1="118" y1="174" x2="180" y2="174"/>
+          <line class="bond" x1="220" y1="170" x2="290" y2="170"/>
+          <line class="bond" x1="330" y1="170" x2="390" y2="170"/>
+          <text class="at" x="90" y="176">CH₂</text>
+          <text class="at" x="200" y="176">C</text>
+          <text class="at" x="310" y="176">C</text>
+          <text class="at" x="410" y="176">R</text>
+          <text class="idx" x="109" y="191">1</text>
+          <text class="idx" x="213" y="191">2</text>
+          <text class="idx" x="323" y="191">3</text>
+          <line class="bond" x1="200" y1="160" x2="200" y2="138"/>
+          <text class="at" x="200" y="132">OH</text>
+          <line class="bond" x1="306" y1="160" x2="306" y2="138"/>
+          <line class="bond" x1="314" y1="160" x2="314" y2="138"/>
+          <text class="at" x="310" y="132">O</text>
+          <!-- proton below C1 -->
+          <text class="rgt" x="48" y="258">H⁺</text>
+          <path class="arw" d="M 147 184 C 132 212 102 238 76 248" marker-end="url(#arw-base)"/>
+          <circle class="bdg" cx="114" cy="218" r="9"/><text class="bdgt" x="114" y="222">7</text>
+          <path class="arw" d="M 182 126 C 162 136 166 158 188 164" marker-end="url(#arw-base)"/>
+          <circle class="bdg" cx="158" cy="150" r="9"/><text class="bdgt" x="158" y="154">8</text>
+          <text class="pcap" x="250" y="296">Enol</text>
+
+          <line class="rxn" x1="470" y1="170" x2="566" y2="170" marker-end="url(#arw-ink)"/>
+          <text class="cond" x="516" y="156">+ H⁺ (C1)</text>
+          <text class="cond" x="516" y="192">− H⁺ (O)</text>
+
+          <!-- Panel R: 1-DG -->
+          <line class="bond" x1="658" y1="170" x2="720" y2="170"/>
+          <line class="bond" x1="760" y1="170" x2="830" y2="170"/>
+          <line class="bond" x1="870" y1="170" x2="930" y2="170"/>
+          <text class="at" x="630" y="176">CH₃</text>
+          <text class="at" x="740" y="176">C</text>
+          <text class="at" x="850" y="176">C</text>
+          <text class="at" x="950" y="176">R</text>
+          <text class="idx" x="649" y="191">1</text>
+          <text class="idx" x="753" y="191">2</text>
+          <text class="idx" x="863" y="191">3</text>
+          <line class="bond" x1="736" y1="160" x2="736" y2="138"/>
+          <line class="bond" x1="744" y1="160" x2="744" y2="138"/>
+          <text class="at" x="740" y="132">O</text>
+          <line class="bond" x1="846" y1="160" x2="846" y2="138"/>
+          <line class="bond" x1="854" y1="160" x2="854" y2="138"/>
+          <text class="at" x="850" y="132">O</text>
+          <path class="deloc" d="M 740 196 C 750 214 840 214 850 196"/>
+          <text class="note-svg" x="795" y="238" style="fill:var(--base)">α-Dicarbonyl</text>
+          <text class="pcap" x="790" y="296">1-Desoxyglucoson</text>
+        </svg>
+      </div>
+      <figcaption>Das Proton landet am C1 — daraus wird die <strong>Methylgruppe</strong>. Damit sitzt das α-Dicarbonyl eine Position weiter innen als bei 3-DG.</figcaption>
+    </figure>
+
+    <ul class="arrows">
+      <li><span class="n">7</span><span>Die <strong>π-Elektronen der C1=C2</strong> klappen zum C1 und greifen ein <strong>Proton</strong> → <strong>C1 wird CH₃</strong>.</span></li>
+      <li><span class="n sim">8</span><span>Das freie Elektronenpaar am <strong>C2-OH-Sauerstoff</strong> schiebt in C2 → <strong>C2=O</strong>, Proton geht ab.</span></li>
+    </ul>
+  </div>
+
+  <div class="result">
+    <h3>✅ 1-Desoxyglucoson (1-DG)</h3>
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>C1</th><th>C2</th><th>C3</th><th>C4–C6</th></tr></thead>
+      <tbody><tr><td>CH₃</td><td>C=O</td><td>C=O</td><td>unverändert</td></tr></tbody>
+    </table>
+    </div>
+    <p><strong>α-Dicarbonyl an C2/C3, desoxy (Methyl!) an C1.</strong></p>
+  </div>
+</section>
+
+<!-- ============ MERKARCHITEKTUR ============ -->
+<section>
+  <div class="sec-head">
+    <span class="eyebrow">Merkarchitektur</span>
+    <h2>Vier Regeln, ein Merksatz</h2>
+  </div>
+
+  <figure>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 1040 220" role="img" aria-label="Vergleich: 3-Desoxyglucoson hat CHO an C1, C=O an C2 und CH2 an C3; 1-Desoxyglucoson hat CH3 an C1 und Ketogruppen an C2 und C3.">
+        <!-- 3-DG -->
+        <line class="bond" x1="124" y1="110" x2="180" y2="110"/>
+        <line class="bond" x1="220" y1="110" x2="282" y2="110"/>
+        <line class="bond" x1="338" y1="110" x2="390" y2="110"/>
+        <text class="at" x="100" y="116">CH</text>
+        <text class="at" x="200" y="116">C</text>
+        <text class="at" x="310" y="116">CH₂</text>
+        <text class="at" x="410" y="116">R</text>
+        <text class="idx" x="115" y="131">1</text>
+        <text class="idx" x="213" y="131">2</text>
+        <text class="idx" x="330" y="131">3</text>
+        <line class="bond" x1="96" y1="100" x2="96" y2="78"/>
+        <line class="bond" x1="104" y1="100" x2="104" y2="78"/>
+        <text class="at" x="100" y="72">O</text>
+        <line class="bond" x1="196" y1="100" x2="196" y2="78"/>
+        <line class="bond" x1="204" y1="100" x2="204" y2="78"/>
+        <text class="at" x="200" y="72">O</text>
+        <circle class="hl" cx="310" cy="112" r="24" style="stroke:var(--acid)"/>
+        <text class="note-svg" x="310" y="160" style="fill:var(--acid)">desoxy am C3</text>
+        <text class="pcap" x="250" y="196" style="fill:var(--acid)">3-Desoxyglucoson · Weg A · pH &lt; 7</text>
+
+        <!-- divider -->
+        <line x1="520" y1="40" x2="520" y2="180" stroke="var(--line)" stroke-width="1"/>
+
+        <!-- 1-DG -->
+        <line class="bond" x1="668" y1="110" x2="720" y2="110"/>
+        <line class="bond" x1="760" y1="110" x2="830" y2="110"/>
+        <line class="bond" x1="870" y1="110" x2="930" y2="110"/>
+        <text class="at" x="640" y="116">CH₃</text>
+        <text class="at" x="740" y="116">C</text>
+        <text class="at" x="850" y="116">C</text>
+        <text class="at" x="950" y="116">R</text>
+        <text class="idx" x="659" y="131">1</text>
+        <text class="idx" x="753" y="131">2</text>
+        <text class="idx" x="863" y="131">3</text>
+        <line class="bond" x1="736" y1="100" x2="736" y2="78"/>
+        <line class="bond" x1="744" y1="100" x2="744" y2="78"/>
+        <text class="at" x="740" y="72">O</text>
+        <line class="bond" x1="846" y1="100" x2="846" y2="78"/>
+        <line class="bond" x1="854" y1="100" x2="854" y2="78"/>
+        <text class="at" x="850" y="72">O</text>
+        <circle class="hl" cx="640" cy="112" r="26" style="stroke:var(--base)"/>
+        <text class="note-svg" x="640" y="160" style="fill:var(--base)">desoxy am C1</text>
+        <text class="pcap" x="790" y="196" style="fill:var(--base)">1-Desoxyglucoson · Weg B · pH &gt; 7</text>
+      </svg>
+    </div>
+    <figcaption>Die Ziffer im Namen sagt dir, wo der Sauerstoff fehlt — und damit auch, wo das α-Dicarbonyl sitzt.</figcaption>
+  </figure>
+
+  <div class="rules">
+    <div class="rule">
+      <span class="rn">Regel 1</span>
+      <p><strong>Die Ziffer im Namen sagt dir, wo der Sauerstoff fehlt.</strong> 3-DG → C3 ist desoxy (CH₂). 1-DG → C1 ist desoxy (CH₃).</p>
+    </div>
+    <div class="rule">
+      <span class="rn">Regel 2</span>
+      <p><strong>Enolisierungsstelle und Desoxy-Stelle liegen an gegenüberliegenden Enden.</strong> 1,2-Enolisierung → Eliminierung weiter außen bei C3 → <strong>3</strong>-DG. 2,3-Enolisierung → Eliminierung weiter außen bei C1 → <strong>1</strong>-DG. <em>Die Welle rollt immer von der Enolisierungsstelle weg und wirft am anderen Ende die Abgangsgruppe raus.</em></p>
+    </div>
+    <div class="rule">
+      <span class="rn">Regel 3</span>
+      <p><strong>Wer ist die Abgangsgruppe?</strong> Weg A (sauer): <strong>Wasser</strong> (protoniertes C3-OH); das Amin bleibt dran und wird erst <strong>hydrolytisch</strong> abgespalten. Weg B (alkalisch): <strong>das Amin selbst</strong> — es wird <strong>eliminiert</strong>, nicht hydrolysiert.</p>
+    </div>
+    <div class="rule">
+      <span class="rn">Regel 4</span>
+      <p><strong>pH-Logik.</strong> Sauer → man kann protonieren → OH wird zu H₂O → Weg A. Alkalisch → Endiolat ist stabil (4-Zentren-Delokalisierung) → Weg B.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="k">Merksatz zum Aufsagen</span>
+    <p class="merksatz">Saurer Dreier, basische Eins. Sauer wirft Wasser raus und behält das Amin bis zum Schluss — basisch wirft das Amin raus und behält den Sauerstoff.</p>
+  </div>
+</section>
+
+<!-- ============ EINORDNUNG ============ -->
+<section>
+  <div class="sec-head">
+    <span class="eyebrow">Einordnung</span>
+    <h2>Warum das die Prüfungspointe ist</h2>
+  </div>
+  <div class="stack">
+    <p><strong>3-DG</strong> ist bei Glomb <strong>Pflichtmechanismus</strong> — laut Themenkatalog fast immer dran. Es ist das wichtigste α-Dicarbonyl der Kaskade und führt direkt zu <strong>HMF</strong> (sauer, Ringschluss + 2× H₂O-Abspaltung) und zu <strong>Pyrralin</strong> (mit Lysin).</p>
+    <p><strong>1-DG</strong> ist das <strong>reaktivste</strong> Intermediat und Ausgangspunkt der <strong>Dreifachverzweigung</strong> (Redox / Cyclisierung / Fragmentierung) — der nächste Standard-Block.</p>
+    <p>Beide zusammen bilden den <strong>Dicarbonylpool</strong>, der in den Strecker-Abbau einläuft.</p>
+    <div class="callout">
+      <span class="k">Randnotiz · nur zum Wiedererkennen</span>
+      <p>Die Enolisierung kann prinzipiell die ganze Kette durchwandern → weitere Glucosone bis zum <strong>Lederer-Glucoson</strong>. Ganz ohne Amin isomerisieren Zucker im Alkalischen über Endiolate ineinander → <strong>Lobry de Bruyn–Alberda van Ekenstein</strong> (Glucose ⇌ Fructose ⇌ Mannose). Taucht bei <strong>Milch</strong> wieder auf (Lactose → Lactulose).</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  LMC StEx · Block 2 — Gabelung der Enolisierung. Alle Strukturen ab C4 als <code>R</code> abgekürzt (= –CH(OH)–CH(OH)–CH₂OH).
+</footer>
+
+</div>
