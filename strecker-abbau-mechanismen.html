@@ -1,0 +1,1250 @@
+<title>Strecker-Abbau — Mechanismen Schritt für Schritt</title>
+
+<style>
+/* ── Tokens ────────────────────────────────────────────────────────────
+   Neutrals carry a warm bias: this document is about browning.
+   Two functional hues only — orange = Elektronenbewegung, grün = neue Bindung.
+   The Bräunungsrampe (--s0…--s5) is the reaction's own colour development
+   and marks how far down the cascade each Stufe sits.                     */
+:root{
+  --paper:#fdfcfa; --panel:#f7f4ef; --ink:#1c1815; --ink2:#6d6459;
+  --rule:#e6e0d8; --e:#bf4310; --onE:#fffaf6; --g:#146c3f; --quote:#faf6f0;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --paper:#131110; --panel:#1c1916; --ink:#ece7e0; --ink2:#9b9288;
+         --rule:#2d2823; --e:#ff8f52; --onE:#1d0f06; --g:#5bcf8e; --quote:#1a1714; }
+}
+:root[data-theme="dark"]{ --paper:#131110; --panel:#1c1916; --ink:#ece7e0; --ink2:#9b9288;
+  --rule:#2d2823; --e:#ff8f52; --onE:#1d0f06; --g:#5bcf8e; --quote:#1a1714; }
+:root[data-theme="light"]{ --paper:#fdfcfa; --panel:#f7f4ef; --ink:#1c1815; --ink2:#6d6459;
+  --rule:#e6e0d8; --e:#bf4310; --onE:#fffaf6; --g:#146c3f; --quote:#faf6f0; }
+:root{
+  --s0:#f0e6cd; --s1:#ddc389; --s2:#c69a55; --s3:#a4703c; --s4:#7c4c28; --s5:#4d2c18;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--paper); color:var(--ink); font-family:var(--sans);
+  font-size:16px; line-height:1.65; margin:0; padding:3rem 1.25rem 6rem;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:58rem;margin:0 auto}
+
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(2rem,4.4vw,2.7rem);
+   line-height:1.12;margin:0 0 .5rem;letter-spacing:-.015em;text-wrap:balance}
+h2{font-family:var(--serif);font-weight:600;font-size:1.6rem;line-height:1.2;
+   margin:.15rem 0 .6rem;letter-spacing:-.01em;text-wrap:balance}
+h3{font-size:1rem;font-weight:650;margin:2.4rem 0 .25rem;letter-spacing:-.003em}
+p{margin:.65rem 0}
+b,strong{font-weight:650}
+.lede{color:var(--ink2);font-size:1.06rem;line-height:1.6;margin-bottom:1.5rem;max-width:44em}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+     background:var(--panel);padding:.1em .38em;border-radius:2px;font-size:.88em}
+
+/* Stufen-Marke: Bräunungschip + Nummer. Die Reihenfolge ist echt, also
+   darf sie nummeriert sein. */
+.stage{display:flex;align-items:center;gap:.6rem;margin:4rem 0 0;
+       padding-top:1.5rem;border-top:1px solid var(--rule)}
+.stage:first-of-type{border-top:0;padding-top:0}
+.chip{width:.95rem;height:.95rem;border-radius:2px;flex:0 0 auto;
+      box-shadow:inset 0 0 0 1px rgba(120,90,60,.35)}
+.eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+         color:var(--ink2)}
+
+.legend{display:flex;flex-wrap:wrap;gap:.35rem 1.4rem;font-size:.82rem;color:var(--ink2);
+        border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+        padding:.75rem 0;margin:0 0 2.2rem}
+.legend span{display:inline-flex;align-items:center;gap:.4rem}
+.swatch{width:1.4rem;height:2px;border-radius:1px;display:inline-block}
+
+.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));
+     gap:.15rem 1.2rem;margin:0 0 2.5rem;padding:0;list-style:none;font-size:.9rem}
+.toc a{display:flex;align-items:center;gap:.55rem;color:var(--ink);text-decoration:none;
+       padding:.3rem 0;border-bottom:1px solid transparent}
+.toc a:hover{border-bottom-color:var(--e)}
+.toc a:focus-visible{outline:2px solid var(--e);outline-offset:3px;border-radius:2px}
+.toc .n{font-variant-numeric:tabular-nums;color:var(--ink2);font-size:.78rem;font-weight:700}
+
+figure{margin:1.2rem 0 1.6rem;background:var(--panel);
+       border:1px solid var(--rule);border-radius:3px;padding:1rem .5rem .1rem}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+svg.mech{display:block;margin:0 auto;max-width:100%;height:auto;color:var(--ink)}
+figcaption{font-size:.855rem;color:var(--ink2);padding:.7rem 1.1rem 1.1rem;
+           line-height:1.55;max-width:46em;margin:0 auto}
+
+/* --- SVG drawing primitives --- */
+.bd{stroke:currentColor;stroke-width:1.7;fill:none;stroke-linecap:round}
+.nb{stroke:var(--g);stroke-width:2.4;fill:none;stroke-linecap:round}
+.brk{stroke:currentColor;stroke-width:1.7;fill:none;stroke-dasharray:5 4;opacity:.45}
+.ea{stroke:var(--e);stroke-width:1.8;fill:none;stroke-linecap:round}
+.ra{stroke:currentColor;stroke-width:1.6;fill:none;opacity:.65}
+.ah-e{fill:var(--e)}
+.ah-r{fill:currentColor;opacity:.65}
+.lp{fill:var(--e)}
+.at{font-size:16px;text-anchor:middle;dominant-baseline:central;fill:currentColor;font-family:inherit}
+.at-g{font-size:16px;text-anchor:middle;dominant-baseline:central;fill:var(--g);font-family:inherit;font-weight:600}
+.chg{font-size:13px;text-anchor:middle;dominant-baseline:central;fill:currentColor}
+.lbl{font-size:11px;text-anchor:middle;dominant-baseline:central;fill:currentColor;opacity:.5}
+.ann{font-size:12.5px;text-anchor:middle;dominant-baseline:central;fill:var(--e)}
+.annk{font-size:12.5px;text-anchor:middle;dominant-baseline:central;fill:currentColor;opacity:.7}
+.ttl{font-size:13px;dominant-baseline:central;fill:currentColor;opacity:.75;font-weight:600}
+.badge{fill:var(--e)}
+.num{font-size:11.5px;font-weight:700;text-anchor:middle;dominant-baseline:central;fill:var(--onE)}
+.hl{fill:none;stroke:var(--e);stroke-width:1.6;stroke-dasharray:5 4;opacity:.85}
+
+/* Randnotiz im Lehrbuch-Register: Label statt farbiger Leiste. */
+.key{margin:1.4rem 0;padding:.1rem 0 .1rem 1.15rem;border-left:1px solid var(--rule);font-size:.95rem}
+.key .tag{display:block;font-size:.7rem;font-weight:700;letter-spacing:.13em;
+          text-transform:uppercase;color:var(--e);margin-bottom:.2rem}
+
+.arrows{font-size:.94rem;margin:.8rem 0 1rem;padding-left:0;list-style:none}
+.arrows li{margin:.4rem 0;padding-left:2.1rem;position:relative}
+.arrows li b{position:absolute;left:0;top:.16rem;display:inline-flex;align-items:center;
+  justify-content:center;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--e);
+  color:var(--onE);font-size:.73rem;font-weight:700;font-variant-numeric:tabular-nums}
+
+.chain{background:var(--panel);border:1px solid var(--rule);border-radius:3px;
+       padding:1.1rem 1.3rem;font-size:.95rem;line-height:1.95}
+.chain b{color:var(--e)}
+
+@media (max-width:34rem){
+  body{padding:2rem .9rem 4rem}
+  figure{padding:.75rem .25rem .1rem}
+  figcaption{padding:.6rem .5rem 1rem}
+}
+</style>
+
+<div class="wrap">
+
+<h1>Strecker-Abbau — Mechanismen Schritt für Schritt</h1>
+<p class="lede">Vom Dicarbonylpool über Kondensation, Decarboxylierung und Hydrolyse zu Strecker-Aldehyd, Pyrazin und Melanoidin. Jeder Elementarschritt einzeln gezeichnet, mit den Pfeilen ①–⑯.</p>
+<p class="legend">
+  <span><i class="swatch" style="background:var(--e)"></i> Elektronenbewegung (Pfeile ①–⑯)</span>
+  <span><i class="swatch" style="background:var(--g);height:3px"></i> neu geknüpfte Bindung</span>
+  <span><i class="swatch" style="background:currentColor;opacity:.45"></i> brechende Bindung</span>
+</p>
+
+<p style="font-size:.87rem;color:var(--ink2);margin:-1.4rem 0 2.2rem;max-width:46em">
+Notation durchgehend: <b>C<sub>a</sub></b> = das vom Amin angegriffene Carbonyl-C ·
+<b>C<sub>b</sub></b> = der Nachbar, der später die Ladung auffängt ·
+<b>C<sub>α</sub></b> = das α-C der Aminosäure · <b>R′</b> = Aminosäure-Seitenkette.</p>
+
+<ul class="toc">
+  <li><a href="#s0"><i class="chip" style="background:var(--s0)"></i><span class="n">00</span> Dicarbonylpool</a></li>
+  <li><a href="#s1"><i class="chip" style="background:var(--s1)"></i><span class="n">01</span> Kondensation</a></li>
+  <li><a href="#s2"><i class="chip" style="background:var(--s2)"></i><span class="n">02</span> Decarboxylierung</a></li>
+  <li><a href="#s3"><i class="chip" style="background:var(--s3)"></i><span class="n">03</span> Hydrolyse</a></li>
+  <li><a href="#s4"><i class="chip" style="background:var(--s4)"></i><span class="n">04</span> Pyrazinbildung</a></li>
+  <li><a href="#s5"><i class="chip" style="background:var(--s5)"></i><span class="n">05</span> Melanoidine</a></li>
+</ul>
+
+
+<div class="stage" id="s0"><i class="chip" style="background:var(--s0)"></i><span class="eyebrow">Stufe 00 · Ausgangslage</span></div>
+<h2>Der Dicarbonylpool</h2>
+
+<p>Aus Weg A und Weg B ist ein <b>α-Dicarbonyl</b> entstanden — 3-DG (Dicarbonyl an C1/C2) oder 1-DG (an C2/C3). Beide tragen dieselbe Struktureinheit: zwei Carbonylgruppen direkt nebeneinander.</p>
+
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:504px" viewBox="-4 2 450 492" role="img" aria-label="Strukturformeln von 3-Desoxyglucoson mit dem Dicarbonyl an C1 und C2 und 1-Desoxyoson mit dem Dicarbonyl an C2 und C3; die Dicarbonyleinheit ist in beiden Molekülen gestrichelt umrandet.">
+  <g transform="translate(66,132)">
+    <text class="ttl" x="-34" y="-104">3-Desoxyglucoson (3-DG)</text>
+    <rect class="hl" x="-34" y="-80" width="140" height="116" rx="10"/>
+    <line class="bd" x1="-32" y1="0" x2="350" y2="0"/>
+    <text class="at" x="-46" y="0">H</text>
+    <line class="bd" x1="-3" y1="-4" x2="-3" y2="-46"/><line class="bd" x1="3" y1="-4" x2="3" y2="-46"/>
+    <text class="at" x="0" y="-60">O</text>
+    <line class="bd" x1="67" y1="-4" x2="67" y2="-46"/><line class="bd" x1="73" y1="-4" x2="73" y2="-46"/>
+    <text class="at" x="70" y="-60">O</text>
+    <line class="bd" x1="210" y1="4" x2="210" y2="38"/><text class="at" x="210" y="52">OH</text>
+    <line class="bd" x1="280" y1="4" x2="280" y2="38"/><text class="at" x="280" y="52">OH</text>
+    <line class="bd" x1="350" y1="4" x2="350" y2="38"/><text class="at" x="350" y="52">OH</text>
+    <text class="lbl" x="0" y="80">C1</text><text class="lbl" x="70" y="80">C2</text>
+    <text class="lbl" x="140" y="26">C3</text>
+    <text class="lbl" x="210" y="80">C4</text><text class="lbl" x="280" y="80">C5</text><text class="lbl" x="350" y="80">C6</text>
+  </g>
+  <g transform="translate(66,390)">
+    <text class="ttl" x="-34" y="-104">1-Desoxyoson (1-DG)</text>
+    <rect class="hl" x="36" y="-80" width="140" height="116" rx="10"/>
+    <line class="bd" x1="0" y1="0" x2="350" y2="0"/>
+    <line class="bd" x1="67" y1="-4" x2="67" y2="-46"/><line class="bd" x1="73" y1="-4" x2="73" y2="-46"/>
+    <text class="at" x="70" y="-60">O</text>
+    <line class="bd" x1="137" y1="-4" x2="137" y2="-46"/><line class="bd" x1="143" y1="-4" x2="143" y2="-46"/>
+    <text class="at" x="140" y="-60">O</text>
+    <line class="bd" x1="210" y1="4" x2="210" y2="38"/><text class="at" x="210" y="52">OH</text>
+    <line class="bd" x1="280" y1="4" x2="280" y2="38"/><text class="at" x="280" y="52">OH</text>
+    <line class="bd" x1="350" y1="4" x2="350" y2="38"/><text class="at" x="350" y="52">OH</text>
+    <text class="lbl" x="0" y="26">C1</text>
+    <text class="lbl" x="70" y="80">C2</text><text class="lbl" x="140" y="80">C3</text>
+    <text class="lbl" x="210" y="80">C4</text><text class="lbl" x="280" y="80">C5</text><text class="lbl" x="350" y="80">C6</text>
+  </g>
+</svg>
+</div>
+<figcaption>Beide Osone tragen dieselbe reaktive Einheit <b>–C(=O)–C(=O)–</b>, nur an unterschiedlicher Position der Kette. Ab hier ist die Position egal — der Mechanismus ist identisch.</figcaption>
+</figure>
+
+<h3>Warum ausgerechnet <em>zwei</em> Carbonyle?</h3>
+<p>Das ist die eigentliche Pointe, und sie lässt sich zeichnen: entsteht am C ein Carbanion, kann es nur dann delokalisieren, wenn direkt daneben ein C=O sitzt.</p>
+
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:952px" viewBox="16 6 850 238" role="img" aria-label="Vergleich: links delokalisiert ein Carbanion neben einer Carbonylgruppe in das Enolat, rechts bleibt ein Carbanion ohne benachbarte Carbonylgruppe unstabilisiert.">
+  <defs>
+    <marker id="e0" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-e" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+    <marker id="r0" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+    <marker id="r0b" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M9.5,1 L1,5 L9.5,9 Z"/></marker>
+  </defs>
+
+  <text class="ttl" x="34" y="34">α-Dicarbonyl — Ladung wird aufgefangen</text>
+  <g transform="translate(140,130)">
+    <line class="bd" x1="-84" y1="0" x2="44" y2="0"/>
+    <line class="bd" x1="-63" y1="-4" x2="-63" y2="-46"/><line class="bd" x1="-57" y1="-4" x2="-57" y2="-46"/>
+    <text class="at" x="-60" y="-60">O</text>
+    <circle class="lp" cx="-6" cy="-16" r="2.2"/><circle class="lp" cx="6" cy="-16" r="2.2"/>
+    <text class="chg" x="24" y="-22">⊖</text>
+    <text class="lbl" x="-60" y="24">C<tspan dy="3" font-size="9">b</tspan></text>
+    <text class="lbl" x="4" y="24">C<tspan dy="3" font-size="9">a</tspan></text>
+    <path class="ea" d="M 0 -26 Q -40 -46 -32 -10" marker-end="url(#e0)"/>
+    <path class="ea" d="M -67 -26 Q -104 -34 -70 -54" marker-end="url(#e0)"/>
+  </g>
+  <line class="ra" x1="228" y1="130" x2="286" y2="130" marker-end="url(#r0)" marker-start="url(#r0b)"/>
+  <g transform="translate(400,130)">
+    <line class="bd" x1="-84" y1="0" x2="-63" y2="0"/>
+    <line class="bd" x1="-57" y1="-4" x2="-57" y2="-46"/>
+    <text class="at" x="-60" y="-60">O</text><text class="chg" x="-42" y="-70">⊖</text>
+    <line class="bd" x1="-60" y1="-3" x2="-3" y2="-3"/><line class="bd" x1="-60" y1="3" x2="-3" y2="3"/>
+    <line class="bd" x1="0" y1="0" x2="44" y2="0"/>
+    <text class="annk" x="-14" y="34">Enolat — stabilisiert</text>
+  </g>
+
+  <line x1="560" y1="24" x2="560" y2="226" stroke="currentColor" stroke-width="1" opacity=".18"/>
+
+  <text class="ttl" x="600" y="34">einfaches Keton — keine Nachbarschaft</text>
+  <g transform="translate(720,130)">
+    <line class="bd" x1="-90" y1="0" x2="60" y2="0"/>
+    <circle class="lp" cx="-6" cy="-16" r="2.2"/><circle class="lp" cx="6" cy="-16" r="2.2"/>
+    <text class="chg" x="24" y="-22">⊖</text>
+    <text class="annk" x="-12" y="34">nirgendwo hin zu delokalisieren</text>
+    <text x="-4" y="-52" class="at" fill="var(--e)" font-size="22">✕</text>
+  </g>
+</svg>
+</div>
+<figcaption><b>Die Prüfungspointe:</b> Ohne das zweite C=O am C<sub>b</sub> gibt es kein stabilisiertes Carbanion → keine Decarboxylierung → <b>kein Strecker-Abbau</b>. Deshalb braucht man ein α-Dicarbonyl und kein einfaches Keton.</figcaption>
+</figure>
+
+<div class="key"><span class="tag">Merksatz</span>Ein einzelnes Carbonyl kann Amine binden. Erst zwei nebeneinander können Aminosäuren zerlegen.</div>
+
+
+<div class="stage" id="s1"><i class="chip" style="background:var(--s1)"></i><span class="eyebrow">Stufe 01 · Pfeile ①–⑦</span></div>
+<h2>Kondensation: Aminosäure trifft Dicarbonyl</h2>
+<p>Dieselbe Choreografie wie schon zweimal zuvor: Hand ran ans C → Doppelbindung hoch → protonieren → Stickstoff drückt Wasser raus. Sieben Pfeile, fünf Zeichnungen.</p>
+
+<h3>1.1 — Nucleophiler Angriff <span style="color:var(--e)">①②</span></h3>
+<ul class="arrows">
+  <li><b>1</b>Das freie Elektronenpaar am <b>Stickstoff</b> greift das elektrophile <b>C<sub>a</sub></b> an → neue N–C<sub>a</sub>-σ-Bindung.</li>
+  <li><b>2</b>Simultan: das <b>π-Elektronenpaar der C<sub>a</sub>=O</b> klappt hoch auf den Sauerstoff → C<sub>a</sub>–O<sup>⊖</sup>.</li>
+</ul>
+
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:422px" viewBox="73 25 377 475" role="img" aria-label="Das Stickstoff-Elektronenpaar der Aminosäure greift das Carbonylkohlenstoff C-a des Dicarbonyls an, gleichzeitig klappt die Pi-Bindung auf den Sauerstoff; es entsteht ein zwitterionisches Addukt mit Alkoholat und Ammonium.">
+  <defs>
+    <marker id="e1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-e" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+    <marker id="r1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+  </defs>
+
+  <g transform="translate(250,112)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <line class="bd" x1="-3" y1="-4" x2="-3" y2="-46"/><line class="bd" x1="3" y1="-4" x2="3" y2="-46"/>
+    <text class="at" x="0" y="-60">O</text>
+    <text class="lbl" x="-75" y="22">C<tspan dy="3" font-size="9">b</tspan></text>
+    <text class="lbl" x="26" y="22">C<tspan dy="3" font-size="9">a</tspan></text>
+    <g transform="translate(0,95)">
+      <text class="at" x="9" y="0" text-anchor="end">H₂N</text>
+      <line class="bd" x1="16" y1="0" x2="78" y2="0"/>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-38"/><text class="at" x="80" y="-52">R′</text>
+      <line class="bd" x1="82" y1="0" x2="122" y2="0"/>
+      <text class="at" x="146" y="0">COO</text><text class="chg" x="176" y="-10">⊖</text>
+      <text class="lbl" x="80" y="24">C<tspan dy="3" font-size="9">α</tspan></text>
+    </g>
+    <circle class="lp" cx="-6" cy="80" r="2.2"/><circle class="lp" cx="6" cy="80" r="2.2"/>
+    <path class="ea" d="M 0 72 Q -40 46 -6 12" marker-end="url(#e1)"/>
+    <path class="ea" d="M 7 -26 Q 44 -34 11 -53" marker-end="url(#e1)"/>
+    <circle class="badge" cx="-44" cy="48" r="11"/><text class="num" x="-44" y="48">1</text>
+    <circle class="badge" cx="50" cy="-46" r="11"/><text class="num" x="50" y="-46">2</text>
+  </g>
+
+  <line class="ra" x1="250" y1="248" x2="250" y2="298" marker-end="url(#r1)"/>
+
+  <g transform="translate(250,378)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <line class="bd" x1="0" y1="-4" x2="0" y2="-46"/>
+    <text class="at" x="0" y="-60">O</text><text class="chg" x="19" y="-70">⊖</text>
+    <line class="nb" x1="0" y1="6" x2="0" y2="80"/>
+    <text class="lbl" x="30" y="22">C<tspan dy="3" font-size="9">a</tspan></text>
+    <text class="lbl" x="-75" y="22">C<tspan dy="3" font-size="9">b</tspan></text>
+    <g transform="translate(0,95)">
+      <text class="at" x="9" y="0" text-anchor="end">H₂N</text>
+      <text class="chg" x="24" y="-14">⊕</text>
+      <line class="bd" x1="16" y1="0" x2="78" y2="0"/>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-38"/><text class="at" x="80" y="-52">R′</text>
+      <line class="bd" x1="82" y1="0" x2="122" y2="0"/>
+      <text class="at" x="146" y="0">COO</text><text class="chg" x="176" y="-10">⊖</text>
+    </g>
+  </g>
+</svg>
+</div>
+<figcaption>Zwitterionisches Addukt. Die grüne Bindung ist neu. Beachte: das C<sub>b</sub>=O bleibt die ganze Zeit unangetastet — es wird erst in Schritt 2 gebraucht.</figcaption>
+</figure>
+
+<h3>1.2 — Protonentransfer <span style="color:var(--e)">③</span> → Halbaminal</h3>
+<ul class="arrows"><li><b>3</b>Das Alkoholat holt sich ein Proton (Lösungsmittel bzw. vom N<sup>⊕</sup>), das N<sup>⊕</sup> gibt seins ab. Netto: neutrales <b>Halbaminal</b>.</li></ul>
+
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:422px" viewBox="73 -4 377 527" role="img" aria-label="Protonentransfer: das Alkoholat nimmt ein Proton auf und der positiv geladene Stickstoff gibt eines ab; es entsteht das neutrale Halbaminal mit Hydroxylgruppe und NH-Gruppe.">
+  <defs>
+    <marker id="e2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-e" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+    <marker id="r2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+  </defs>
+
+  <g transform="translate(250,118)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <line class="bd" x1="0" y1="-4" x2="0" y2="-46"/>
+    <text class="at" x="0" y="-60">O</text><text class="chg" x="19" y="-70">⊖</text>
+    <circle class="lp" cx="-16" cy="-52" r="2.2"/><circle class="lp" cx="-16" cy="-64" r="2.2"/>
+    <line class="bd" x1="0" y1="6" x2="0" y2="80"/>
+    <g transform="translate(0,95)">
+      <text class="at" x="9" y="0" text-anchor="end">H₂N</text>
+      <text class="chg" x="24" y="-14">⊕</text>
+      <line class="bd" x1="16" y1="0" x2="78" y2="0"/>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-38"/><text class="at" x="80" y="-52">R′</text>
+      <line class="bd" x1="82" y1="0" x2="122" y2="0"/>
+      <text class="at" x="146" y="0">COO</text><text class="chg" x="176" y="-10">⊖</text>
+    </g>
+    <text class="at" x="-96" y="-86">H</text><text class="chg" x="-80" y="-96">⊕</text>
+    <path class="ea" d="M -26 -62 Q -58 -84 -84 -84" marker-end="url(#e2)"/>
+    <circle class="badge" cx="-52" cy="-58" r="11"/><text class="num" x="-52" y="-58">3</text>
+    <text class="annk" x="128" y="76">– H⁺ vom N<tspan font-size="9" dy="-4">⊕</tspan></text>
+  </g>
+
+  <line class="ra" x1="250" y1="248" x2="250" y2="298" marker-end="url(#r2)"/>
+
+  <g transform="translate(250,376)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <line class="bd" x1="0" y1="-4" x2="0" y2="-40"/>
+    <text class="at-g" x="4" y="-56">OH</text>
+    <line class="bd" x1="0" y1="6" x2="0" y2="80"/>
+    <text class="lbl" x="30" y="22">C<tspan dy="3" font-size="9">a</tspan></text>
+    <g transform="translate(0,95)">
+      <text class="at" x="9" y="0" text-anchor="end">HN</text>
+      <line class="bd" x1="16" y1="0" x2="78" y2="0"/>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-38"/><text class="at" x="80" y="-52">R′</text>
+      <line class="bd" x1="82" y1="0" x2="122" y2="0"/>
+      <text class="at" x="146" y="0">COO</text><text class="chg" x="176" y="-10">⊖</text>
+    </g>
+    <text class="annk" x="0" y="122">Halbaminal</text>
+  </g>
+</svg>
+</div>
+<figcaption>Das Halbaminal ist die Weggabelung, die es <em>nicht</em> ist: es hat nur einen Ausweg — Wasser abspalten. Dafür muss das OH erst zur guten Abgangsgruppe gemacht werden.</figcaption>
+</figure>
+
+<h3>1.3 — Protonierung der OH-Gruppe <span style="color:var(--e)">④</span></h3>
+<ul class="arrows"><li><b>4</b>Das freie Elektronenpaar am <b>C<sub>a</sub>-OH-Sauerstoff</b> greift ein Proton → <b>C<sub>a</sub>–OH₂<sup>⊕</sup></b>, eine gute Abgangsgruppe.</li></ul>
+
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:422px" viewBox="73 -6 377 496" role="img" aria-label="Die Hydroxylgruppe am C-a wird protoniert und dadurch in eine Oxonium-Abgangsgruppe umgewandelt.">
+  <defs>
+    <marker id="e3" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-e" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+    <marker id="r3" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+  </defs>
+
+  <g transform="translate(250,112)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <line class="bd" x1="0" y1="-4" x2="0" y2="-40"/>
+    <text class="at" x="4" y="-56">OH</text>
+    <circle class="lp" cx="-16" cy="-48" r="2.2"/><circle class="lp" cx="-16" cy="-60" r="2.2"/>
+    <line class="bd" x1="0" y1="6" x2="0" y2="80"/>
+    <g transform="translate(0,95)">
+      <text class="at" x="9" y="0" text-anchor="end">HN</text>
+      <line class="bd" x1="16" y1="0" x2="78" y2="0"/>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-38"/><text class="at" x="80" y="-52">R′</text>
+      <line class="bd" x1="82" y1="0" x2="122" y2="0"/>
+      <text class="at" x="146" y="0">COO</text><text class="chg" x="176" y="-10">⊖</text>
+    </g>
+    <text class="at" x="-98" y="-82">H</text><text class="chg" x="-82" y="-92">⊕</text>
+    <path class="ea" d="M -26 -58 Q -58 -80 -86 -80" marker-end="url(#e3)"/>
+    <circle class="badge" cx="-52" cy="-54" r="11"/><text class="num" x="-52" y="-54">4</text>
+  </g>
+
+  <line class="ra" x1="250" y1="242" x2="250" y2="292" marker-end="url(#r3)"/>
+
+  <g transform="translate(250,368)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <line class="bd" x1="0" y1="-4" x2="0" y2="-40"/>
+    <text class="at-g" x="6" y="-56">OH₂</text><text class="chg" x="40" y="-68">⊕</text>
+    <line class="bd" x1="0" y1="6" x2="0" y2="80"/>
+    <g transform="translate(0,95)">
+      <text class="at" x="9" y="0" text-anchor="end">HN</text>
+      <line class="bd" x1="16" y1="0" x2="78" y2="0"/>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-38"/><text class="at" x="80" y="-52">R′</text>
+      <line class="bd" x1="82" y1="0" x2="122" y2="0"/>
+      <text class="at" x="146" y="0">COO</text><text class="chg" x="176" y="-10">⊖</text>
+    </g>
+  </g>
+</svg>
+</div>
+<figcaption>Aus <code>–OH</code> (Abgangsgruppe: miserabel) wird <code>–OH₂<sup>⊕</sup></code> (Abgangsgruppe: Wasser). Nur deshalb läuft der nächste Schritt.</figcaption>
+</figure>
+
+<h3>1.4 — Wasseraustritt <span style="color:var(--e)">⑤⑥</span> → Iminiumion</h3>
+<ul class="arrows">
+  <li><b>5</b>Das freie Elektronenpaar am <b>Stickstoff</b> schiebt in die N–C<sub>a</sub>-Bindung → <b>C<sub>a</sub>=N<sup>⊕</sup></b>.</li>
+  <li><b>6</b>Simultan: die <b>C<sub>a</sub>–OH₂<sup>⊕</sup>-Bindung bricht heterolytisch</b>, das Elektronenpaar geht zum Sauerstoff → Wasser tritt aus.</li>
+</ul>
+
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:422px" viewBox="73 24 377 482" role="img" aria-label="Das Stickstoff-Elektronenpaar schiebt in die Kohlenstoff-Stickstoff-Bindung und verdrängt Wasser; es entsteht ein Iminiumion.">
+  <defs>
+    <marker id="e4" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-e" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+    <marker id="r4" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+  </defs>
+
+  <g transform="translate(250,118)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <line class="brk" x1="0" y1="-4" x2="0" y2="-40"/>
+    <text class="at" x="6" y="-56">OH₂</text><text class="chg" x="40" y="-68">⊕</text>
+    <line class="bd" x1="0" y1="6" x2="0" y2="80"/>
+    <g transform="translate(0,95)">
+      <text class="at" x="9" y="0" text-anchor="end">HN</text>
+      <line class="bd" x1="16" y1="0" x2="78" y2="0"/>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-38"/><text class="at" x="80" y="-52">R′</text>
+      <line class="bd" x1="82" y1="0" x2="122" y2="0"/>
+      <text class="at" x="146" y="0">COO</text><text class="chg" x="176" y="-10">⊖</text>
+    </g>
+    <circle class="lp" cx="-14" cy="106" r="2.2"/><circle class="lp" cx="-4" cy="110" r="2.2"/>
+    <path class="ea" d="M -20 100 Q -54 76 -10 46" marker-end="url(#e4)"/>
+    <circle class="badge" cx="-56" cy="74" r="11"/><text class="num" x="-56" y="74">5</text>
+    <path class="ea" d="M -8 -24 Q -44 -34 -10 -52" marker-end="url(#e4)"/>
+    <circle class="badge" cx="-52" cy="-16" r="11"/><text class="num" x="-52" y="-16">6</text>
+  </g>
+
+  <line class="ra" x1="250" y1="254" x2="250" y2="304" marker-end="url(#r4)"/>
+  <text class="annk" x="316" y="279">– H₂O</text>
+
+  <g transform="translate(250,384)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <line class="nb" x1="-3" y1="8" x2="-3" y2="80"/><line class="nb" x1="3" y1="8" x2="3" y2="80"/>
+    <text class="lbl" x="30" y="-22">C<tspan dy="3" font-size="9">a</tspan></text>
+    <g transform="translate(0,95)">
+      <text class="at" x="0" y="0">N</text><text class="chg" x="20" y="-14">⊕</text>
+      <line class="bd" x1="-12" y1="0" x2="-38" y2="0"/><text class="at" x="-50" y="0">H</text>
+      <line class="bd" x1="12" y1="0" x2="78" y2="0"/>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-38"/><text class="at" x="80" y="-52">R′</text>
+      <line class="bd" x1="82" y1="0" x2="122" y2="0"/>
+      <text class="at" x="146" y="0">COO</text><text class="chg" x="176" y="-10">⊖</text>
+    </g>
+  </g>
+</svg>
+</div>
+<figcaption>Iminiumion. Die grüne Doppelbindung C<sub>a</sub>=N<sup>⊕</sup> ist neu — sie ist die <b>Elektronensenke</b>, die im nächsten Schritt die Decarboxylierung überhaupt erst ermöglicht.</figcaption>
+</figure>
+
+<h3>1.5 — Deprotonierung <span style="color:var(--e)">⑦</span> → Schiff-Base</h3>
+<ul class="arrows"><li><b>7</b>Eine Base nimmt das Proton vom N<sup>⊕</sup> → neutrale <b>Schiff-Base (Azomethin)</b>.</li></ul>
+
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:422px" viewBox="73 25 377 490" role="img" aria-label="Deprotonierung des Iminiumstickstoffs liefert die neutrale Schiff-Base mit der Doppelbindung zwischen C-a und Stickstoff.">
+  <defs>
+    <marker id="e5" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-e" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+    <marker id="r5" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+  </defs>
+
+  <g transform="translate(250,112)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <line class="bd" x1="-3" y1="8" x2="-3" y2="80"/><line class="bd" x1="3" y1="8" x2="3" y2="80"/>
+    <g transform="translate(0,95)">
+      <text class="at" x="0" y="0">N</text><text class="chg" x="20" y="-14">⊕</text>
+      <line class="brk" x1="-12" y1="0" x2="-38" y2="0"/><text class="at" x="-50" y="0">H</text>
+      <line class="bd" x1="12" y1="0" x2="78" y2="0"/>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-38"/><text class="at" x="80" y="-52">R′</text>
+      <line class="bd" x1="82" y1="0" x2="122" y2="0"/>
+      <text class="at" x="146" y="0">COO</text><text class="chg" x="176" y="-10">⊖</text>
+    </g>
+    <text class="at" x="-116" y="128">B</text>
+    <path class="ea" d="M -66 88 Q -92 108 -106 122" marker-end="url(#e5)"/>
+    <circle class="badge" cx="-64" cy="118" r="11"/><text class="num" x="-64" y="118">7</text>
+  </g>
+
+  <line class="ra" x1="250" y1="256" x2="250" y2="300" marker-end="url(#r5)"/>
+
+  <g transform="translate(250,370)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <line class="bd" x1="-3" y1="8" x2="-3" y2="80"/><line class="bd" x1="3" y1="8" x2="3" y2="80"/>
+    <text class="lbl" x="-75" y="22">C<tspan dy="3" font-size="9">b</tspan></text>
+    <text class="lbl" x="30" y="-22">C<tspan dy="3" font-size="9">a</tspan></text>
+    <g transform="translate(0,95)">
+      <text class="at" x="0" y="0">N</text>
+      <line class="bd" x1="12" y1="0" x2="78" y2="0"/>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-38"/><text class="at" x="80" y="-52">R′</text>
+      <line class="bd" x1="82" y1="0" x2="122" y2="0"/>
+      <text class="at" x="146" y="0">COO</text><text class="chg" x="176" y="-10">⊖</text>
+      <text class="lbl" x="80" y="24">C<tspan dy="3" font-size="9">α</tspan></text>
+    </g>
+  </g>
+</svg>
+</div>
+<figcaption>Die Schiff-Base <b>C<sub>b</sub>(=O)–C<sub>a</sub>=N–C<sub>α</sub>(H)(R′)–COO<sup>⊖</sup></b>. Alles ist jetzt in einer Linie: Carboxylat — Kette — Elektronensenke N — und dahinter das auffangende C<sub>b</sub>=O.</figcaption>
+</figure>
+
+<div class="key"><span class="tag">Wenn du nur eines mitnimmst</span>Wenn du diese sieben Pfeile blind kannst, kannst du 60 % aller Maillard-Mechanismen. Es ist dieselbe Choreografie wie bei N-Glykosid und Amadori.</div>
+
+
+<div class="stage" id="s2"><i class="chip" style="background:var(--s2)"></i><span class="eyebrow">Stufe 02 · Pfeile ⑧–⑪</span></div>
+<h2>Decarboxylierung: der eigentliche Strecker-Schritt</h2>
+
+<h3>2.1 — Konzertierte CO₂-Abspaltung <span style="color:var(--e)">⑧⑨⑩</span></h3>
+<ul class="arrows">
+  <li><b>8</b>Das <b>Bindungselektronenpaar der C<sub>α</sub>–COO<sup>⊖</sup>-Bindung</b> schiebt in die C<sub>α</sub>–N-Bindung → neue <b>C<sub>α</sub>=N</b>.</li>
+  <li><b>9</b>Simultan: die <b>π-Elektronen der C<sub>a</sub>=N</b> klappen hinunter aufs <b>C<sub>a</sub></b> → <b>Carbanion</b>.</li>
+  <li><b>10</b>Simultan: <b>CO₂ tritt aus.</b></li>
+</ul>
+
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:534px" viewBox="53 45 477 581" role="img" aria-label="Konzertierte Decarboxylierung: das Bindungselektronenpaar der Carboxylatgruppe schiebt in die C-alpha-Stickstoff-Bindung, die Pi-Elektronen der C-a-Stickstoff-Doppelbindung klappen auf C-a und Kohlendioxid tritt aus; es entsteht ein Carbanion.">
+  <defs>
+    <marker id="e6" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-e" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+    <marker id="r6" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+    <marker id="g6" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+  </defs>
+
+  <g transform="translate(230,132)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <line class="bd" x1="-3" y1="8" x2="-3" y2="80"/><line class="bd" x1="3" y1="8" x2="3" y2="80"/>
+    <text class="lbl" x="30" y="-22">C<tspan dy="3" font-size="9">a</tspan></text>
+    <g transform="translate(0,95)">
+      <text class="at" x="0" y="0">N</text>
+      <line class="bd" x1="12" y1="0" x2="78" y2="0"/>
+      <line class="bd" x1="80" y1="4" x2="80" y2="38"/><text class="at" x="80" y="52">R′</text>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-32"/><text class="at" x="80" y="-46">H</text>
+      <line class="brk" x1="88" y1="0" x2="140" y2="0"/>
+      <line class="bd" x1="145" y1="-6" x2="145" y2="-38"/><line class="bd" x1="151" y1="-6" x2="151" y2="-38"/>
+      <text class="at" x="148" y="-52">O</text>
+      <line class="bd" x1="148" y1="6" x2="148" y2="34"/>
+      <text class="at" x="148" y="48">O</text><text class="chg" x="167" y="38">⊖</text>
+      <text class="lbl" x="108" y="22">C<tspan dy="3" font-size="9">α</tspan></text>
+    </g>
+    <path class="ea" d="M 112 86 Q 88 44 44 84" marker-end="url(#e6)"/>
+    <circle class="badge" cx="126" cy="64" r="11"/><text class="num" x="126" y="64">8</text>
+    <path class="ea" d="M -10 46 Q -48 40 -8 8" marker-end="url(#e6)"/>
+    <circle class="badge" cx="-52" cy="40" r="11"/><text class="num" x="-52" y="40">9</text>
+    <path class="brk" d="M 176 150 Q 216 168 240 168" marker-end="url(#r6)"/>
+    <text class="annk" x="270" y="168">CO₂</text>
+    <circle class="badge" cx="204" cy="188" r="11"/><text class="num" x="204" y="188">10</text>
+  </g>
+
+  <line class="ra" x1="250" y1="332" x2="250" y2="382" marker-end="url(#r6)"/>
+  <text class="annk" x="316" y="357">– CO₂</text>
+
+  <g transform="translate(230,452)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <circle class="lp" cx="-6" cy="-16" r="2.2"/><circle class="lp" cx="6" cy="-16" r="2.2"/>
+    <text class="chg" x="0" y="-34">⊖</text>
+    <text class="lbl" x="30" y="20">C<tspan dy="3" font-size="9">a</tspan></text>
+    <line class="bd" x1="0" y1="8" x2="0" y2="80"/>
+    <g transform="translate(0,95)">
+      <text class="at" x="0" y="0">N</text>
+      <line class="nb" x1="12" y1="-3" x2="78" y2="-3"/><line class="nb" x1="12" y1="3" x2="78" y2="3"/>
+      <line class="bd" x1="80" y1="4" x2="80" y2="38"/><text class="at" x="80" y="52">R′</text>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-32"/><text class="at" x="80" y="-46">H</text>
+      <text class="lbl" x="108" y="22">C<tspan dy="3" font-size="9">α</tspan></text>
+    </g>
+    <text class="annk" x="188" y="95">+ CO₂ ↑</text>
+  </g>
+</svg>
+</div>
+<figcaption><b>Die Doppelbindung ist gewandert</b> — von der Dicarbonyl-Seite (C<sub>a</sub>=N) auf die Aminosäure-Seite (N=C<sub>α</sub>). Das ist der ganze Trick des Strecker-Abbaus. Zurück bleibt ein Carbanion am C<sub>a</sub>.</figcaption>
+</figure>
+
+<h3>2.2 — Ladungsauffang <span style="color:var(--e)">⑪</span> → Enolat</h3>
+<ul class="arrows"><li><b>11</b>Das <b>Carbanion am C<sub>a</sub></b> schiebt in die C<sub>a</sub>–C<sub>b</sub>-Bindung; gleichzeitig klappt das <b>π-Elektronenpaar der C<sub>b</sub>=O</b> auf den Sauerstoff → <b>Enolat</b>.</li></ul>
+
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:317px" viewBox="53 33 283 509" role="img" aria-label="Das Carbanion am C-a delokalisiert in die Bindung zum Nachbarn C-b, dessen Carbonyl-Pi-Elektronen auf den Sauerstoff klappen; es entsteht ein Enolat.">
+  <defs>
+    <marker id="e7" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-e" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+    <marker id="r7" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+  </defs>
+
+  <g transform="translate(230,120)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <circle class="lp" cx="-6" cy="-16" r="2.2"/><circle class="lp" cx="6" cy="-16" r="2.2"/>
+    <text class="chg" x="20" y="-22">⊖</text>
+    <line class="bd" x1="0" y1="8" x2="0" y2="80"/>
+    <g transform="translate(0,95)">
+      <text class="at" x="0" y="0">N</text>
+      <line class="bd" x1="12" y1="-3" x2="78" y2="-3"/><line class="bd" x1="12" y1="3" x2="78" y2="3"/>
+      <line class="bd" x1="80" y1="4" x2="80" y2="38"/><text class="at" x="80" y="52">R′</text>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-32"/><text class="at" x="80" y="-46">H</text>
+    </g>
+    <path class="ea" d="M -6 -28 Q -50 -46 -40 -10" marker-end="url(#e7)"/>
+    <path class="ea" d="M -84 -26 Q -122 -34 -88 -54" marker-end="url(#e7)"/>
+    <circle class="badge" cx="-34" cy="-48" r="11"/><text class="num" x="-34" y="-48">11</text>
+    <circle class="badge" cx="-124" cy="-8" r="11"/><text class="num" x="-124" y="-8">11</text>
+  </g>
+
+  <line class="ra" x1="250" y1="252" x2="250" y2="300" marker-end="url(#r7)"/>
+
+  <g transform="translate(230,368)">
+    <line class="bd" x1="-139" y1="0" x2="-78" y2="0"/>
+    <line class="bd" x1="3" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-75" y1="-4" x2="-75" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text><text class="chg" x="-56" y="-70">⊖</text>
+    <line class="nb" x1="-72" y1="-4" x2="-3" y2="-4"/><line class="nb" x1="-72" y1="4" x2="-3" y2="4"/>
+    <line class="bd" x1="0" y1="8" x2="0" y2="80"/>
+    <g transform="translate(0,95)">
+      <text class="at" x="0" y="0">N</text>
+      <line class="bd" x1="12" y1="-3" x2="78" y2="-3"/><line class="bd" x1="12" y1="3" x2="78" y2="3"/>
+      <line class="bd" x1="80" y1="4" x2="80" y2="38"/><text class="at" x="80" y="52">R′</text>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-32"/><text class="at" x="80" y="-46">H</text>
+    </g>
+    <text class="annk" x="-36" y="-92">Enolat — Ladung aufgefangen</text>
+  </g>
+</svg>
+</div>
+<figcaption><b>Bild für die ganze Bewegung:</b> Das CO₂ springt ab, und die frei werdenden Elektronen laufen wie eine Welle durch die Kette bis zum zweiten Sauerstoff, wo sie geparkt werden.</figcaption>
+</figure>
+
+<h3>2.3 — Protonierung → umgelagerte Schiff-Base</h3>
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:356px" viewBox="53 -4 318 546" role="img" aria-label="Das Enolat wird am C-a protoniert, die Carbonylgruppe am C-b bildet sich zurück; Ergebnis ist die umgelagerte Schiff-Base.">
+  <defs>
+    <marker id="e8" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-e" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+    <marker id="r8" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+  </defs>
+
+  <g transform="translate(230,124)">
+    <line class="bd" x1="-139" y1="0" x2="-78" y2="0"/>
+    <line class="bd" x1="3" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-75" y1="-4" x2="-75" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text><text class="chg" x="-56" y="-70">⊖</text>
+    <circle class="lp" cx="-92" cy="-52" r="2.2"/><circle class="lp" cx="-92" cy="-64" r="2.2"/>
+    <line class="bd" x1="-72" y1="-4" x2="-3" y2="-4"/><line class="bd" x1="-72" y1="4" x2="-3" y2="4"/>
+    <line class="bd" x1="0" y1="8" x2="0" y2="80"/>
+    <g transform="translate(0,95)">
+      <text class="at" x="0" y="0">N</text>
+      <line class="bd" x1="12" y1="-3" x2="78" y2="-3"/><line class="bd" x1="12" y1="3" x2="78" y2="3"/>
+      <line class="bd" x1="80" y1="4" x2="80" y2="38"/><text class="at" x="80" y="52">R′</text>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-32"/><text class="at" x="80" y="-46">H</text>
+    </g>
+    <text class="at" x="0" y="-92">H</text><text class="chg" x="17" y="-102">⊕</text>
+    <path class="ea" d="M -38 -14 Q -20 -60 -8 -80" marker-end="url(#e8)"/>
+    <path class="ea" d="M -104 -58 Q -112 -92 -84 -94" marker-end="url(#e8)"/>
+  </g>
+
+  <line class="ra" x1="250" y1="248" x2="250" y2="296" marker-end="url(#r8)"/>
+  <text class="annk" x="322" y="272">Tautomerie</text>
+
+  <g transform="translate(230,368)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <line class="nb" x1="0" y1="-6" x2="0" y2="-36"/><text class="at-g" x="0" y="-52">H</text>
+    <line class="bd" x1="0" y1="8" x2="0" y2="80"/>
+    <text class="lbl" x="-75" y="22">C<tspan dy="3" font-size="9">b</tspan></text>
+    <text class="lbl" x="30" y="20">C<tspan dy="3" font-size="9">a</tspan></text>
+    <g transform="translate(0,95)">
+      <text class="at" x="0" y="0">N</text>
+      <line class="bd" x1="12" y1="-3" x2="78" y2="-3"/><line class="bd" x1="12" y1="3" x2="78" y2="3"/>
+      <line class="bd" x1="80" y1="4" x2="80" y2="38"/><text class="at" x="80" y="52">R′</text>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-32"/><text class="at" x="80" y="-46">H</text>
+      <text class="lbl" x="108" y="22">C<tspan dy="3" font-size="9">α</tspan></text>
+    </g>
+  </g>
+</svg>
+</div>
+<figcaption>Die <b>umgelagerte Schiff-Base</b> C<sub>b</sub>(=O)–C<sub>a</sub>H₂–N=C<sub>α</sub>(H)(R′). Das C<sub>a</sub> trägt jetzt zwei H (das ursprüngliche Aldehyd-H und das neu aufgenommene) — daraus wird gleich das α-Aminoketon.</figcaption>
+</figure>
+
+
+<div class="stage" id="s3"><i class="chip" style="background:var(--s3)"></i><span class="eyebrow">Stufe 03 · Pfeile ⑫–⑯</span></div>
+<h2>Hydrolyse: die zwei Produkte trennen sich</h2>
+<p>Exakt umgekehrt zur Bildung — nur greift diesmal Wasser an, und zwar am <b>C<sub>α</sub></b>, weil dort jetzt die Doppelbindung sitzt.</p>
+
+<h3>3.1 — Wasserangriff <span style="color:var(--e)">⑫⑬</span></h3>
+<ul class="arrows">
+  <li><b>12</b>Das freie Elektronenpaar eines <b>Wasser-Sauerstoffs</b> greift das elektrophile <b>C<sub>α</sub></b> an.</li>
+  <li><b>13</b>Simultan: die <b>π-Elektronen der C<sub>α</sub>=N</b> klappen auf den <b>Stickstoff</b>. Nach Protonentransfer: <b>Halbaminal</b>.</li>
+</ul>
+
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:444px" viewBox="43 31 396 571" role="img" aria-label="Wasser greift das C-alpha der umgelagerten Schiff-Base an, die Pi-Elektronen klappen auf den Stickstoff; nach Protonentransfer entsteht ein Halbaminal.">
+  <defs>
+    <marker id="e9" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-e" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+    <marker id="r9" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+  </defs>
+
+  <g transform="translate(220,118)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <line class="bd" x1="0" y1="-6" x2="0" y2="-36"/><text class="at" x="0" y="-52">H</text>
+    <line class="bd" x1="0" y1="8" x2="0" y2="80"/>
+    <g transform="translate(0,95)">
+      <text class="at" x="0" y="0">N</text>
+      <line class="bd" x1="12" y1="-3" x2="78" y2="-3"/><line class="bd" x1="12" y1="3" x2="78" y2="3"/>
+      <line class="bd" x1="80" y1="4" x2="80" y2="38"/><text class="at" x="80" y="52">R′</text>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-32"/><text class="at" x="80" y="-46">H</text>
+      <text class="lbl" x="108" y="22">C<tspan dy="3" font-size="9">α</tspan></text>
+    </g>
+    <text class="at" x="186" y="95">H₂O</text>
+    <circle class="lp" cx="164" cy="80" r="2.2"/><circle class="lp" cx="174" cy="76" r="2.2"/>
+    <path class="ea" d="M 162 72 Q 122 54 92 84" marker-end="url(#e9)"/>
+    <circle class="badge" cx="126" cy="44" r="11"/><text class="num" x="126" y="44">12</text>
+    <path class="ea" d="M 46 108 Q 40 146 12 110" marker-end="url(#e9)"/>
+    <circle class="badge" cx="34" cy="152" r="11"/><text class="num" x="34" y="152">13</text>
+  </g>
+
+  <line class="ra" x1="250" y1="288" x2="250" y2="334" marker-end="url(#r9)"/>
+  <text class="annk" x="336" y="311">+ H⁺-Transfer</text>
+
+  <g transform="translate(220,400)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <line class="bd" x1="0" y1="-6" x2="0" y2="-36"/><text class="at" x="0" y="-52">H</text>
+    <line class="bd" x1="0" y1="8" x2="0" y2="80"/>
+    <g transform="translate(0,95)">
+      <text class="at" x="0" y="0">N</text>
+      <line class="bd" x1="-12" y1="0" x2="-38" y2="0"/><text class="at" x="-50" y="0">H</text>
+      <line class="bd" x1="12" y1="0" x2="78" y2="0"/>
+      <line class="bd" x1="80" y1="4" x2="80" y2="38"/><text class="at" x="80" y="52">R′</text>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-32"/><text class="at" x="80" y="-46">H</text>
+      <line class="nb" x1="88" y1="0" x2="122" y2="0"/><text class="at-g" x="146" y="0">OH</text>
+    </g>
+    <text class="annk" x="30" y="176">Halbaminal</text>
+  </g>
+</svg>
+</div>
+<figcaption>Am C<sub>α</sub> sitzen jetzt vier verschiedene Gruppen: N, OH, H und R′ — das klassische Halbaminal, das gleich in zwei Teile zerfällt.</figcaption>
+</figure>
+
+<h3>3.2 — Protonierung des Stickstoffs <span style="color:var(--e)">⑭</span></h3>
+<ul class="arrows"><li><b>14</b>Der <b>Stickstoff wird protoniert</b> → er wird zur guten Abgangsgruppe.</li></ul>
+
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:395px" viewBox="43 25 353 551" role="img" aria-label="Der Stickstoff des Halbaminals wird protoniert und dadurch zur guten Abgangsgruppe.">
+  <defs>
+    <marker id="e10" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-e" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+    <marker id="r10" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+  </defs>
+
+  <g transform="translate(220,112)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <line class="bd" x1="0" y1="-6" x2="0" y2="-36"/><text class="at" x="0" y="-52">H</text>
+    <line class="bd" x1="0" y1="8" x2="0" y2="80"/>
+    <g transform="translate(0,95)">
+      <text class="at" x="0" y="0">N</text>
+      <line class="bd" x1="-12" y1="0" x2="-38" y2="0"/><text class="at" x="-50" y="0">H</text>
+      <line class="bd" x1="12" y1="0" x2="78" y2="0"/>
+      <line class="bd" x1="80" y1="4" x2="80" y2="38"/><text class="at" x="80" y="52">R′</text>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-32"/><text class="at" x="80" y="-46">H</text>
+      <line class="bd" x1="88" y1="0" x2="122" y2="0"/><text class="at" x="146" y="0">OH</text>
+    </g>
+    <circle class="lp" cx="-6" cy="112" r="2.2"/><circle class="lp" cx="6" cy="112" r="2.2"/>
+    <text class="at" x="-30" y="158">H</text><text class="chg" x="-14" y="148">⊕</text>
+    <path class="ea" d="M 0 120 Q -8 148 -20 152" marker-end="url(#e10)"/>
+    <circle class="badge" cx="34" cy="140" r="11"/><text class="num" x="34" y="140">14</text>
+  </g>
+
+  <line class="ra" x1="250" y1="296" x2="250" y2="340" marker-end="url(#r10)"/>
+
+  <g transform="translate(220,402)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <line class="bd" x1="0" y1="-6" x2="0" y2="-36"/><text class="at" x="0" y="-52">H</text>
+    <line class="bd" x1="0" y1="8" x2="0" y2="80"/>
+    <g transform="translate(0,95)">
+      <text class="at" x="0" y="0">N</text><text class="chg" x="-20" y="-14">⊕</text>
+      <line class="bd" x1="-12" y1="0" x2="-38" y2="0"/><text class="at" x="-50" y="0">H</text>
+      <line class="nb" x1="0" y1="12" x2="0" y2="34"/><text class="at-g" x="0" y="50">H</text>
+      <line class="bd" x1="12" y1="0" x2="78" y2="0"/>
+      <line class="bd" x1="80" y1="4" x2="80" y2="38"/><text class="at" x="80" y="52">R′</text>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-32"/><text class="at" x="80" y="-46">H</text>
+      <line class="bd" x1="88" y1="0" x2="122" y2="0"/><text class="at" x="146" y="0">OH</text>
+    </g>
+  </g>
+</svg>
+</div>
+<figcaption>Gleiche Logik wie bei Pfeil ④: Neutrale N- und O-Gruppen sind schlechte Abgangsgruppen — erst die Protonierung macht sie brauchbar.</figcaption>
+</figure>
+
+<h3>3.3 — Spaltung <span style="color:var(--e)">⑮⑯</span> → die zwei Produkte</h3>
+<ul class="arrows">
+  <li><b>15</b>Das freie Elektronenpaar am <b>C<sub>α</sub>-OH-Sauerstoff</b> schiebt in C<sub>α</sub> → <b>C<sub>α</sub>=O</b> bildet sich.</li>
+  <li><b>16</b>Simultan: die <b>C<sub>α</sub>–N-Bindung bricht</b>, das Elektronenpaar geht zum Stickstoff → <b>Trennung</b>.</li>
+</ul>
+
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:567px" viewBox="24 31 506 481" role="img" aria-label="Das Sauerstoff-Elektronenpaar bildet die Carbonylgruppe am C-alpha, gleichzeitig bricht die Bindung zum Stickstoff; es entstehen der Strecker-Aldehyd und das alpha-Aminoketon.">
+  <defs>
+    <marker id="e11" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-e" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+    <marker id="r11" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+  </defs>
+
+  <g transform="translate(230,118)">
+    <line class="bd" x1="-139" y1="0" x2="48" y2="0"/>
+    <text class="at" x="-153" y="0">R</text><text class="at" x="58" y="0">H</text>
+    <line class="bd" x1="-78" y1="-4" x2="-78" y2="-46"/><line class="bd" x1="-72" y1="-4" x2="-72" y2="-46"/>
+    <text class="at" x="-75" y="-60">O</text>
+    <line class="bd" x1="0" y1="-6" x2="0" y2="-36"/><text class="at" x="0" y="-52">H</text>
+    <line class="bd" x1="0" y1="8" x2="0" y2="80"/>
+    <g transform="translate(0,95)">
+      <text class="at" x="0" y="0">N</text><text class="chg" x="-20" y="-14">⊕</text>
+      <line class="bd" x1="-12" y1="0" x2="-38" y2="0"/><text class="at" x="-50" y="0">H</text>
+      <line class="bd" x1="0" y1="12" x2="0" y2="34"/><text class="at" x="0" y="50">H</text>
+      <line class="brk" x1="12" y1="0" x2="78" y2="0"/>
+      <line class="bd" x1="80" y1="4" x2="80" y2="38"/><text class="at" x="80" y="52">R′</text>
+      <line class="bd" x1="80" y1="-4" x2="80" y2="-32"/><text class="at" x="80" y="-46">H</text>
+      <line class="bd" x1="88" y1="0" x2="122" y2="0"/><text class="at" x="146" y="0">OH</text>
+      <circle class="lp" cx="140" cy="-18" r="2.2"/><circle class="lp" cx="152" cy="-18" r="2.2"/>
+    </g>
+    <path class="ea" d="M 140 68 Q 116 46 102 82" marker-end="url(#e11)"/>
+    <circle class="badge" cx="152" cy="48" r="11"/><text class="num" x="152" y="48">15</text>
+    <path class="ea" d="M 46 104 Q 30 142 10 106" marker-end="url(#e11)"/>
+    <circle class="badge" cx="30" cy="152" r="11"/><text class="num" x="30" y="152">16</text>
+  </g>
+
+  <line class="ra" x1="290" y1="288" x2="290" y2="336" marker-end="url(#r11)"/>
+
+  <g transform="translate(180,400)">
+    <line class="bd" x1="-118" y1="0" x2="30" y2="0"/>
+    <text class="at" x="-132" y="0">R</text><text class="at" x="40" y="0">H</text>
+    <line class="bd" x1="-63" y1="-4" x2="-63" y2="-46"/><line class="bd" x1="-57" y1="-4" x2="-57" y2="-46"/>
+    <text class="at" x="-60" y="-60">O</text>
+    <line class="bd" x1="0" y1="-6" x2="0" y2="-36"/><text class="at" x="0" y="-52">H</text>
+    <line class="bd" x1="0" y1="8" x2="0" y2="34"/>
+    <text class="at-g" x="0" y="50">NH₂</text>
+    <text class="annk" x="-30" y="86">α-Aminoketon</text>
+  </g>
+  <text class="at" x="352" y="400">+</text>
+  <g transform="translate(450,400)">
+    <line class="bd" x1="-16" y1="0" x2="40" y2="0"/>
+    <line class="bd" x1="-19" y1="-4" x2="-19" y2="-46"/><line class="bd" x1="-13" y1="-4" x2="-13" y2="-46"/>
+    <text class="at-g" x="-16" y="-60">O</text>
+    <text class="at" x="-16" y="26">H</text>
+    <text class="at" x="54" y="0">R′</text>
+    <text class="annk" x="10" y="86">Strecker-Aldehyd</text>
+  </g>
+</svg>
+</div>
+<figcaption>Fertig. Der Zucker behält den Stickstoff, die Aminosäure geht als Aldehyd — <b>mit einem C-Atom weniger</b>, weil das Carboxyl-C als CO₂ verloren ging.</figcaption>
+</figure>
+
+<h3>Wer hat was bekommen?</h3>
+
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:640px" viewBox="14 8 571 226" role="img" aria-label="Bilanz des Strecker-Abbaus: aus dem Zucker stammender Teil trägt nach der Reaktion den Stickstoff der Aminosäure, während aus der Aminosäure der um ein Kohlenstoffatom ärmere Aldehyd entsteht.">
+  <defs>
+    <marker id="r12" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+  </defs>
+  <text class="ttl" x="40" y="34">aus dem <tspan fill="var(--e)">Dicarbonyl</tspan></text>
+  <g transform="translate(170,120)">
+    <line class="bd" x1="-118" y1="0" x2="30" y2="0"/>
+    <text class="at" x="-132" y="0">R</text><text class="at" x="40" y="0">H</text>
+    <line class="bd" x1="-63" y1="-4" x2="-63" y2="-46"/><line class="bd" x1="-57" y1="-4" x2="-57" y2="-46"/>
+    <text class="at" x="-60" y="-60">O</text>
+    <line class="bd" x1="0" y1="-6" x2="0" y2="-36"/><text class="at" x="0" y="-52">H</text>
+    <line class="bd" x1="0" y1="8" x2="0" y2="34"/>
+    <text class="at-g" x="0" y="50">NH₂</text>
+    <text class="annk" x="60" y="52">← der N stammt aus der Aminosäure</text>
+  </g>
+  <line x1="380" y1="30" x2="380" y2="216" stroke="currentColor" stroke-width="1" opacity=".18"/>
+  <text class="ttl" x="410" y="34">aus der <tspan fill="var(--e)">Aminosäure</tspan></text>
+  <g transform="translate(480,120)">
+    <line class="bd" x1="-16" y1="0" x2="40" y2="0"/>
+    <line class="bd" x1="-19" y1="-4" x2="-19" y2="-46"/><line class="bd" x1="-13" y1="-4" x2="-13" y2="-46"/>
+    <text class="at" x="-16" y="-60">O</text>
+    <text class="at" x="-16" y="26">H</text>
+    <text class="at" x="54" y="0">R′</text>
+    <text class="annk" x="20" y="66">R′–CHO · ein C weniger</text>
+  </g>
+</svg>
+</div>
+<figcaption><b>Merksatz:</b> Der Zucker klaut der Aminosäure den Stickstoff und gibt ihr dafür einen Aldehyd zurück — minus ein Kohlenstoff.</figcaption>
+</figure>
+
+<h3>Die Strecker-Aldehyde, die du benennen können musst</h3>
+
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:724px" viewBox="21 32 646 323" role="img" aria-label="Strukturformeln der sechs prüfungsrelevanten Strecker-Aldehyde: 2-Methylpropanal, 3-Methylbutanal, 2-Methylbutanal, Phenylacetaldehyd, Methional und Mercaptoacetaldehyd.">
+  <defs>
+    <g id="ph">
+      <line class="bd" x1="0" y1="0" x2="15" y2="-26"/>
+      <line class="bd" x1="15" y1="-26" x2="45" y2="-26"/>
+      <line class="bd" x1="45" y1="-26" x2="60" y2="0"/>
+      <line class="bd" x1="60" y1="0" x2="45" y2="26"/>
+      <line class="bd" x1="45" y1="26" x2="15" y2="26"/>
+      <line class="bd" x1="15" y1="26" x2="0" y2="0"/>
+      <line class="bd" x1="19" y1="-21" x2="41" y2="-21"/>
+      <line class="bd" x1="53.4" y1="1.4" x2="42.9" y2="19.6"/>
+      <line class="bd" x1="17" y1="19.6" x2="6.5" y2="1.4"/>
+    </g>
+  </defs>
+
+  <g transform="translate(60,80)">
+    <text class="at" x="-14" y="0">O</text>
+    <line class="bd" x1="4" y1="4" x2="24" y2="15"/><line class="bd" x1="7" y1="-1" x2="27" y2="10"/>
+    <line class="bd" x1="26" y1="15" x2="52" y2="0"/>
+    <line class="bd" x1="52" y1="0" x2="78" y2="15"/>
+    <line class="bd" x1="52" y1="0" x2="78" y2="-15"/>
+    <text class="annk" x="34" y="76">2-Methylpropanal</text>
+    <text class="lbl" x="34" y="96">Valin · malzig</text>
+  </g>
+
+  <g transform="translate(280,80)">
+    <text class="at" x="-14" y="0">O</text>
+    <line class="bd" x1="4" y1="4" x2="24" y2="15"/><line class="bd" x1="7" y1="-1" x2="27" y2="10"/>
+    <line class="bd" x1="26" y1="15" x2="52" y2="0"/>
+    <line class="bd" x1="52" y1="0" x2="78" y2="15"/>
+    <line class="bd" x1="78" y1="15" x2="104" y2="0"/>
+    <line class="bd" x1="78" y1="15" x2="78" y2="45"/>
+    <text class="annk" x="48" y="76">3-Methylbutanal</text>
+    <text class="lbl" x="48" y="96">Leucin · malzig, schokoladig</text>
+  </g>
+
+  <g transform="translate(520,80)">
+    <text class="at" x="-14" y="0">O</text>
+    <line class="bd" x1="4" y1="4" x2="24" y2="15"/><line class="bd" x1="7" y1="-1" x2="27" y2="10"/>
+    <line class="bd" x1="26" y1="15" x2="52" y2="0"/>
+    <line class="bd" x1="52" y1="0" x2="78" y2="15"/>
+    <line class="bd" x1="78" y1="15" x2="104" y2="0"/>
+    <line class="bd" x1="52" y1="0" x2="52" y2="-30"/>
+    <text class="annk" x="48" y="76">2-Methylbutanal</text>
+    <text class="lbl" x="48" y="96">Isoleucin · malzig</text>
+  </g>
+
+  <g transform="translate(60,230)">
+    <text class="at" x="-14" y="0">O</text>
+    <line class="bd" x1="4" y1="4" x2="24" y2="15"/><line class="bd" x1="7" y1="-1" x2="27" y2="10"/>
+    <line class="bd" x1="26" y1="15" x2="52" y2="0"/>
+    <line class="bd" x1="52" y1="0" x2="78" y2="15"/>
+    <use href="#ph" x="78" y="15"/>
+    <text class="annk" x="70" y="80">Phenylacetaldehyd</text>
+    <text class="lbl" x="70" y="100">Phenylalanin · honigartig</text>
+  </g>
+
+  <g transform="translate(320,230)">
+    <text class="at" x="-14" y="0">O</text>
+    <line class="bd" x1="4" y1="4" x2="24" y2="15"/><line class="bd" x1="7" y1="-1" x2="27" y2="10"/>
+    <line class="bd" x1="26" y1="15" x2="52" y2="0"/>
+    <line class="bd" x1="52" y1="0" x2="78" y2="15"/>
+    <line class="bd" x1="78" y1="15" x2="96" y2="4"/>
+    <text class="at" x="108" y="0">S</text>
+    <line class="bd" x1="120" y1="4" x2="138" y2="15"/>
+    <text class="annk" x="60" y="80">Methional</text>
+    <text class="lbl" x="60" y="100">Methionin · Kochkartoffel</text>
+  </g>
+
+  <g transform="translate(540,230)">
+    <text class="at" x="-14" y="0">O</text>
+    <line class="bd" x1="4" y1="4" x2="24" y2="15"/><line class="bd" x1="7" y1="-1" x2="27" y2="10"/>
+    <line class="bd" x1="26" y1="15" x2="52" y2="0"/>
+    <line class="bd" x1="52" y1="0" x2="70" y2="11"/>
+    <text class="at" x="88" y="15">SH</text>
+    <text class="annk" x="50" y="80">Mercaptoacetaldehyd</text>
+    <text class="lbl" x="50" y="100">Cystein → H₂S, Thiole</text>
+  </g>
+</svg>
+</div>
+<figcaption><b>Bild:</b> Die Aminosäure zieht ihre Seitenkette an und legt Kopf (COOH) und Stickstoff ab. Was übrig bleibt, ist der Duft. <b>Cystein ist der Sonderfall</b> — es liefert Schwefel in die Kaskade und ist damit die Quelle aller Fleisch- und Röstaromen (Thiazole, Thiophene, Furanthiole).</figcaption>
+</figure>
+
+
+<div class="stage" id="s4"><i class="chip" style="background:var(--s4)"></i><span class="eyebrow">Stufe 04 · Folgechemie</span></div>
+<h2>Pyrazinbildung: zwei Aminoketone finden sich</h2>
+<p>Jedes α-Aminoketon trägt eine NH₂-Gruppe <em>und</em> daneben eine C=O-Gruppe. Es ist also gleichzeitig <b>Nucleophil und Elektrophil</b>. Zwei Moleküle greifen sich <b>über Kreuz</b>.</p>
+
+<h3>4.1 — Erste Kondensation (intermolekular)</h3>
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:595px" viewBox="28 4 531 354" role="img" aria-label="Das Stickstoffatom eines alpha-Aminoketons greift die Carbonylgruppe eines zweiten an; nach Wasserabspaltung entsteht die erste Kohlenstoff-Stickstoff-Doppelbindung zwischen den beiden Molekülen.">
+  <defs>
+    <marker id="e13" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-e" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+    <marker id="r13" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+  </defs>
+
+  <text class="ttl" x="46" y="30">Molekül A</text>
+  <g transform="translate(150,110)">
+    <line class="bd" x1="-84" y1="0" x2="64" y2="0"/>
+    <text class="at" x="-98" y="0">R</text>
+    <line class="bd" x1="-33" y1="-4" x2="-33" y2="-46"/><line class="bd" x1="-27" y1="-4" x2="-27" y2="-46"/>
+    <text class="at" x="-30" y="-60">O</text>
+    <text class="at" x="86" y="0">NH₂</text>
+    <circle class="lp" cx="80" cy="-18" r="2.2"/><circle class="lp" cx="92" cy="-18" r="2.2"/>
+  </g>
+
+  <text class="ttl" x="336" y="30">Molekül B</text>
+  <g transform="translate(440,110)">
+    <line class="bd" x1="-84" y1="0" x2="64" y2="0"/>
+    <text class="at" x="-98" y="0">R</text>
+    <line class="bd" x1="-33" y1="-4" x2="-33" y2="-46"/><line class="bd" x1="-27" y1="-4" x2="-27" y2="-46"/>
+    <text class="at" x="-30" y="-60">O</text>
+    <text class="at" x="86" y="0">NH₂</text>
+  </g>
+
+  <path class="ea" d="M 242 84 Q 320 24 400 62" marker-end="url(#e13)"/>
+  <circle class="badge" cx="322" cy="46" r="11"/><text class="num" x="322" y="46">1</text>
+  <path class="ea" d="M 414 84 Q 448 90 418 58" marker-end="url(#e13)"/>
+  <circle class="badge" cx="456" cy="76" r="11"/><text class="num" x="456" y="76">2</text>
+
+  <line class="ra" x1="320" y1="196" x2="320" y2="244" marker-end="url(#r13)"/>
+  <text class="annk" x="386" y="220">– H₂O</text>
+
+  <g transform="translate(190,320)">
+    <line class="bd" x1="-84" y1="0" x2="64" y2="0"/>
+    <text class="at" x="-98" y="0">R</text>
+    <line class="bd" x1="-33" y1="-4" x2="-33" y2="-46"/><line class="bd" x1="-27" y1="-4" x2="-27" y2="-46"/>
+    <text class="at" x="-30" y="-60">O</text>
+    <text class="at" x="78" y="0">N</text>
+    <line class="nb" x1="90" y1="-3" x2="146" y2="-3"/><line class="nb" x1="90" y1="3" x2="146" y2="3"/>
+    <line class="bd" x1="148" y1="-4" x2="148" y2="-42"/><text class="at" x="148" y="-56">R</text>
+    <line class="bd" x1="150" y1="0" x2="216" y2="0"/>
+    <text class="at" x="240" y="0">NH₂</text>
+    <circle class="lp" cx="234" cy="18" r="2.2"/><circle class="lp" cx="246" cy="18" r="2.2"/>
+  </g>
+</svg>
+</div>
+<figcaption>Gleiche 7-Pfeil-Sequenz wie immer (Angriff → Halbaminal → Protonierung → Wasseraustritt). Jetzt hängen beide Moleküle zusammen — und die verbleibende NH₂-Gruppe steht dem noch freien C=O direkt gegenüber.</figcaption>
+</figure>
+
+<h3>4.2 — Ringschluss (intramolekular) → Dihydropyrazin</h3>
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:442px" viewBox="58 33 395 411" role="img" aria-label="Die verbliebene Aminogruppe greift intramolekular die verbliebene Carbonylgruppe an; nach zweiter Wasserabspaltung entsteht ein Dihydropyrazin mit Stickstoffatomen in 1,4-Stellung.">
+  <defs>
+    <marker id="e14" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-e" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+    <marker id="r14" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+  </defs>
+
+  <g transform="translate(180,120)">
+    <line class="bd" x1="-84" y1="0" x2="64" y2="0"/>
+    <text class="at" x="-98" y="0">R</text>
+    <line class="bd" x1="-33" y1="-4" x2="-33" y2="-46"/><line class="bd" x1="-27" y1="-4" x2="-27" y2="-46"/>
+    <text class="at" x="-30" y="-60">O</text>
+    <text class="at" x="78" y="0">N</text>
+    <line class="bd" x1="90" y1="-3" x2="146" y2="-3"/><line class="bd" x1="90" y1="3" x2="146" y2="3"/>
+    <line class="bd" x1="148" y1="-4" x2="148" y2="-42"/><text class="at" x="148" y="-56">R</text>
+    <line class="bd" x1="150" y1="0" x2="216" y2="0"/>
+    <text class="at" x="240" y="0">NH₂</text>
+    <circle class="lp" cx="234" cy="18" r="2.2"/><circle class="lp" cx="246" cy="18" r="2.2"/>
+    <path class="ea" d="M 240 30 Q 130 116 -26 20" marker-end="url(#e14)"/>
+    <circle class="badge" cx="106" cy="86" r="11"/><text class="num" x="106" y="86">3</text>
+    <path class="ea" d="M -40 -26 Q -76 -34 -42 -54" marker-end="url(#e14)"/>
+    <circle class="badge" cx="-82" cy="-14" r="11"/><text class="num" x="-82" y="-14">4</text>
+  </g>
+
+  <line class="ra" x1="310" y1="216" x2="310" y2="262" marker-end="url(#r14)"/>
+  <text class="annk" x="376" y="239">– H₂O</text>
+
+  <g transform="translate(310,330)">
+    <line class="nb" x1="11.3" y1="-41.5" x2="41.6" y2="-24"/>
+    <line class="nb" x1="11.9" y1="-34.2" x2="35.0" y2="-20.9"/>
+    <line class="bd" x1="41.6" y1="-24" x2="41.6" y2="24"/>
+    <line class="bd" x1="41.6" y1="24" x2="11.3" y2="41.5"/>
+    <line class="nb" x1="-11.3" y1="41.5" x2="-41.6" y2="24"/>
+    <line class="nb" x1="-11.9" y1="34.2" x2="-35.0" y2="20.9"/>
+    <line class="bd" x1="-41.6" y1="24" x2="-41.6" y2="-24"/>
+    <line class="bd" x1="-41.6" y1="-24" x2="-11.3" y2="-41.5"/>
+    <text class="at" x="0" y="-48">N</text><text class="at" x="0" y="48">N</text>
+    <line class="bd" x1="46" y1="-27" x2="76" y2="-44"/><text class="at" x="90" y="-52">R</text>
+    <line class="bd" x1="-46" y1="27" x2="-76" y2="44"/><text class="at" x="-90" y="52">R</text>
+    <text class="lbl" x="64" y="36">H₂</text>
+    <text class="lbl" x="-64" y="-36">H₂</text>
+    <text class="annk" x="0" y="88">Dihydropyrazin — noch nicht aromatisch</text>
+  </g>
+</svg>
+</div>
+<figcaption><b>Warum sitzen die N in 1,4-Stellung?</b> Weil jedes Molekül seinen Stickstoff und seinen Carbonylkohlenstoff direkt nebeneinander trägt und die beiden sich <em>über Kreuz</em> verbinden. Zeichne den Ringschluss einmal langsam — es geht gar nicht anders.</figcaption>
+</figure>
+
+<h3>4.3 — Oxidation → aromatisches Pyrazin</h3>
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:669px" viewBox="26 41 597 195" role="img" aria-label="Oxidation des Dihydropyrazins unter Abgabe von zwei Wasserstoffatomen liefert das aromatische Pyrazin, hier als 2,5-Dimethylpyrazin.">
+  <defs>
+    <marker id="r15" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+  </defs>
+  <g transform="translate(140,120)">
+    <line class="bd" x1="11.3" y1="-41.5" x2="41.6" y2="-24"/>
+    <line class="bd" x1="11.9" y1="-34.2" x2="35.0" y2="-20.9"/>
+    <line class="bd" x1="41.6" y1="-24" x2="41.6" y2="24"/>
+    <line class="bd" x1="41.6" y1="24" x2="11.3" y2="41.5"/>
+    <line class="bd" x1="-11.3" y1="41.5" x2="-41.6" y2="24"/>
+    <line class="bd" x1="-11.9" y1="34.2" x2="-35.0" y2="20.9"/>
+    <line class="bd" x1="-41.6" y1="24" x2="-41.6" y2="-24"/>
+    <line class="bd" x1="-41.6" y1="-24" x2="-11.3" y2="-41.5"/>
+    <text class="at" x="0" y="-48">N</text><text class="at" x="0" y="48">N</text>
+    <line class="bd" x1="46" y1="-27" x2="76" y2="-44"/><text class="at" x="90" y="-52">R</text>
+    <line class="bd" x1="-46" y1="27" x2="-76" y2="44"/><text class="at" x="-90" y="52">R</text>
+    <text class="lbl" x="64" y="36">H₂</text><text class="lbl" x="-64" y="-36">H₂</text>
+    <text class="annk" x="0" y="90">Dihydropyrazin</text>
+  </g>
+
+  <line class="ra" x1="270" y1="120" x2="370" y2="120" marker-end="url(#r15)"/>
+  <text class="annk" x="320" y="100">Oxidation (O₂)</text>
+  <text class="annk" x="320" y="142">– 2 H</text>
+
+  <g transform="translate(490,120)">
+    <line class="bd" x1="11.3" y1="-41.5" x2="41.6" y2="-24"/>
+    <line class="bd" x1="11.9" y1="-34.2" x2="35.0" y2="-20.9"/>
+    <line class="bd" x1="41.6" y1="-24" x2="41.6" y2="24"/>
+    <line class="bd" x1="41.6" y1="24" x2="11.3" y2="41.5"/>
+    <line class="bd" x1="35.0" y1="20.9" x2="11.9" y2="34.2"/>
+    <line class="bd" x1="-11.3" y1="41.5" x2="-41.6" y2="24"/>
+    <line class="bd" x1="-41.6" y1="24" x2="-41.6" y2="-24"/>
+    <line class="bd" x1="-35.6" y1="18" x2="-35.6" y2="-18"/>
+    <line class="bd" x1="-41.6" y1="-24" x2="-11.3" y2="-41.5"/>
+    <text class="at" x="0" y="-48">N</text><text class="at" x="0" y="48">N</text>
+    <line class="bd" x1="46" y1="-27" x2="76" y2="-44"/><text class="at" x="90" y="-52">R</text>
+    <line class="bd" x1="-46" y1="27" x2="-76" y2="44"/><text class="at" x="-90" y="52">R</text>
+    <text class="lbl" x="0" y="-26">1</text><text class="lbl" x="22" y="-13">2</text>
+    <text class="lbl" x="22" y="13">3</text><text class="lbl" x="0" y="26">4</text>
+    <text class="lbl" x="-22" y="13">5</text><text class="lbl" x="-22" y="-13">6</text>
+    <text class="annk" x="0" y="90">Pyrazin (R = CH₃ → 2,5-Dimethylpyrazin)</text>
+  </g>
+</svg>
+</div>
+<figcaption><b>Merksatz: –2 H₂O, –2 H.</b> Zwei Aminoketone, zweimal Wasser raus, einmal Wasserstoff raus — fertig ist der Röstduft. Typische Produkte: 2,5- und 2,3-Dimethylpyrazin, Trimethylpyrazin (Erdnuss, Kaffee) und <b>2-Ethyl-3,5-dimethylpyrazin</b>, das extrem geruchsintensive Kaffee-Leitaroma. Pyrazine entstehen erst &gt; 120 °C — deshalb riecht gekochtes Fleisch anders als gebratenes.</figcaption>
+</figure>
+
+
+<div class="stage" id="s5"><i class="chip" style="background:var(--s5)"></i><span class="eyebrow">Stufe 05 · Endstation</span></div>
+<h2>Melanoidine: das Ende der Straße</h2>
+<p>Die reaktiven Dicarbonyle und Aldehyde reagieren immer weiter mit Aminogruppen — vor allem mit der <b>ε-Aminogruppe des Lysins</b>, weil die frei zugänglich aus der Proteinkette herausragt. Ergebnis: Vernetzung und Polymerisation.</p>
+
+<figure>
+<div class="scroll">
+<svg class="mech" style="max-width:778px" viewBox="12 13 695 280" role="img" aria-label="Zwei Proteinstränge mit Lysin-Seitenketten werden über ein Dicarbonyl quervernetzt; das Produkt ist ein braunes, hochmolekulares, stickstoffhaltiges Netzwerk mit konjugierten Furan- und Pyrrolbausteinen.">
+  <defs>
+    <marker id="r16" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-r" d="M0.5,1 L9,5 L0.5,9 Z"/></marker>
+  </defs>
+
+  <path class="bd" d="M 30 60 Q 70 40 110 60 Q 150 80 190 60" stroke-width="3" opacity=".45"/>
+  <text class="lbl" x="108" y="38">Proteinkette</text>
+  <line class="bd" x1="110" y1="60" x2="110" y2="104"/>
+  <text class="at" x="110" y="120">NH₂</text>
+  <text class="lbl" x="56" y="120">ε-Lysin</text>
+
+  <path class="bd" d="M 30 260 Q 70 280 110 260 Q 150 240 190 260" stroke-width="3" opacity=".45"/>
+  <line class="bd" x1="110" y1="260" x2="110" y2="216"/>
+  <text class="at" x="110" y="200">NH₂</text>
+  <text class="lbl" x="56" y="200">ε-Lysin</text>
+
+  <g transform="translate(250,160)">
+    <line class="bd" x1="-20" y1="0" x2="60" y2="0"/>
+    <line class="bd" x1="-3" y1="-4" x2="-3" y2="-40"/><line class="bd" x1="3" y1="-4" x2="3" y2="-40"/>
+    <text class="at" x="0" y="-54">O</text>
+    <line class="bd" x1="37" y1="-4" x2="37" y2="-40"/><line class="bd" x1="43" y1="-4" x2="43" y2="-40"/>
+    <text class="at" x="40" y="-54">O</text>
+    <text class="lbl" x="20" y="26">α-Dicarbonyl</text>
+  </g>
+
+  <path class="ea" d="M 140 118 Q 190 132 224 152" marker-end="url(#r16)" opacity=".5"/>
+  <path class="ea" d="M 140 202 Q 190 188 224 168" marker-end="url(#r16)" opacity=".5"/>
+
+  <line class="ra" x1="352" y1="160" x2="414" y2="160" marker-end="url(#r16)"/>
+  <text class="annk" x="383" y="138">Vernetzung</text>
+
+  <g transform="translate(596,160)">
+    <path class="bd" d="M -120 -74 Q -76 -94 -32 -74 Q 12 -54 56 -74" stroke-width="3" opacity=".45"/>
+    <path class="bd" d="M -120 74 Q -76 94 -32 74 Q 12 54 56 74" stroke-width="3" opacity=".45"/>
+    <line class="nb" x1="-32" y1="-70" x2="-32" y2="-50"/>
+    <text class="at-g" x="-32" y="-38">N</text>
+    <line class="nb" x1="-32" y1="-26" x2="-32" y2="-17"/>
+    <rect x="-117" y="-17" width="170" height="34" rx="4" fill="none"
+          stroke="currentColor" stroke-width="1.4" stroke-dasharray="5 4" opacity=".5"/>
+    <text class="lbl" x="-32" y="0">Furan / Pyrrol · konjugiert</text>
+    <line class="nb" x1="-32" y1="17" x2="-32" y2="26"/>
+    <text class="at-g" x="-32" y="38">N</text>
+    <line class="nb" x1="-32" y1="50" x2="-32" y2="70"/>
+    <text class="annk" x="-32" y="108">Melanoidin — braun, hochmolekular, N-haltig</text>
+  </g>
+</svg>
+</div>
+<figcaption>Schematisch — die exakte Struktur der Melanoidine ist <b>bis heute nicht vollständig aufgeklärt</b>, und genau das darfst und sollst du so sagen. Die Chromophore entstehen durch <b>ausgedehnte konjugierte Systeme</b> aus Furan- und Pyrrol-Bausteinen, die über Aminogruppen verknüpft sind. Funktionell: antioxidativ, farbgebend, Metallionen bindend.</figcaption>
+</figure>
+
+<div class="key"><span class="tag">Ernährungsphysiologische Pointe</span>Lysin wird durch die Bindung <b>biologisch unverfügbar</b> → Verlust einer essenziellen Aminosäure. Das ist der wichtigste Nachteil der Maillard-Reaktion. Nachweis der Hitzeschädigung: <b>Furosin</b>, das bei der Säurehydrolyse aus den Amadori-Produkten des Lysins entsteht — Standardmarker z. B. in Milch.</div>
+
+
+<div class="stage"><i class="chip" style="background:linear-gradient(135deg,var(--s0),var(--s5))"></i><span class="eyebrow">Kettensatz</span></div>
+<h2>Das Rückgrat, einmal am Stück</h2>
+<div class="chain">
+Ring auf → Amin greift C1 an → Schiff-Base → N-Glykosid → Amadori-Umlagerung → <b>ARP</b> → pH-Gabelung: sauer 1,2-Enolisierung → 3-DG, basisch 2,3-Enolisierung → 1-DG → <b>Dicarbonylpool</b> → Strecker: Kondensation, Decarboxylierung, Hydrolyse → <b>Strecker-Aldehyd + α-Aminoketon</b> → 2× Aminoketon → Dihydropyrazin → Oxidation → <b>Pyrazin</b> → Vernetzung mit Lysin → <b>Melanoidine</b>.
+</div>
+
+</div>
