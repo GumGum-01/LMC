@@ -1,0 +1,740 @@
+<title>Maillard — sechs Flussdiagramme</title>
+<style>
+:root{
+  --paper:#F4F1EF; --surface:#FFFFFF; --line:#E4DBD8; --line-2:#EFE7E4;
+  --ink:#241C1D; --muted:#77696A; --shade:#F0EAE7;
+  --arrow:#BE2637; --arrow-soft:rgba(190,38,55,.13);
+  --teal:#0D6A65; --teal-soft:rgba(13,106,101,.12);
+  --gold:#87680F; --gold-soft:rgba(135,104,15,.10);
+  --ff-head:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --ff-body:Charter,"Bitstream Charter","Iowan Old Style",Georgia,serif;
+  --ff-ui:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --ff-struct:Charter,Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#161213; --surface:#1E191A; --line:#372E2F; --line-2:#2A2324;
+    --ink:#ECE4E2; --muted:#A2918F; --shade:#241E1F;
+    --arrow:#FF7C87; --arrow-soft:rgba(255,124,135,.15);
+    --teal:#4FD5C5; --teal-soft:rgba(79,213,197,.14);
+    --gold:#D8AC52; --gold-soft:rgba(216,172,82,.12);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#161213; --surface:#1E191A; --line:#372E2F; --line-2:#2A2324;
+  --ink:#ECE4E2; --muted:#A2918F; --shade:#241E1F;
+  --arrow:#FF7C87; --arrow-soft:rgba(255,124,135,.15);
+  --teal:#4FD5C5; --teal-soft:rgba(79,213,197,.14);
+  --gold:#D8AC52; --gold-soft:rgba(216,172,82,.12);
+}
+:root[data-theme="light"]{
+  --paper:#F4F1EF; --surface:#FFFFFF; --line:#E4DBD8; --line-2:#EFE7E4;
+  --ink:#241C1D; --muted:#77696A; --shade:#F0EAE7;
+  --arrow:#BE2637; --arrow-soft:rgba(190,38,55,.13);
+  --teal:#0D6A65; --teal-soft:rgba(13,106,101,.12);
+  --gold:#87680F; --gold-soft:rgba(135,104,15,.10);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--ff-body);font-size:17px;line-height:1.6;
+  -webkit-text-size-adjust:100%}
+.wrap{max-width:63rem;margin:0 auto;padding:0 1.35rem 5rem}
+h1,h2,h3,.eyebrow,.tg,.pf,.badge,table,.tag{font-family:var(--ff-head)}
+h1{font-size:clamp(2.05rem,5.2vw,3rem);line-height:1.06;letter-spacing:-.028em;
+  font-weight:750;margin:0 0 .6rem;text-wrap:balance}
+h2{font-size:clamp(1.35rem,2.6vw,1.7rem);letter-spacing:-.018em;font-weight:700;
+  margin:0 0 .35rem;text-wrap:balance}
+h3{font-size:1.02rem;letter-spacing:-.005em;font-weight:700;margin:2.1rem 0 .5rem}
+p{margin:0 0 1rem;max-width:64ch}
+a{color:inherit}
+strong{font-weight:700}
+.eyebrow{font-family:var(--ff-ui);font-size:.7rem;letter-spacing:.19em;
+  text-transform:uppercase;color:var(--muted)}
+
+/* ---- header ---- */
+header.top{padding:3.4rem 0 1.6rem;border-bottom:1px solid var(--line)}
+.lede{font-size:1.12rem;color:var(--muted);max-width:56ch;margin-bottom:1.5rem}
+.metastrip{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;align-items:center;
+  font-family:var(--ff-ui);font-size:.74rem;letter-spacing:.06em;color:var(--muted)}
+.metastrip b{color:var(--ink);font-weight:600}
+
+/* ---- practice toggle ---- */
+.tg{display:inline-flex;align-items:center;gap:.6rem;cursor:pointer;
+  background:var(--surface);color:var(--ink);border:1px solid var(--line);
+  border-radius:3px;padding:.5rem .85rem;font-size:.8rem;font-weight:600;
+  letter-spacing:.01em}
+.tg:hover{border-color:var(--arrow)}
+.tg:focus-visible,.mech:focus-visible,summary:focus-visible{outline:2px solid var(--arrow);outline-offset:3px}
+.tg .dot{width:.55rem;height:.55rem;border-radius:50%;background:var(--line);
+  border:1px solid var(--muted)}
+body.practice .tg .dot{background:var(--arrow);border-color:var(--arrow)}
+.tg-state{font-family:var(--ff-ui);font-size:.72rem;color:var(--muted)}
+.tg-hint{font-size:.82rem;color:var(--muted);margin:.6rem 0 0;display:none}
+body.practice .tg-hint{display:block}
+
+/* ---- sections ---- */
+section{padding-top:3.2rem}
+.sec-head{display:flex;align-items:baseline;gap:.5rem .9rem;margin-bottom:1.1rem;
+  flex-wrap:wrap}
+.sec-head .rule{flex:1 1 2rem;height:1px;background:var(--line)}
+.sec-head h2{flex:0 1 auto}
+.goal{font-family:var(--ff-ui);font-size:.74rem;color:var(--muted);
+  letter-spacing:.04em;white-space:nowrap}
+
+/* ---- mechanism card ---- */
+.mech{margin:1.5rem 0 0;padding:1.35rem 1.4rem 1.5rem;background:var(--surface);
+  border:1px solid var(--line);border-radius:3px;
+  display:grid;grid-template-columns:minmax(0,430px) minmax(0,1fr);
+  gap:1.6rem 2rem;align-items:start}
+.mech svg{width:100%;height:auto;display:block;color:var(--ink)}
+.mech figcaption{min-width:0}
+.cap-head{display:flex;align-items:center;gap:.7rem;margin-bottom:.7rem;
+  padding-bottom:.6rem;border-bottom:1px solid var(--line-2)}
+.cap-head{flex-wrap:wrap}
+.cap-head .idx{font-family:var(--ff-ui);font-size:.7rem;letter-spacing:.12em;
+  color:var(--muted);text-transform:uppercase;white-space:nowrap}
+.cap-head .ttl{font-family:var(--ff-head);font-weight:700;font-size:.98rem;
+  letter-spacing:-.01em}
+ul.arrows{list-style:none;margin:0 0 .2rem;padding:0;display:flex;
+  flex-direction:column;gap:.6rem}
+ul.arrows li{display:grid;grid-template-columns:1.35rem 1fr;gap:.65rem;
+  font-size:.94rem;line-height:1.48}
+.pf{display:grid;place-items:center;width:1.35rem;height:1.35rem;border-radius:50%;
+  background:var(--arrow);color:var(--surface);font-size:.72rem;font-weight:700;
+  margin-top:.13rem;font-variant-numeric:tabular-nums}
+.pf.q{background:var(--muted)}
+.why{margin:.85rem 0 0;font-size:.9rem;color:var(--muted);max-width:48ch}
+.why b{color:var(--ink)}
+.result{margin-top:.9rem;padding-top:.75rem;border-top:1px solid var(--line-2);
+  font-size:.9rem}
+.result .tag{display:inline-block;font-size:.63rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--teal);border:1px solid var(--teal);
+  border-radius:2px;padding:.1rem .38rem;margin-right:.5rem;vertical-align:.08em;
+  font-weight:600}
+@media (max-width:780px){.mech{grid-template-columns:1fr;gap:1.1rem}}
+
+/* wide figures */
+.wide{margin:1.5rem 0 0;padding:1.35rem 1.4rem 1.2rem;background:var(--surface);
+  border:1px solid var(--line);border-radius:3px}
+.scroller{overflow-x:auto;padding-bottom:.35rem}
+.scroller svg{display:block;min-width:640px;width:100%;height:auto;color:var(--ink)}
+.wide figcaption{margin-top:.9rem;font-size:.9rem;color:var(--muted);max-width:70ch}
+.wide figcaption b{color:var(--ink)}
+
+/* ---- callouts ---- */
+.merk{margin:1.4rem 0;padding:.95rem 1.1rem;border-left:3px solid var(--gold);
+  background:var(--gold-soft);font-size:.96rem}
+.merk .lbl{font-family:var(--ff-ui);font-size:.66rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--gold);display:block;margin-bottom:.28rem}
+.merk em{font-style:italic}
+.fix{margin:1.4rem 0;padding:.95rem 1.1rem;border:1px dashed var(--teal);
+  background:var(--teal-soft);font-size:.93rem;border-radius:3px}
+.fix .lbl{font-family:var(--ff-ui);font-size:.66rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--teal);display:block;margin-bottom:.28rem}
+.merk p,.fix p{margin:0;max-width:60ch}
+
+/* ---- table ---- */
+.tbl{overflow-x:auto}
+table{min-width:24rem;width:100%;border-collapse:collapse;font-size:.92rem;margin:1.1rem 0}
+th,td{text-align:left;padding:.6rem .7rem;border-bottom:1px solid var(--line)}
+th{font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
+  font-weight:600}
+td:first-child{font-family:var(--ff-ui);font-size:.82rem}
+
+/* ---- checklist ---- */
+.check{list-style:none;margin:1rem 0 0;padding:0;display:grid;gap:.75rem}
+.check li{display:grid;grid-template-columns:auto 1fr;gap:.7rem;font-size:.96rem;
+  padding-bottom:.75rem;border-bottom:1px solid var(--line-2)}
+.check .k{font-family:var(--ff-ui);font-size:.7rem;color:var(--arrow);
+  letter-spacing:.08em;padding-top:.22rem}
+
+/* ---- svg drawing primitives ---- */
+.dg text{font-family:var(--ff-struct);fill:currentColor}
+.at{font-size:19px;text-anchor:middle;dominant-baseline:central}
+.at-s{font-size:15.5px;text-anchor:middle;dominant-baseline:central}
+.at-t{font-size:13px;text-anchor:middle;dominant-baseline:central}
+.num{font-family:var(--ff-ui);font-size:9.5px;fill:var(--muted);text-anchor:middle;
+  dominant-baseline:central}
+.lab{font-family:var(--ff-head);font-size:11.5px;fill:var(--muted);
+  text-anchor:middle;dominant-baseline:central}
+.lab-i{font-family:var(--ff-head);font-size:11.5px;fill:var(--ink);
+  text-anchor:middle;dominant-baseline:central;font-weight:600}
+.bond{stroke:currentColor;stroke-width:1.7;stroke-linecap:round;fill:none}
+.bond-f{stroke-width:3.6}
+.bond-d{stroke-dasharray:4 3.5;opacity:.55}
+.lp{fill:var(--teal)}
+.chg{font-family:var(--ff-head);font-size:14px;fill:var(--teal);text-anchor:middle;
+  dominant-baseline:central;font-weight:700}
+.hot{fill:var(--arrow-soft)}
+.cool{fill:var(--teal-soft)}
+.arw{stroke:var(--arrow);stroke-width:2.1;fill:none;stroke-linecap:round}
+.ahd{fill:var(--arrow)}
+.bdg{fill:var(--arrow)}
+.bdg-t{font-family:var(--ff-head);font-size:10px;font-weight:700;fill:var(--surface);
+  text-anchor:middle;dominant-baseline:central}
+.gone{stroke:var(--muted);stroke-width:1.6;fill:none;stroke-dasharray:4 3;opacity:.8}
+.box{fill:none;stroke:currentColor;stroke-width:1.4;opacity:.55}
+.box-f{fill:var(--shade);stroke:var(--line);stroke-width:1}
+.box-key{stroke:var(--arrow);stroke-width:1.6}
+.flow{stroke:currentColor;stroke-width:1.5;fill:none;opacity:.75}
+
+/* practice mode */
+.arrows-layer{transition:opacity .18s ease}
+body.practice .mech .arrows-layer{opacity:0}
+body.practice .mech.revealed .arrows-layer{opacity:1}
+body.practice .mech{cursor:pointer}
+@media (prefers-reduced-motion:reduce){.arrows-layer{transition:none}}
+
+@media print{
+  body{background:#fff}
+  body.practice .mech .arrows-layer{opacity:1}
+  .mech,.wide{break-inside:avoid;page-break-inside:avoid}
+  .tg,.tg-hint{display:none}
+}
+
+.chart{margin:0 0 2.6rem}
+.chart h3{margin:0 0 .25rem;font-size:1.06rem}
+.chart .q{font-size:.9rem;color:var(--muted);margin:0 0 .9rem;max-width:62ch}
+.legend{display:flex;flex-wrap:wrap;gap:.9rem 1.6rem;margin:1.2rem 0 0;padding:.9rem 1.1rem;
+  background:var(--surface);border:1px solid var(--line);border-radius:3px;
+  font-size:.84rem;align-items:center}
+.legend span{display:inline-flex;align-items:center;gap:.5rem}
+.key{width:1.5rem;height:.95rem;border-radius:2px;background:var(--shade);
+  border:1px solid var(--line);flex:none}
+.key.k2{border-color:var(--arrow);border-width:1.5px}
+.key.k3{border-style:dashed;background:none}
+.key.k4{border:none;background:none;width:1.6rem;height:0;border-top:1.5px solid var(--ink);
+  opacity:.75}
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <p class="eyebrow">LMC StEx · Maillard · Übersichten</p>
+  <h1>Sechs Flussdiagramme</h1>
+  <p class="lede">Die Kaskade ohne Elektronenpfeile — nur wer wohin führt, unter welchen
+  Bedingungen, und was man am Ende misst. Jedes Diagramm beantwortet genau eine Frage.</p>
+  <div class="metastrip">
+    <span><b>1</b> Gesamtschema</span>
+    <span><b>4</b> Phasen im Detail</span>
+    <span><b>1</b> Analytik-Zuordnung</span>
+  </div>
+  <div class="legend">
+    <span><i class="key" aria-hidden="true"></i> Zwischenprodukt</span>
+    <span><i class="key k2" aria-hidden="true"></i> Schlüsselstelle / Leitgröße</span>
+    <span><i class="key k3" aria-hidden="true"></i> entsteht erst bei der Analytik</span>
+    <span><i class="key k4" aria-hidden="true"></i> Pfeilbeschriftung = Bedingung</span>
+  </div>
+</header>
+
+<section id="gesamt">
+  <div class="sec-head">
+    <p class="eyebrow" style="margin:0">Diagramm 1</p>
+    <h2>Die drei Phasen</h2><span class="rule"></span>
+    <span class="goal">Hodge-Schema</span>
+  </div>
+
+  <div class="chart">
+    <p class="q">Frage: In welcher Phase bin ich gerade — und woran sieht bzw. misst man das?</p>
+    <figure class="wide">
+      <div class="scroller">
+      <svg class="dg" viewBox="0 0 900 430" role="img"
+        aria-label="Die drei Maillard-Phasen als Tabelle: Frühphase farblos mit Glykosylamin und Amadori-Produkt, Marker Furosin; Zwischenphase gelb und UV-aktiv mit Desoxyosonen, Fragmentierung und Strecker-Abbau, Marker HMF und Aromastoffe; Endphase braun mit Cyclisierung, AGEs und Melanoidinen, Marker CML und Extinktion bei 420 Nanometer.">
+        <defs><marker id="c1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
+          markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth">
+          <path d="M0,1.4 L9,5 L0,8.6 Z" fill="currentColor" opacity=".75"/></marker></defs>
+
+        <text class="num" x="90" y="30">PHASE</text>
+        <text class="num" x="392" y="30">WAS PASSIERT</text>
+        <text class="num" x="694" y="30">KENNZEICHEN</text>
+        <text class="num" x="828" y="30">MARKER</text>
+        <line class="bond" x1="20" y1="40" x2="880" y2="40" opacity=".3"/>
+
+        <rect class="box-f" x="20" y="52" width="140" height="104" rx="3"/>
+        <text class="lab-i" x="90" y="94">Frühphase</text>
+        <text class="lab" x="90" y="114">farblos</text>
+        <rect class="box-f" x="172" y="52" width="440" height="104" rx="3"/>
+        <text class="lab" x="392" y="76">Ringöffnung → N-Glykosid ⇌ Schiff-Base</text>
+        <text class="lab" x="392" y="98">Amadori- bzw. Heyns-Umlagerung</text>
+        <text class="lab-i" x="392" y="122">ARP / HRP — noch alles reversibel bis hierher</text>
+        <text class="lab" x="392" y="142">kein Geruch, keine Farbe, aber Lysin ist blockiert</text>
+        <rect class="box-f" x="624" y="52" width="140" height="104" rx="3"/>
+        <text class="lab" x="694" y="96">keine Absorption</text>
+        <text class="lab" x="694" y="116">im Sichtbaren</text>
+        <rect class="box-f" x="776" y="52" width="104" height="104" rx="3"/>
+        <text class="lab-i" x="828" y="96">Furosin</text>
+        <text class="lab" x="828" y="116">verfügbares Lys</text>
+
+        <rect class="box-f" x="20" y="172" width="140" height="104" rx="3"/>
+        <text class="lab-i" x="90" y="214">Zwischenphase</text>
+        <text class="lab" x="90" y="234">gelb, UV-aktiv</text>
+        <rect class="box-f box-key" x="172" y="172" width="440" height="104" rx="3"/>
+        <text class="lab" x="392" y="196">Enolisierung → 1- und 3-Desoxyosone</text>
+        <text class="lab" x="392" y="218">Wasserabspaltung · Retro-Aldol · Cyclisierung</text>
+        <text class="lab-i" x="392" y="242">Strecker-Abbau: hier entsteht das Aroma</text>
+        <text class="lab" x="392" y="262">Amin wird frei und reagiert erneut — katalytisch</text>
+        <rect class="box-f" x="624" y="172" width="140" height="104" rx="3"/>
+        <text class="lab" x="694" y="206">gelbliche Töne,</text>
+        <text class="lab" x="694" y="226">Fluoreszenz,</text>
+        <text class="lab" x="694" y="246">Geruch</text>
+        <rect class="box-f" x="776" y="172" width="104" height="104" rx="3"/>
+        <text class="lab-i" x="828" y="206">HMF</text>
+        <text class="lab" x="828" y="226">Strecker-</text>
+        <text class="lab" x="828" y="244">Aldehyde</text>
+
+        <rect class="box-f" x="20" y="292" width="140" height="104" rx="3"/>
+        <text class="lab-i" x="90" y="334">Endphase</text>
+        <text class="lab" x="90" y="354">braun</text>
+        <rect class="box-f" x="172" y="292" width="440" height="104" rx="3"/>
+        <text class="lab" x="392" y="316">Aldolkondensation · N-Heterocyclen</text>
+        <text class="lab" x="392" y="338">Dicarbonyle + Lysin/Arginin → AGEs, Crosslinks</text>
+        <text class="lab-i" x="392" y="362">Melanoidine — hochmolekular, braun, irreversibel</text>
+        <text class="lab" x="392" y="382">Protein wird vernetzt, Verdaulichkeit sinkt</text>
+        <rect class="box-f" x="624" y="292" width="140" height="104" rx="3"/>
+        <text class="lab" x="694" y="336">Bräunung,</text>
+        <text class="lab" x="694" y="356">Röstaroma</text>
+        <rect class="box-f" x="776" y="292" width="104" height="104" rx="3"/>
+        <text class="lab-i" x="828" y="326">CML</text>
+        <text class="lab" x="828" y="346">Pentosidin</text>
+        <text class="lab" x="828" y="364">E 420 nm</text>
+
+        <line class="flow" x1="90" y1="158" x2="90" y2="170" marker-end="url(#c1)"/>
+        <line class="flow" x1="90" y1="278" x2="90" y2="290" marker-end="url(#c1)"/>
+      </svg>
+      </div>
+      <figcaption><b>Die Trennlinie liegt zwischen Zeile 1 und 2.</b> Bis zum
+      Amadori-Produkt ist nichts zu sehen und nichts zu riechen — der Schaden am Lysin ist
+      aber schon da. Ab der rot umrandeten Zeile wird die Reaktion irreversibel und
+      verzweigt sich in Dutzende Wege.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="frueh">
+  <div class="sec-head">
+    <p class="eyebrow" style="margin:0">Diagramm 2</p>
+    <h2>Frühphase</h2><span class="rule"></span>
+    <span class="goal">Zucker → ARP / HRP</span>
+  </div>
+
+  <div class="chart">
+    <p class="q">Frage: Welche Zwischenstufen liegen zwischen dem geschlossenen Zucker und
+    dem Amadori-Produkt — und welche davon sind noch umkehrbar?</p>
+    <figure class="wide">
+      <div class="scroller">
+      <svg class="dg" viewBox="0 0 900 330" role="img"
+        aria-label="Flussdiagramm der Frühphase: Pyranose öffnet sich säurekatalysiert zur offenen Kette, reagiert mit Amin zum N-Glykosid im Gleichgewicht mit der Schiff-Base, geht über das 1,2-Enaminol zum Amadori-Produkt aus Aldosen oder zum Heyns-Produkt aus Ketosen; aus dem Amadori-Produkt entsteht bei saurer Hydrolyse der Marker Furosin.">
+        <defs><marker id="c2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
+          markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth">
+          <path d="M0,1.4 L9,5 L0,8.6 Z" fill="currentColor" opacity=".75"/></marker></defs>
+
+        <rect class="box-f" x="15" y="96" width="130" height="56" rx="3"/>
+        <text class="lab-i" x="80" y="118">Pyranose</text>
+        <text class="lab" x="80" y="136">Halbacetal</text>
+
+        <rect class="box-f" x="200" y="96" width="130" height="56" rx="3"/>
+        <text class="lab-i" x="265" y="118">offene Kette</text>
+        <text class="lab" x="265" y="136">&lt; 0,1 %</text>
+
+        <rect class="box-f" x="385" y="96" width="130" height="56" rx="3"/>
+        <text class="lab-i" x="450" y="112">N-Glykosid</text>
+        <text class="lab-i" x="450" y="128">⇌ Schiff-Base</text>
+        <text class="lab" x="450" y="144">beweglich</text>
+
+        <rect class="box-f" x="570" y="96" width="130" height="56" rx="3"/>
+        <text class="lab-i" x="635" y="118">1,2-Enaminol</text>
+        <text class="lab" x="635" y="136">Schlüsselstufe</text>
+
+        <rect class="box-f box-key" x="755" y="60" width="130" height="50" rx="3"/>
+        <text class="lab-i" x="820" y="78">Amadori (ARP)</text>
+        <text class="lab" x="820" y="96">aus Aldosen</text>
+        <rect class="box-f box-key" x="755" y="140" width="130" height="50" rx="3"/>
+        <text class="lab-i" x="820" y="158">Heyns (HRP)</text>
+        <text class="lab" x="820" y="176">aus Ketosen</text>
+
+        <rect class="box" x="570" y="240" width="130" height="52" rx="3" stroke-dasharray="5 4"/>
+        <text class="lab-i" x="635" y="258">Furosin</text>
+        <text class="lab" x="635" y="276">nach 6 M HCl</text>
+
+        <line class="flow" x1="147" y1="124" x2="196" y2="124" marker-end="url(#c2)"/>
+        <text class="num" x="171" y="86">H⁺ / OH⁻</text>
+        <text class="num" x="171" y="164">reversibel</text>
+        <line class="flow" x1="332" y1="124" x2="381" y2="124" marker-end="url(#c2)"/>
+        <text class="num" x="356" y="86">+ R–NH₂</text>
+        <text class="num" x="356" y="164">– H₂O</text>
+        <line class="flow" x1="517" y1="124" x2="566" y2="124" marker-end="url(#c2)"/>
+        <text class="num" x="541" y="86">+ H⁺, – H⁺</text>
+        <text class="num" x="541" y="164">am Nachbar-C</text>
+        <line class="flow" x1="702" y1="116" x2="751" y2="92" marker-end="url(#c2)"/>
+        <line class="flow" x1="702" y1="132" x2="751" y2="158" marker-end="url(#c2)"/>
+        <text class="num" x="726" y="124">Tautomerie</text>
+
+        <path class="flow" d="M 751 85 L 720 85 L 720 220 L 635 220 L 635 236" fill="none"
+          marker-end="url(#c2)"/>
+        <text class="num" x="800" y="216">nur im Labor: Säurehydrolyse</text>
+
+        <path class="flow" d="M 450 156 L 450 200 L 265 200 L 265 156" fill="none"
+          marker-end="url(#c2)" stroke-dasharray="5 4"/>
+        <text class="num" x="357" y="214">Hydrolyse bei Wasserüberschuss</text>
+      </svg>
+      </div>
+      <figcaption><b>Alles links vom Enaminol ist ein Gleichgewicht.</b> Erst die
+      Umlagerung zum ARP bzw. HRP legt die Richtung fest — das Keton bzw. der Aldehyd ist
+      thermodynamisch stabiler als Imin plus Enol. Furosin ist kein Lebensmittelinhaltsstoff,
+      sondern entsteht erst in der salzsauren Hydrolyse der Probe; es misst rückwirkend,
+      wie viel Amadori-Produkt da war.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="zwischen">
+  <div class="sec-head">
+    <p class="eyebrow" style="margin:0">Diagramm 3</p>
+    <h2>Zwischenphase</h2><span class="rule"></span>
+    <span class="goal">ARP → α-Dicarbonyle</span>
+  </div>
+
+  <div class="chart">
+    <p class="q">Frage: Warum liefert dasselbe Amadori-Produkt einmal HMF und einmal
+    Furaneol — und wo entstehen die reaktiven kurzkettigen Dicarbonyle?</p>
+    <figure class="wide">
+      <div class="scroller">
+      <svg class="dg" viewBox="0 0 900 470" role="img"
+      aria-label="Verzweigungsdiagramm: das Amadori-Produkt geht bei pH bis 7 über die 1,2-Enolisierung zum 3-Desoxyoson und weiter zu HMF und Pyrralin, bei pH über 7 über die 2,3-Enolisierung zum 1-Desoxyoson und weiter zu Furaneol und Diacetyl; beide Desoxyosone liefern per Retro-Aldol kurzkettige alpha-Dicarbonyle, die den Strecker-Abbau und die AGE-Bildung speisen; aus Aminoketonen entstehen Pyrazine.">
+      <defs><marker id="c3" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
+        markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth">
+        <path d="M0,1.4 L9,5 L0,8.6 Z" fill="currentColor" opacity=".75"/></marker></defs>
+
+      <rect class="box-f box-key" x="370" y="12" width="160" height="46" rx="3"/>
+      <text class="lab-i" x="450" y="30">Amadori-Produkt</text>
+      <text class="lab" x="450" y="47">die Kreuzung</text>
+
+      <rect class="box-f" x="95" y="86" width="210" height="50" rx="3"/>
+      <text class="lab-i" x="200" y="104">1,2-Enolisierung</text>
+      <text class="lab" x="200" y="122">H von C1 · pH ≤ 7</text>
+      <rect class="box-f" x="595" y="86" width="210" height="50" rx="3"/>
+      <text class="lab-i" x="700" y="104">2,3-Enolisierung</text>
+      <text class="lab" x="700" y="122">H von C3 · pH &gt; 7</text>
+
+      <rect class="box-f" x="95" y="164" width="210" height="50" rx="3"/>
+      <text class="lab-i" x="200" y="182">3-Desoxyoson (3-DG)</text>
+      <text class="lab" x="200" y="200">C1 CHO · C2 C=O · C3 CH₂</text>
+      <rect class="box-f" x="595" y="164" width="210" height="50" rx="3"/>
+      <text class="lab-i" x="700" y="182">1-Desoxyoson (1-DG)</text>
+      <text class="lab" x="700" y="200">C1 CH₃ · C2/C3 Dicarbonyl</text>
+
+      <rect class="box-f" x="20" y="242" width="165" height="50" rx="3"/>
+      <text class="lab-i" x="102" y="260">HMF</text>
+      <text class="lab" x="102" y="278">Pyrralin · Pyranone</text>
+      <rect class="box-f" x="350" y="242" width="200" height="50" rx="3"/>
+      <text class="lab-i" x="450" y="260">kurze α-Dicarbonyle</text>
+      <text class="lab" x="450" y="278">Glyoxal · Methylglyoxal</text>
+      <rect class="box-f" x="715" y="242" width="165" height="50" rx="3"/>
+      <text class="lab-i" x="797" y="260">Furaneol · Diacetyl</text>
+      <text class="lab" x="797" y="278">Maltol (aus Disacchariden)</text>
+
+      <rect class="box-f" x="240" y="320" width="200" height="50" rx="3"/>
+      <text class="lab-i" x="340" y="338">Strecker-Abbau</text>
+      <text class="lab" x="340" y="356">Aldehyd + CO₂ + Aminoketon</text>
+      <rect class="box-f" x="500" y="320" width="200" height="50" rx="3"/>
+      <text class="lab-i" x="600" y="338">AGEs</text>
+      <text class="lab" x="600" y="356">CML · Pentosidin · Glucosepan</text>
+
+      <rect class="box-f" x="240" y="398" width="200" height="46" rx="3"/>
+      <text class="lab-i" x="340" y="416">Pyrazine</text>
+      <text class="lab" x="340" y="433">Röstaroma</text>
+      <rect class="box-f" x="500" y="398" width="200" height="46" rx="3"/>
+      <text class="lab-i" x="600" y="416">Melanoidine</text>
+      <text class="lab" x="600" y="433">braune Polymere</text>
+
+      <line class="flow" x1="418" y1="60" x2="232" y2="84" marker-end="url(#c3)"/>
+      <line class="flow" x1="482" y1="60" x2="668" y2="84" marker-end="url(#c3)"/>
+      <line class="flow" x1="200" y1="138" x2="200" y2="160" marker-end="url(#c3)"/>
+      <line class="flow" x1="700" y1="138" x2="700" y2="160" marker-end="url(#c3)"/>
+      <text class="num" x="252" y="152">– H₂O, – Amin</text>
+      <text class="num" x="752" y="152">– Amin, – H₂O</text>
+
+      <line class="flow" x1="180" y1="216" x2="118" y2="238" marker-end="url(#c3)"/>
+      <line class="flow" x1="222" y1="216" x2="398" y2="238" marker-end="url(#c3)"/>
+      <line class="flow" x1="720" y1="216" x2="782" y2="238" marker-end="url(#c3)"/>
+      <line class="flow" x1="678" y1="216" x2="502" y2="238" marker-end="url(#c3)"/>
+      <text class="num" x="300" y="232">Retro-Aldol</text>
+      <text class="num" x="600" y="232">Retro-Aldol</text>
+      <text class="num" x="120" y="228">Cyclisierung</text>
+      <text class="num" x="782" y="228">Cyclisierung</text>
+
+      <line class="flow" x1="428" y1="294" x2="366" y2="316" marker-end="url(#c3)"/>
+      <line class="flow" x1="472" y1="294" x2="576" y2="316" marker-end="url(#c3)"/>
+      <text class="num" x="356" y="308">+ Aminosäure</text>
+      <text class="num" x="560" y="308">+ Lys / Arg</text>
+      <line class="flow" x1="340" y1="372" x2="340" y2="394" marker-end="url(#c3)"/>
+      <line class="flow" x1="600" y1="372" x2="600" y2="394" marker-end="url(#c3)"/>
+      <text class="num" x="396" y="386">2 × Aminoketon</text>
+      <text class="num" x="656" y="386">Polymerisation</text>
+    </svg>
+      </div>
+      <figcaption><b>Der pH stellt die Weiche.</b> Beide Wege enolisieren das ARP, aber an
+      verschiedenen C-Atomen — und beide spalten das Amin wieder ab: es wirkt
+      <b>katalytisch</b> und geht erneut in die Reaktion. Die α-Dicarbonyle in der Mitte
+      sind die eigentliche Drehscheibe: <b>3-DG ist mengenmäßig führend</b>,
+      <b>Methylglyoxal und Glyoxal sind die reaktivsten</b>.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="strecker">
+  <div class="sec-head">
+    <p class="eyebrow" style="margin:0">Diagramm 4</p>
+    <h2>Strecker-Abbau</h2><span class="rule"></span>
+    <span class="goal">wo das Aroma herkommt</span>
+  </div>
+
+  <div class="chart">
+    <p class="q">Frage: Was genau macht eine Aminosäure mit einem α-Dicarbonyl — und
+    warum riecht das Ergebnis nach Malz, Kartoffel oder Honig?</p>
+    <figure class="wide">
+      <div class="scroller">
+      <svg class="dg" viewBox="0 0 900 350" role="img"
+        aria-label="Flussdiagramm des Strecker-Abbaus: alpha-Dicarbonyl und Aminosäure bilden unter Wasserabspaltung eine Schiff-Base, diese decarboxyliert zum Ylid und liefert nach Hydrolyse den Strecker-Aldehyd, Kohlendioxid und ein alpha-Aminoketon; zwei Aminoketone kondensieren zu Pyrazinen.">
+        <defs><marker id="c4" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
+          markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth">
+          <path d="M0,1.4 L9,5 L0,8.6 Z" fill="currentColor" opacity=".75"/></marker></defs>
+
+        <rect class="box-f" x="20" y="50" width="190" height="56" rx="3"/>
+        <text class="lab-i" x="115" y="72">α-Dicarbonyl</text>
+        <text class="lab" x="115" y="90">Methylglyoxal · Glyoxal · 3-DG</text>
+
+        <rect class="box-f" x="20" y="170" width="190" height="56" rx="3"/>
+        <text class="lab-i" x="115" y="192">Aminosäure</text>
+        <text class="lab" x="115" y="210">freie α-Aminogruppe</text>
+
+        <rect class="box-f" x="285" y="110" width="165" height="56" rx="3"/>
+        <text class="lab-i" x="367" y="132">Schiff-Base</text>
+        <text class="lab" x="367" y="150">Addition, dann – H₂O</text>
+
+        <rect class="box-f box-key" x="520" y="102" width="180" height="72" rx="3"/>
+        <text class="lab-i" x="610" y="122">Decarboxylierung</text>
+        <text class="lab" x="610" y="140">– CO₂ → Ylid</text>
+        <text class="lab" x="610" y="158">→ Umiminierung</text>
+
+        <rect class="box-f" x="740" y="20" width="145" height="56" rx="3"/>
+        <text class="lab-i" x="812" y="42">Strecker-Aldehyd</text>
+        <text class="lab" x="812" y="60">ein C kürzer</text>
+
+        <rect class="box-f" x="740" y="110" width="145" height="50" rx="3"/>
+        <text class="lab-i" x="812" y="135">CO₂</text>
+
+        <rect class="box-f" x="740" y="194" width="145" height="56" rx="3"/>
+        <text class="lab-i" x="812" y="216">α-Aminoketon</text>
+        <text class="lab" x="812" y="234">z. B. Aminoaceton</text>
+
+        <rect class="box-f box-key" x="740" y="284" width="145" height="52" rx="3"/>
+        <text class="lab-i" x="812" y="302">Pyrazine</text>
+        <text class="lab" x="812" y="320">Röstaroma</text>
+
+        <line class="flow" x1="212" y1="86" x2="281" y2="120" marker-end="url(#c4)"/>
+        <line class="flow" x1="212" y1="190" x2="281" y2="156" marker-end="url(#c4)"/>
+        <text class="num" x="248" y="112">+</text>
+        <line class="flow" x1="452" y1="138" x2="516" y2="138" marker-end="url(#c4)"/>
+        <line class="flow" x1="702" y1="126" x2="736" y2="62" marker-end="url(#c4)"/>
+        <line class="flow" x1="702" y1="138" x2="736" y2="136" marker-end="url(#c4)"/>
+        <line class="flow" x1="702" y1="152" x2="736" y2="206" marker-end="url(#c4)"/>
+        <text class="num" x="712" y="74">+ H₂O</text>
+        <text class="num" x="672" y="188">Hydrolyse</text>
+        <line class="flow" x1="812" y1="252" x2="812" y2="280" marker-end="url(#c4)"/>
+        <text class="num" x="856" y="268">2 ×, – 2 H</text>
+
+        <text class="num" x="367" y="196">aus der Aminosäure wird der Aldehyd,</text>
+        <text class="num" x="367" y="212">aus dem Dicarbonyl das Aminoketon</text>
+      </svg>
+      </div>
+      <figcaption><b>Die Bilanz merken:</b> Aminosäure + α-Dicarbonyl → Aldehyd (ein
+      C-Atom kürzer) + CO₂ + α-Aminoketon. Das CO₂ ist der Nachweis, dass ein
+      Strecker-Abbau läuft.<br>
+      <b>Valin</b> → Isobutanal · <b>Leucin</b> → 3-Methylbutanal (Malz) ·
+      <b>Methionin</b> → Methional (Kartoffel) · <b>Phenylalanin</b> → Phenylacetaldehyd
+      (blumig, Honig) · <b>Cystein</b> → H₂S und Folgeprodukte (Thiazole, Thiophene —
+      Fleischaroma).</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="end">
+  <div class="sec-head">
+    <p class="eyebrow" style="margin:0">Diagramm 5</p>
+    <h2>Endphase und AGEs</h2><span class="rule"></span>
+    <span class="goal">was am Protein hängen bleibt</span>
+  </div>
+
+  <div class="chart">
+    <p class="q">Frage: Welche Addukte entstehen an Lysin und Arginin — und welche davon
+    vernetzen zwei Proteinketten?</p>
+    <figure class="wide">
+      <div class="scroller">
+      <svg class="dg" viewBox="0 0 900 340" role="img"
+        aria-label="Flussdiagramm der Endphase: alpha-Dicarbonyle reagieren mit Lysin- und Argininseitenketten über Addition, Cyclisierung und Oxidation zu Lysin-Addukten wie CML und Pyrralin, Arginin-Addukten wie MG-H1 und Argpyrimidin sowie zu Crosslinks wie Pentosidin und Glucosepan; parallel entstehen braune Melanoidine.">
+        <defs><marker id="c5" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
+          markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth">
+          <path d="M0,1.4 L9,5 L0,8.6 Z" fill="currentColor" opacity=".75"/></marker></defs>
+
+        <rect class="box-f" x="20" y="50" width="185" height="62" rx="3"/>
+        <text class="lab-i" x="112" y="72">α-Dicarbonyle</text>
+        <text class="lab" x="112" y="90">Glyoxal · Methylglyoxal</text>
+        <text class="lab" x="112" y="106">3-DG · 1-DG</text>
+
+        <rect class="box-f" x="20" y="184" width="185" height="62" rx="3"/>
+        <text class="lab-i" x="112" y="206">Proteinseitenketten</text>
+        <text class="lab" x="112" y="224">Lysin: ε-NH₂</text>
+        <text class="lab" x="112" y="240">Arginin: Guanidin</text>
+
+        <rect class="box-f" x="270" y="112" width="180" height="72" rx="3"/>
+        <text class="lab-i" x="360" y="132">Addition</text>
+        <text class="lab" x="360" y="150">Cyclisierung</text>
+        <text class="lab" x="360" y="168">Oxidation</text>
+
+        <rect class="box-f" x="520" y="16" width="185" height="62" rx="3"/>
+        <text class="lab-i" x="612" y="38">Lysin-Addukte</text>
+        <text class="lab" x="612" y="56">CML · CEL</text>
+        <text class="lab" x="612" y="72">Pyrralin (aus 3-DG)</text>
+
+        <rect class="box-f" x="520" y="108" width="185" height="62" rx="3"/>
+        <text class="lab-i" x="612" y="130">Arginin-Addukte</text>
+        <text class="lab" x="612" y="148">MG-H1</text>
+        <text class="lab" x="612" y="164">Argpyrimidin</text>
+
+        <rect class="box-f box-key" x="520" y="200" width="185" height="62" rx="3"/>
+        <text class="lab-i" x="612" y="222">Crosslinks Lys–Arg</text>
+        <text class="lab" x="612" y="240">Pentosidin</text>
+        <text class="lab" x="612" y="256">Glucosepan</text>
+
+        <rect class="box-f" x="740" y="60" width="145" height="70" rx="3"/>
+        <text class="lab-i" x="812" y="82">Melanoidine</text>
+        <text class="lab" x="812" y="100">braun, hochmolekular</text>
+        <text class="lab" x="812" y="118">irreversibel</text>
+
+        <rect class="box-f" x="740" y="188" width="145" height="86" rx="3"/>
+        <text class="lab-i" x="812" y="210">Folgen</text>
+        <text class="lab" x="812" y="228">Lysin nicht verfügbar</text>
+        <text class="lab" x="812" y="244">Protein vernetzt</text>
+        <text class="lab" x="812" y="260">Verdaulichkeit ↓</text>
+
+        <line class="flow" x1="207" y1="86" x2="266" y2="126" marker-end="url(#c5)"/>
+        <line class="flow" x1="207" y1="210" x2="266" y2="170" marker-end="url(#c5)"/>
+        <text class="num" x="236" y="112">+</text>
+        <line class="flow" x1="452" y1="132" x2="516" y2="60" marker-end="url(#c5)"/>
+        <line class="flow" x1="452" y1="146" x2="516" y2="140" marker-end="url(#c5)"/>
+        <line class="flow" x1="452" y1="164" x2="516" y2="226" marker-end="url(#c5)"/>
+        <line class="flow" x1="707" y1="42" x2="762" y2="56" marker-end="url(#c5)"/>
+        <line class="flow" x1="707" y1="232" x2="762" y2="222" marker-end="url(#c5)"/>
+        <text class="num" x="744" y="30">Polymerisation</text>
+        <line class="flow" x1="707" y1="140" x2="736" y2="120" marker-end="url(#c5)"/>
+      </svg>
+      </div>
+      <figcaption><b>Zwei Adduktarten, eine Vernetzung.</b> Einfache Addukte blockieren
+      nur eine Seitenkette; die rot umrandeten Crosslinks verbinden zwei Ketten dauerhaft
+      — <b>Glucosepan</b> ist der mengenmäßig häufigste Crosslink im Kollagen. Melanoidine
+      sind keine definierte Substanz, sondern die braune, hochmolekulare Sammelfraktion.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="analytik">
+  <div class="sec-head">
+    <p class="eyebrow" style="margin:0">Diagramm 6</p>
+    <h2>Marker und Analytik</h2><span class="rule"></span>
+    <span class="goal">was misst welche Phase?</span>
+  </div>
+
+  <div class="chart">
+    <p class="q">Frage: Ich habe eine Probe und einen Messwert — welche Phase der Reaktion
+    beschreibt er, und welche nicht?</p>
+    <figure class="wide">
+      <div class="scroller">
+      <svg class="dg" viewBox="0 0 900 400" role="img"
+        aria-label="Zuordnung von Markern: Furosin aus dem Amadori-Produkt nach Säurehydrolyse per HPLC misst die Wärmebelastung von Milch; HMF aus dem 3-Desoxyoson misst Erhitzung und Lagerung; Strecker-Aldehyde per GC-MS zeigen die Aromabildung; CML und Pentosidin per LC-MS/MS die AGE-Last; Melanoidine über die Extinktion bei 420 Nanometer den Bräunungsgrad.">
+        <text class="num" x="95" y="30">MARKER</text>
+        <text class="num" x="332" y="30">ENTSTEHT AUS</text>
+        <text class="num" x="584" y="30">BESTIMMUNG</text>
+        <text class="num" x="783" y="30">SAGT ETWAS ÜBER</text>
+        <line class="bond" x1="20" y1="40" x2="880" y2="40" opacity=".3"/>
+
+        <rect class="box" x="20" y="52" width="150" height="60" rx="3" stroke-dasharray="5 4"/>
+        <text class="lab-i" x="95" y="76">Furosin</text>
+        <text class="lab" x="95" y="94">Frühphase</text>
+        <rect class="box-f" x="182" y="52" width="300" height="60" rx="3"/>
+        <text class="lab" x="332" y="76">Fructosyl-/Lactulosyllysin (ARP)</text>
+        <text class="lab" x="332" y="94">— erst bei der Säurehydrolyse der Probe</text>
+        <rect class="box-f" x="494" y="52" width="180" height="60" rx="3"/>
+        <text class="lab" x="584" y="76">6 M HCl, dann</text>
+        <text class="lab" x="584" y="94">RP-HPLC (Ionenpaar)</text>
+        <rect class="box-f" x="686" y="52" width="194" height="60" rx="3"/>
+        <text class="lab" x="783" y="76">Wärmebelastung Milch,</text>
+        <text class="lab" x="783" y="94">verfügbares Lysin</text>
+
+        <rect class="box-f" x="20" y="124" width="150" height="60" rx="3"/>
+        <text class="lab-i" x="95" y="148">HMF</text>
+        <text class="lab" x="95" y="166">Zwischenphase</text>
+        <rect class="box-f" x="182" y="124" width="300" height="60" rx="3"/>
+        <text class="lab" x="332" y="148">3-Desoxyoson, sauer cyclisiert</text>
+        <text class="lab" x="332" y="166">und zweimal dehydratisiert</text>
+        <rect class="box-f" x="494" y="124" width="180" height="60" rx="3"/>
+        <text class="lab" x="584" y="148">HPLC-UV (284 nm)</text>
+        <text class="lab" x="584" y="166">oder photometrisch</text>
+        <rect class="box-f" x="686" y="124" width="194" height="60" rx="3"/>
+        <text class="lab" x="783" y="148">Erhitzung und Lagerung:</text>
+        <text class="lab" x="783" y="166">Honig, Säfte, Milch</text>
+
+        <rect class="box-f" x="20" y="196" width="150" height="60" rx="3"/>
+        <text class="lab-i" x="95" y="220">Strecker-Aldehyde</text>
+        <text class="lab" x="95" y="238">Zwischenphase</text>
+        <rect class="box-f" x="182" y="196" width="300" height="60" rx="3"/>
+        <text class="lab" x="332" y="220">Aminosäure + α-Dicarbonyl,</text>
+        <text class="lab" x="332" y="238">unter CO₂-Abspaltung</text>
+        <rect class="box-f" x="494" y="196" width="180" height="60" rx="3"/>
+        <text class="lab" x="584" y="220">GC-MS, Headspace</text>
+        <text class="lab" x="584" y="238">Olfaktometrie</text>
+        <rect class="box-f" x="686" y="196" width="194" height="60" rx="3"/>
+        <text class="lab" x="783" y="220">Aromabildung,</text>
+        <text class="lab" x="783" y="238">Röst- und Backgrad</text>
+
+        <rect class="box-f box-key" x="20" y="268" width="150" height="60" rx="3"/>
+        <text class="lab-i" x="95" y="292">CML · Pentosidin</text>
+        <text class="lab" x="95" y="310">Endphase</text>
+        <rect class="box-f" x="182" y="268" width="300" height="60" rx="3"/>
+        <text class="lab" x="332" y="292">Dicarbonyl + Lysin bzw. Lysin + Arginin,</text>
+        <text class="lab" x="332" y="310">am Protein gebunden</text>
+        <rect class="box-f" x="494" y="268" width="180" height="60" rx="3"/>
+        <text class="lab" x="584" y="292">Hydrolyse, dann</text>
+        <text class="lab" x="584" y="310">LC-MS/MS</text>
+        <rect class="box-f" x="686" y="268" width="194" height="60" rx="3"/>
+        <text class="lab" x="783" y="292">AGE-Last,</text>
+        <text class="lab" x="783" y="310">Proteinschädigung</text>
+
+        <rect class="box-f" x="20" y="340" width="150" height="52" rx="3"/>
+        <text class="lab-i" x="95" y="360">Melanoidine</text>
+        <text class="lab" x="95" y="378">Endphase</text>
+        <rect class="box-f" x="182" y="340" width="300" height="52" rx="3"/>
+        <text class="lab" x="332" y="366">Polymerisation der Endphase</text>
+        <rect class="box-f" x="494" y="340" width="180" height="52" rx="3"/>
+        <text class="lab" x="584" y="366">Extinktion bei 420 nm</text>
+        <rect class="box-f" x="686" y="340" width="194" height="52" rx="3"/>
+        <text class="lab" x="783" y="366">Bräunungsgrad</text>
+      </svg>
+      </div>
+      <figcaption><b>Der häufigste Fehler in der Prüfung:</b> von einem Marker auf die
+      ganze Reaktion schließen. Furosin sagt nichts über die Bräunung, und die Extinktion
+      bei 420 nm sagt nichts über das verfügbare Lysin — die Phasen laufen zeitlich
+      versetzt. Für eine schonend erhitzte Milch ist Furosin hoch empfindlich, während HMF
+      und Farbe noch gar nichts anzeigen.</figcaption>
+    </figure>
+  </div>
+</section>
+
+</div>
+
+<script>
+(function(){
+  var tg=document.getElementById('practice');
+  if(!tg)return;
+})();
+</script>
