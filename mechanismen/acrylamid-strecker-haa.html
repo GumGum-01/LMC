@@ -1,0 +1,556 @@
+<title>Acrylamid & HAA — Mechanismen Schritt für Schritt</title>
+
+<style>
+  :root{
+    --bg:#EDF0EA; --surface:#FFFFFF; --surface-2:#E2E8DF;
+    --ink:#1A231F; --ink-dim:#55635B; --rule:#C6D0C2;
+    --accent:#146B5E; --accent-soft:#D9E8E1;
+    --warn:#9C3B2A; --warn-soft:#F1DDD4;
+    --gold-wash:#EFE0B8; --gold-line:#B99B4B;
+    --font-serif: ui-serif, "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --font-mono: ui-monospace, "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#121714; --surface:#181F1B; --surface-2:#1F2822;
+      --ink:#E4EAE3; --ink-dim:#9AAAA0; --rule:#2C3830;
+      --accent:#4FB3A0; --accent-soft:#1E3A34;
+      --warn:#E08066; --warn-soft:#3B241E;
+      --gold-wash:#3A331C; --gold-line:#8A783F;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#121714; --surface:#181F1B; --surface-2:#1F2822;
+    --ink:#E4EAE3; --ink-dim:#9AAAA0; --rule:#2C3830;
+    --accent:#4FB3A0; --accent-soft:#1E3A34;
+    --warn:#E08066; --warn-soft:#3B241E;
+    --gold-wash:#3A331C; --gold-line:#8A783F;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:var(--font-serif);
+    margin:0; padding:0 20px 80px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{ max-width:760px; margin:0 auto; }
+  .wide{ max-width:920px; margin:0 auto; }
+
+  header.hero{
+    max-width:760px; margin:0 auto; padding:56px 0 28px;
+    border-bottom:1px solid var(--rule);
+  }
+  .eyebrow{
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.09em;
+    text-transform:uppercase; color:var(--accent); font-weight:600;
+    display:flex; gap:10px; align-items:center; margin-bottom:14px;
+  }
+  .eyebrow .dot{ width:5px; height:5px; border-radius:50%; background:var(--accent); }
+  h1{
+    font-size:clamp(28px,4.4vw,40px); line-height:1.12; margin:0 0 12px;
+    text-wrap:balance; font-weight:600; letter-spacing:-0.01em;
+  }
+  .lede{ font-size:17px; color:var(--ink-dim); line-height:1.55; max-width:620px; }
+
+  .toc{
+    display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:22px;
+    font-family:var(--font-mono); font-size:12.5px;
+  }
+  .toc a{ color:var(--ink-dim); text-decoration:none; border-bottom:1px dotted var(--rule); }
+  .toc a:hover{ color:var(--accent); border-color:var(--accent); }
+
+  section.part{ max-width:760px; margin:0 auto; padding-top:64px; }
+  .part-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:6px; }
+  .part-num{
+    font-family:var(--font-mono); font-size:13px; color:var(--ink-dim);
+    border:1px solid var(--rule); border-radius:20px; padding:3px 10px;
+  }
+  h2{ font-size:26px; margin:18px 0 6px; letter-spacing:-0.01em; text-wrap:balance; }
+  h3{ font-size:15px; margin:0; font-weight:600; }
+  p{ line-height:1.65; font-size:16.5px; }
+  p.tight{ font-size:15.5px; color:var(--ink-dim); }
+
+  .callout{
+    background:var(--surface); border:1px solid var(--rule); border-radius:10px;
+    padding:16px 20px; margin:20px 0; font-size:15px; line-height:1.55;
+  }
+  .callout.merk{ border-left:3px solid var(--accent); }
+  .callout.merk .lbl{ font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; color:var(--accent); text-transform:uppercase; display:block; margin-bottom:6px; font-weight:700;}
+  .callout.warn{ border-left:3px solid var(--warn); background:var(--warn-soft); }
+  .callout.story{ background:var(--surface-2); }
+
+  .step{
+    background:var(--surface); border:1px solid var(--rule); border-radius:14px;
+    padding:22px 22px 20px; margin:22px 0;
+  }
+  .step .step-head{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .step .num{
+    font-family:var(--font-mono); font-weight:700; font-size:13px;
+    color:var(--surface); background:var(--accent); border-radius:6px;
+    padding:3px 9px; flex:none;
+  }
+  .step h3{ font-family:var(--font-mono); font-size:13px; letter-spacing:.03em; text-transform:uppercase; color:var(--ink); }
+  .step p{ font-size:15.5px; margin:8px 0; }
+  .fig-scroll{ overflow-x:auto; margin:14px 0 6px; padding:6px 0; }
+  figure{ margin:0; }
+  figure svg{ display:block; }
+  figcaption{
+    font-family:var(--font-mono); font-size:12px; color:var(--ink-dim);
+    margin-top:8px; line-height:1.5;
+  }
+
+  .bond{ stroke:var(--ink); stroke-width:2; stroke-linecap:round; fill:none; }
+  .bond2{ stroke:var(--ink); stroke-width:2; stroke-linecap:round; fill:none; }
+  text.atom{ font-family:var(--font-mono); font-size:13px; font-weight:600; fill:var(--ink); paint-order:stroke fill; stroke:var(--surface); stroke-width:5; }
+  text.atom.warnc{ fill:var(--warn); }
+  text.atom.accentc{ fill:var(--accent); }
+  text.lbl{ font-family:var(--font-mono); font-size:11.5px; fill:var(--ink-dim); }
+  text.rxn{ font-family:var(--font-mono); font-size:11.5px; fill:var(--ink-dim); text-anchor:middle; }
+  .earrow{ stroke:var(--accent); fill:none; stroke-width:1.7; }
+  .rarrow{ stroke:var(--ink); fill:none; stroke-width:2; }
+  .ghost{ stroke:var(--ink-dim); stroke-dasharray:3 3; stroke-width:1.4; fill:none; }
+
+  table{ width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px; }
+  th,td{ text-align:left; padding:9px 12px; border-bottom:1px solid var(--rule); vertical-align:top; }
+  th{ font-family:var(--font-mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-dim); font-weight:600; }
+  tr:last-child td{ border-bottom:none; }
+
+  .log{
+    background:var(--surface-2); border:1px solid var(--rule); border-radius:10px;
+    padding:18px 22px; font-family:var(--font-mono); font-size:13px; line-height:1.9;
+    color:var(--ink-dim); margin:20px 0;
+  }
+  .log .done{ color:var(--accent); }
+  .log .hr{ color:var(--rule); }
+
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .kv{ background:var(--surface); border:1px solid var(--rule); border-radius:10px; padding:14px 16px; }
+  .kv .k{ font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--accent); }
+  .kv .v{ font-size:15px; margin-top:4px; }
+
+  hr.div{ border:none; border-top:1px solid var(--rule); margin:56px 0 0; }
+  footer{ max-width:760px; margin:40px auto 0; color:var(--ink-dim); font-size:13px; }
+</style>
+
+<header class="hero">
+  <div class="eyebrow"><span class="dot"></span>LMC StEx · Maillard, Block 6 · Pflicht-nah</div>
+  <h1>Acrylamid & HAA — Mechanismen, Schritt für Schritt</h1>
+  <p class="lede">Der letzte Block der Maillard-Kaskade: derselbe Strecker-Abbau, den du schon kennst — nur mit einem toxischen Twist am Ende. Jede Stufe einzeln als eigenes Bild, mit Elektronenpfeilen dort, wo es neu wird.</p>
+  <div class="toc">
+    <a href="#teil1">Teil 1 · Acrylamid</a>
+    <a href="#teil2">Teil 2 · HAA</a>
+    <a href="#teil3">Teil 3 · Funktionalisierung</a>
+    <a href="#protokoll">Protokoll</a>
+  </div>
+</header>
+
+<!-- ================= TEIL 1 ================= -->
+<section class="part" id="teil1">
+  <div class="part-head"><span class="part-num">Teil 1 / 3</span></div>
+  <h2>Acrylamid — der Strecker-Abbau mit tödlichem Twist</h2>
+
+  <div class="callout story">
+    <strong>2002, Schweden, Tunnelbau.</strong> Flüssiges Acrylamid-Monomer wurde zum Abdichten ins Gestein injiziert. Tunnelarbeiter trugen <strong>Hämoglobin-Addukte von Acrylamid</strong> im Blut — erwartbar. Der Schock: nicht-exponierte Kontrollpersonen trugen <strong>dieselben Addukte</strong>, nur schwächer. Quelle: Lebensmittel. Startpunkt der gesamten Forschung.
+  </div>
+
+  <p>Acrylamid entsteht <strong>spezifisch aus Asparagin</strong> — seine Seitenkette trägt bereits die Amidgruppe, die am Ende zum Acrylamid wird:</p>
+
+  <div class="fig-scroll">
+    <figure>
+      <svg viewBox="0 0 340 175" role="img" aria-label="Struktur von Asparagin, die Seitenkette CH2-CO-NH2 ist hervorgehoben" style="min-width:320px;max-width:100%;height:auto;color:var(--ink)">
+        <rect x="104" y="6" width="128" height="118" rx="16" fill="var(--gold-wash)"/>
+        <!-- main chain -->
+        <line class="bond" x1="55" y1="100" x2="92" y2="76"/>
+        <line class="bond" x1="92" y1="76" x2="129" y2="100"/>
+        <line class="bond" x1="129" y1="100" x2="166" y2="76"/>
+        <!-- C1 carboxyl -->
+        <line class="bond" x1="53" y1="98" x2="53" y2="55"/>
+        <line class="bond" x1="59" y1="98" x2="59" y2="57"/>
+        <text class="atom" x="56" y="46">O</text>
+        <line class="bond" x1="55" y1="100" x2="24" y2="121"/>
+        <text class="atom" x="15" y="132">HO</text>
+        <!-- alpha amino -->
+        <line class="bond" x1="92" y1="76" x2="92" y2="32"/>
+        <text class="atom" x="92" y="21">H₂N</text>
+        <!-- amide carbonyl -->
+        <line class="bond" x1="164" y1="74" x2="164" y2="30"/>
+        <line class="bond" x1="170" y1="76" x2="170" y2="34"/>
+        <text class="atom" x="166" y="20">O</text>
+        <line class="bond" x1="166" y1="76" x2="201" y2="99"/>
+        <text class="atom" x="218" y="105">NH₂</text>
+      </svg>
+      <figcaption>Asparagin: Die goldene Fläche markiert –CH₂–CO–NH₂ — genau dieses Fragment wird zum Acrylamid-Gerüst. Ab hier abgekürzt als <strong>R = –CH₂–CONH₂</strong>.</figcaption>
+    </figure>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="num">1</span><h3>Kondensation → Schiff-Base</h3></div>
+    <p>Die α-Aminogruppe des Asparagins reagiert mit einem <strong>α-Dicarbonyl</strong> (Maillard-Zwischenstufe) zur Schiff-Base. Mechanistisch nichts Neues — die sieben Pfeile dazu kennst du aus Block 1/3, hier nur das Ergebnis:</p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 700 190" role="img" aria-label="Asparagin kondensiert mit einem alpha-Dicarbonyl unter Wasserabspaltung zur Schiff-Base" style="min-width:600px;max-width:100%;height:auto;color:var(--ink)">
+        <!-- Asparagine core -->
+        <line class="bond" x1="55" y1="95" x2="30" y2="70"/><text class="atom" x="18" y="62">HOOC</text>
+        <line class="bond" x1="55" y1="95" x2="55" y2="55"/><text class="atom accentc" x="55" y="44">H₂N</text>
+        <line class="bond" x1="55" y1="95" x2="82" y2="118"/><text class="atom" x="90" y="135">R</text>
+        <text class="lbl" x="55" y="152" text-anchor="middle">Asparagin</text>
+        <text x="118" y="100" font-family="var(--font-serif)" font-size="20" fill="var(--ink-dim)" text-anchor="middle">+</text>
+        <!-- dicarbonyl: Cx=O / R1, Cx-Cy, Cy=O / R2 -->
+        <line class="bond" x1="175" y1="100" x2="175" y2="60"/>
+        <line class="bond" x1="181" y1="100" x2="181" y2="62"/>
+        <text class="atom" x="178" y="49">O</text>
+        <line class="bond" x1="175" y1="100" x2="150" y2="122"/><text class="atom" x="132" y="132">R¹</text>
+        <line class="bond" x1="175" y1="100" x2="215" y2="100"/>
+        <line class="bond" x1="215" y1="100" x2="215" y2="60"/>
+        <line class="bond" x1="221" y1="100" x2="221" y2="62"/>
+        <text class="atom" x="218" y="49">O</text>
+        <line class="bond" x1="215" y1="100" x2="245" y2="122"/><text class="atom" x="262" y="132">R²</text>
+        <text class="lbl" x="195" y="152" text-anchor="middle">α-Dicarbonyl</text>
+        <!-- reaction arrow -->
+        <line class="rarrow" x1="300" y1="100" x2="380" y2="100" marker-end="url(#r1)"/>
+        <text class="rxn" x="340" y="88">Kondensation, –H₂O</text>
+        <text class="rxn" x="340" y="118" fill="var(--ink-dim)">(7 Pfeile · bekannt)</text>
+        <!-- schiff base product: Ca - N = Cb, Cb - CO-R1 -->
+        <line class="bond" x1="430" y1="100" x2="405" y2="75"/><text class="atom" x="390" y="66">HOOC</text>
+        <line class="bond" x1="430" y1="100" x2="455" y2="123"/><text class="atom" x="463" y="140">R</text>
+        <line class="bond" x1="430" y1="100" x2="475" y2="100"/>
+        <text class="atom accentc" x="475" y="86" font-size="15">N</text>
+        <line class="bond" x1="481" y1="100" x2="521" y2="100"/>
+        <line class="bond" x1="481" y1="107" x2="521" y2="107"/>
+        <line class="bond" x1="521" y1="100" x2="546" y2="75"/><text class="atom" x="562" y="66">R²</text>
+        <line class="bond" x1="521" y1="103" x2="546" y2="128"/><text class="atom" x="554" y="140">CO–R¹</text>
+        <text class="lbl" x="480" y="20" text-anchor="middle">Schiff-Base (Imin, COOH noch dran)</text>
+        <defs><marker id="r1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"/></marker></defs>
+      </svg>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="num">2</span><h3>Decarboxylierung (Strecker-Bewegung)</h3></div>
+    <p>Jetzt wird's Strecker: die Carboxylgruppe am Cα ist direkt an das Iminium konjugiert. <strong>CO₂ verlässt</strong> die Kette, die frei werdenden Elektronen wandern in eine neue Cα=N-Doppelbindung, während die alte N=C-Doppelbindung als freies Elektronenpaar am Stickstoff "landet" — es entsteht das <strong>decarboxylierte Iminium/Enaminol</strong>.</p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 640 210" role="img" aria-label="Decarboxylierung: CO2 verlässt Cα, Elektronenpfeile bilden eine neue Cα=N Doppelbindung, die alte Doppelbindung wird zum freien Elektronenpaar am Stickstoff" style="min-width:560px;max-width:100%;height:auto;color:var(--ink)">
+        <text class="rxn" x="105" y="30" fill="var(--accent)" font-weight="700">–CO₂</text>
+        <!-- substrate core: Ca(70,110) - N(115,110) = Cb(160,110) -->
+        <line class="bond" x1="70" y1="110" x2="45" y2="83"/><text class="atom" x="30" y="74">HOOC</text>
+        <line class="bond" x1="70" y1="110" x2="48" y2="140"/><text class="atom" x="35" y="153">R</text>
+        <line class="bond" x1="70" y1="110" x2="115" y2="110"/>
+        <text class="atom accentc" x="115" y="96" font-size="15">N</text>
+        <line class="bond" x1="121" y1="110" x2="160" y2="110"/>
+        <line class="bond" x1="121" y1="117" x2="160" y2="117"/>
+        <line class="bond" x1="160" y1="110" x2="192" y2="83"/><text class="atom" x="208" y="74">R²</text>
+        <line class="bond" x1="160" y1="113" x2="192" y2="140"/><text class="atom" x="220" y="153">CO–R¹</text>
+        <!-- curved arrow 1: Ca-COOH bond electrons -> new Ca=N pi -->
+        <path class="earrow" d="M48,80 C 65,55 90,60 96,102" marker-end="url(#e1)"/>
+        <!-- curved arrow 2: old N=Cb pi -> lone pair on N -->
+        <path class="earrow" d="M145,106 C 132,88 122,86 117,94" marker-end="url(#e1)"/>
+        <!-- reaction arrow -->
+        <line class="rarrow" x1="255" y1="110" x2="330" y2="110" marker-end="url(#r2)"/>
+        <!-- product: Ca(365,110) = N(410,110) - Cb(455,110) -->
+        <text class="lbl" x="470" y="20" text-anchor="middle">decarboxyliertes Iminium/Enaminol</text>
+        <line class="bond" x1="365" y1="110" x2="343" y2="140"/><text class="atom" x="330" y="153">R</text>
+        <line class="bond" x1="365" y1="110" x2="410" y2="110"/>
+        <line class="bond" x1="365" y1="117" x2="410" y2="117"/>
+        <text class="atom accentc" x="410" y="96" font-size="15">N</text>
+        <circle cx="424" cy="86" r="1.6" fill="var(--accent)"/><circle cx="430" cy="90" r="1.6" fill="var(--accent)"/>
+        <line class="bond" x1="416" y1="110" x2="455" y2="110"/>
+        <line class="bond" x1="455" y1="110" x2="455" y2="80"/><text class="atom" x="455" y="69">H</text>
+        <line class="bond" x1="455" y1="110" x2="487" y2="90"/><text class="atom" x="503" y="80">R²</text>
+        <line class="bond" x1="455" y1="110" x2="487" y2="135"/><text class="atom" x="515" y="145">CO–R¹</text>
+        <defs>
+          <marker id="e1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+          <marker id="r2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"/></marker>
+        </defs>
+      </svg>
+    </div>
+    <p class="tight">Cα trägt jetzt R und ist doppelt gebunden an N (rot markiert) — die COOH-Gruppe ist als CO₂ weg.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="num">3</span><h3>Der reversible Twist: Tautomerisierung + Hydrolyse</h3></div>
+    <p>Normalerweise würde jetzt am Cα hydrolysiert → Strecker-Aldehyd. Hier läuft die Elektronenbewegung stattdessen <strong>rückwärts</strong>: die Doppelbindung wandert (1,3-Verschiebung, reversibel) vom Cα zurück zum Dicarbonyl-Kohlenstoff. Erst <em>dieses</em> Imin wird hydrolysiert — und liefert ein <strong>Amin genau an der Cα-Position</strong>, exakt wie beim biogenen Amin.</p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 840 210" role="img" aria-label="Tautomerisierung verschiebt die Doppelbindung ins Gleichgewicht, anschließende Hydrolyse setzt 3-Aminopropionamid frei und regeneriert das Dicarbonyl" style="min-width:720px;max-width:100%;height:auto;color:var(--ink)">
+        <!-- tautomer 1: Ca=N-Cb(H) -->
+        <line class="bond" x1="55" y1="110" x2="33" y2="140"/><text class="atom" x="20" y="153">R</text>
+        <line class="bond" x1="55" y1="110" x2="100" y2="110"/>
+        <line class="bond" x1="55" y1="117" x2="100" y2="117"/>
+        <text class="atom accentc" x="100" y="96" font-size="15">N</text>
+        <line class="bond" x1="106" y1="110" x2="145" y2="110"/>
+        <line class="bond" x1="145" y1="110" x2="145" y2="80"/><text class="atom" x="145" y="69">H</text>
+        <line class="bond" x1="145" y1="110" x2="177" y2="90"/><text class="atom" x="193" y="80">R²</text>
+        <line class="bond" x1="145" y1="110" x2="177" y2="135"/><text class="atom" x="203" y="146">CO–R¹</text>
+        <!-- equilibrium arrows -->
+        <line class="rarrow" x1="230" y1="100" x2="290" y2="100" marker-end="url(#r3)"/>
+        <line class="rarrow" x1="290" y1="118" x2="230" y2="118" marker-end="url(#r3)"/>
+        <text class="rxn" x="260" y="88" fill="var(--accent)">Tautomerie</text>
+        <text class="rxn" x="260" y="35" fill="var(--accent)">(reversibel)</text>
+        <!-- tautomer 2: Ca(H2)-N=Cb -->
+        <line class="bond" x1="325" y1="110" x2="303" y2="140"/><text class="atom" x="290" y="153">R</text>
+        <line class="bond" x1="325" y1="110" x2="370" y2="110"/>
+        <text class="atom accentc" x="370" y="96" font-size="15">N</text>
+        <line class="bond" x1="376" y1="110" x2="416" y2="110"/>
+        <line class="bond" x1="376" y1="117" x2="416" y2="117"/>
+        <line class="bond" x1="416" y1="110" x2="448" y2="90"/><text class="atom" x="464" y="80">R²</text>
+        <line class="bond" x1="416" y1="113" x2="448" y2="138"/><text class="atom" x="474" y="149">CO–R¹</text>
+        <text class="lbl" x="380" y="20" text-anchor="middle">Imin jetzt am Dicarbonyl-C</text>
+        <!-- hydrolysis arrow -->
+        <line class="rarrow" x1="500" y1="110" x2="555" y2="110" marker-end="url(#r3)"/>
+        <text class="rxn" x="527" y="98">+H₂O</text>
+        <!-- product A: 3-aminopropionamide -->
+        <line class="bond" x1="600" y1="110" x2="575" y2="110"/><text class="atom" x="558" y="110">R</text>
+        <line class="bond" x1="600" y1="110" x2="628" y2="133"/><text class="atom" x="636" y="146">NH₂</text>
+        <text class="lbl" x="600" y="172" text-anchor="middle">3-Aminopropionamid</text>
+        <text x="670" y="114" font-family="var(--font-serif)" font-size="18" fill="var(--ink-dim)" text-anchor="middle">+</text>
+        <!-- product B: dicarbonyl regenerated, abbreviated (identisch mit Ausgangsstoff) -->
+        <text class="atom" x="695" y="110">R¹–CO–CO–R²</text>
+        <text class="lbl" x="750" y="172" text-anchor="middle">Dicarbonyl</text>
+        <text class="lbl" x="750" y="186" text-anchor="middle">(kat., zurück)</text>
+        <defs>
+          <marker id="r3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"/></marker>
+        </defs>
+      </svg>
+    </div>
+    <p class="tight">Das Dicarbonyl fungiert netto als <strong>Katalysator</strong> — es geht unverändert wieder heraus. Übrig bleibt 3-Aminopropionamid: „decarboxyliertes Asparagin", das biogene Amin, das man erwarten würde.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="num">4</span><h3>β-Eliminierung → Acrylamid</h3></div>
+    <p>3-Aminopropionamid trägt die Aminogruppe in β-Stellung zur Carbonylfunktion. Deprotonierung α-ständig (acidifiziert durch die Amid-Carbonylgruppe), dann schiebt das freie Elektronenpaar die C=C-Doppelbindung — die C–N-Bindung bricht heterolytisch, NH₃ tritt aus.</p>
+    <div class="fig-scroll">
+      <svg viewBox="0 0 640 175" role="img" aria-label="3-Aminopropionamid wird alpha-deprotoniert, das Elektronenpaar bildet die C=C Doppelbindung während NH3 als Abgangsgruppe aus der beta-Position austritt, Produkt ist Acrylamid" style="min-width:560px;max-width:100%;height:auto;color:var(--ink)">
+        <!-- 3-aminopropionamide: N(beta)-C(beta)H2-C(alpha)H2-C(=O)NH2 -->
+        <text class="atom" x="38" y="80">H₂N</text>
+        <line class="bond" x1="58" y1="88" x2="90" y2="65"/>
+        <text class="lbl" x="80" y="48" font-size="10">β</text>
+        <line class="bond" x1="90" y1="65" x2="122" y2="88"/>
+        <text class="lbl" x="102" y="108" font-size="10">α</text>
+        <line class="bond" x1="122" y1="88" x2="154" y2="65"/>
+        <line class="bond2" x1="154" y1="65" x2="154" y2="28"/><text class="atom" x="154" y="17">O</text>
+        <line class="bond2" x1="160" y1="65" x2="160" y2="28"/>
+        <line class="bond" x1="154" y1="65" x2="186" y2="88"/><text class="atom" x="202" y="95">NH₂</text>
+        <!-- base removes alpha H -->
+        <text class="lbl" x="122" y="112" font-size="10" fill="var(--ink-dim)">H</text>
+        <path class="earrow" d="M122,102 C 118,120 100,122 96,108" marker-end="url(#e3)"/>
+        <text class="rxn" x="95" y="132" fill="var(--accent)">Base, –H⁺</text>
+        <!-- pi formation arrow: alpha lone pair -> beta-N bond breaking -->
+        <path class="earrow" d="M108,80 C 90,55 60,70 55,88" marker-end="url(#e3)"/>
+        <text class="rxn" x="28" y="28" fill="var(--accent)">–NH₃</text>
+        <!-- reaction arrow -->
+        <line class="rarrow" x1="250" y1="90" x2="320" y2="90" marker-end="url(#r4)"/>
+        <!-- acrylamide -->
+        <line class="bond2" x1="360" y1="88" x2="392" y2="65"/>
+        <line class="bond2" x1="363" y1="95" x2="395" y2="72"/>
+        <text class="lbl" x="358" y="105" text-anchor="middle" font-size="10">H₂C</text>
+        <line class="bond" x1="392" y1="65" x2="424" y2="88"/>
+        <line class="bond2" x1="424" y1="88" x2="424" y2="50"/><text class="atom" x="424" y="39">O</text>
+        <line class="bond2" x1="430" y1="88" x2="430" y2="50"/>
+        <line class="bond" x1="424" y1="88" x2="456" y2="110"/><text class="atom" x="472" y="117">NH₂</text>
+        <text class="lbl" x="392" y="15" text-anchor="middle" font-weight="700" fill="var(--warn)">Acrylamid</text>
+        <defs>
+          <marker id="e3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+          <marker id="r4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"/></marker>
+        </defs>
+      </svg>
+    </div>
+  </div>
+
+  <div class="callout merk">
+    <span class="lbl">Merksatz</span>
+    Asparagin verliert sein CO₂ (Strecker), das Iminium tautomerisiert und hydrolysiert zum biogenen Amin 3-Aminopropionamid, das wiederum sein α-NH₂ eliminiert — übrig bleibt die Amid-Seitenkette mit neuer Doppelbindung: Acrylamid.
+  </div>
+
+  <p><strong>Voraussetzungen:</strong> reduzierende Zucker (liefern das Dicarbonyl) + Asparagin (reichlich in Kartoffeln) + &gt;120 °C (Braten, Frittieren, Rösten, Backen) → mg/kg-Bereich. Auch in Kaffee, Kakao, Knäckebrot.</p>
+
+  <h3 style="font-size:19px;margin-top:34px;">Metabolische Aktivierung → Glycidamid</h3>
+  <p>Acrylamid ist bereits selbst reaktiv: als <strong>Michael-Akzeptor</strong> greifen Nukleophile die C=C-Doppelbindung direkt an (→ Hämoglobin-Addukte, der Nachweis bei den Tunnelarbeitern). Cytochrom P450 epoxidiert die Doppelbindung zusätzlich zu <strong>Glycidamid</strong> — dem eigentlich genotoxischen, DNA-reaktiven Metaboliten. Glutathion entgiftet beide Formen durch Konjugation.</p>
+
+  <div class="fig-scroll">
+    <svg viewBox="0 0 680 320" role="img" aria-label="Acrylamid wird durch Cytochrom P450 zum Epoxid Glycidamid oxidiert; beide reagieren mit Glutathion-SH zu ungiftigen Konjugaten" style="min-width:600px;max-width:100%;height:auto;color:var(--ink)">
+      <!-- acrylamide -->
+      <line class="bond2" x1="40" y1="150" x2="72" y2="127"/>
+      <line class="bond2" x1="43" y1="157" x2="75" y2="134"/>
+      <line class="bond" x1="72" y1="127" x2="104" y2="150"/>
+      <line class="bond2" x1="104" y1="150" x2="104" y2="112"/><text class="atom" x="104" y="101">O</text>
+      <line class="bond2" x1="110" y1="150" x2="110" y2="112"/>
+      <line class="bond" x1="104" y1="150" x2="136" y2="172"/><text class="atom" x="152" y="179">NH₂</text>
+      <text class="lbl" x="75" y="202" text-anchor="middle" font-weight="700">Acrylamid</text>
+      <!-- arrow up to glycidamide -->
+      <line class="rarrow" x1="180" y1="128" x2="288" y2="73" marker-end="url(#p1)"/>
+      <text class="rxn" x="235" y="90" fill="var(--warn)">P450, [O]</text>
+      <!-- arrow down to GSH adduct -->
+      <line class="rarrow" x1="180" y1="172" x2="290" y2="240" marker-end="url(#p1)"/>
+      <text class="rxn" x="232" y="230" fill="var(--accent)">GSH (Michael)</text>
+      <!-- glycidamide (epoxide) -->
+      <g transform="translate(280,25)">
+        <polygon points="20,55 52,55 36,29" fill="none" stroke="var(--warn)" stroke-width="2"/>
+        <text class="atom warnc" x="36" y="21">O</text>
+        <line class="bond" x1="52" y1="55" x2="84" y2="77"/>
+        <line class="bond2" x1="84" y1="77" x2="84" y2="41"/><text class="atom" x="84" y="30">O</text>
+        <line class="bond2" x1="90" y1="77" x2="90" y2="41"/>
+        <line class="bond" x1="84" y1="77" x2="116" y2="99"/><text class="atom" x="132" y="106">NH₂</text>
+        <text class="lbl" x="70" y="128" text-anchor="middle" font-weight="700" fill="var(--warn)">Glycidamid</text>
+        <text class="lbl" x="70" y="144" text-anchor="middle">Epoxid — DNA-reaktiv</text>
+      </g>
+      <!-- GSH adduct -->
+      <g transform="translate(280,195)">
+        <text class="atom accentc" x="20" y="60">GS</text>
+        <line class="bond" x1="33" y1="55" x2="63" y2="70"/>
+        <line class="bond" x1="63" y1="70" x2="93" y2="50"/>
+        <line class="bond2" x1="93" y1="50" x2="93" y2="14"/><text class="atom" x="93" y="4">O</text>
+        <line class="bond2" x1="99" y1="50" x2="99" y2="14"/>
+        <line class="bond" x1="93" y1="50" x2="125" y2="72"/><text class="atom" x="141" y="79">NH₂</text>
+        <text class="lbl" x="72" y="100" text-anchor="middle">GSH-Konjugat · Ausscheidung</text>
+      </g>
+      <defs><marker id="p1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"/></marker></defs>
+    </svg>
+  </div>
+
+  <div class="callout merk">
+    <span class="lbl">Merksatz</span>
+    Acrylamid ist der Michael-Akzeptor, Glycidamid das DNA-Gift. P450 macht aus schlecht schlimmer, Glutathion räumt auf.
+  </div>
+
+  <table>
+    <thead><tr><th>Gegenmaßnahme</th><th>Wirkung</th></tr></thead>
+    <tbody>
+      <tr><td>Rohstoffwahl</td><td>Kartoffelsorten mit wenig Asparagin + wenig reduzierenden Zuckern</td></tr>
+      <tr><td>Blanchieren</td><td>wäscht Asparagin + Zucker aus, inaktiviert Enzyme</td></tr>
+      <tr><td>Asparaginase</td><td>spaltet Asparagin → Asparaginsäure (kein Substrat mehr)</td></tr>
+      <tr><td>Temperatur senken</td><td>&lt;120 °C, hellere Bräunung</td></tr>
+    </tbody>
+  </table>
+  <p class="tight">Verwandte Prozesskontaminanten (nur benennen): <strong>Furan</strong>, <strong>Styrol</strong> — ähnliche thermische Entstehung, ähnliche toxikologische Bedenken.</p>
+</section>
+
+<!-- ================= TEIL 2 ================= -->
+<section class="part" id="teil2">
+  <div class="part-head"><span class="part-num">Teil 2 / 3</span></div>
+  <h2>HAA — das Grillfleisch-Gift</h2>
+  <p>Heterocyclische aromatische Amine entstehen bei stark erhitztem Fleisch/Fisch (Grillen, scharfes Braten) — kanzerogen/mutagen. Prototyp: <strong>IQ</strong> (2-Amino-3-methylimidazo[4,5-f]chinolin). Hier zählt das Konzept, nicht jeder Pfeil.</p>
+
+  <table>
+    <thead><tr><th>Baustein</th><th>Herkunft</th><th>liefert</th></tr></thead>
+    <tbody>
+      <tr><td>Kreatinin</td><td>Muskelfleisch (!)</td><td>Imidazolring + 2-Amino-Gruppe</td></tr>
+      <tr><td>Strecker-Aldehyd</td><td>Aminosäureabbau (Maillard)</td><td>Kohlenstoff-Bausteine</td></tr>
+      <tr><td>Pyridin/Pyrazin</td><td>Maillard-Produkt</td><td>den aromatischen Ring</td></tr>
+    </tbody>
+  </table>
+
+  <div class="fig-scroll">
+    <svg viewBox="0 0 900 220" role="img" aria-label="Kreatinin, ein Strecker-Aldehyd und ein Pyridin- oder Pyrazin-Baustein reagieren über Kondensation, Diels-Alder-artigen Ringschluss und Oxidation zum aromatischen Imidazochinolin IQ" style="min-width:800px;max-width:100%;height:auto;color:var(--ink)">
+      <!-- creatinine ring: N1(CH3)-C2(=NH2)-N3(H)-C4(=O)-C5H2- -->
+      <polygon points="100,50 133,72 121,110 79,110 67,72" fill="none" stroke="currentColor" stroke-width="2"/>
+      <text class="atom" x="100" y="50">N</text>
+      <line class="bond" x1="100" y1="50" x2="100" y2="28"/><text class="lbl" x="100" y="18" text-anchor="middle">CH₃</text>
+      <line class="bond2" x1="133" y1="72" x2="162" y2="57"/>
+      <line class="bond2" x1="136" y1="78" x2="165" y2="63"/>
+      <text class="atom accentc" x="180" y="53">NH₂</text>
+      <text class="atom" x="121" y="110">N</text>
+      <text class="lbl" x="128" y="124" font-size="10">H</text>
+      <line class="bond2" x1="79" y1="110" x2="58" y2="128"/>
+      <line class="bond2" x1="84" y1="115" x2="63" y2="133"/>
+      <text class="atom" x="44" y="140">O</text>
+      <text class="lbl" x="100" y="186" text-anchor="middle" font-weight="700">Kreatinin</text>
+      <text class="lbl" x="100" y="202" text-anchor="middle" font-size="10.5">Imidazolring + 2-NH₂</text>
+
+      <text x="205" y="90" font-family="var(--font-serif)" font-size="18" fill="var(--ink-dim)" text-anchor="middle">+</text>
+      <text class="atom" x="245" y="83" text-anchor="middle">R–CH₂–CHO</text>
+      <text class="lbl" x="245" y="107" text-anchor="middle">Strecker-Aldehyd</text>
+
+      <text x="300" y="90" font-family="var(--font-serif)" font-size="18" fill="var(--ink-dim)" text-anchor="middle">+</text>
+      <polygon points="355,57 380,71 380,99 355,113 330,99 330,71" fill="none" stroke="currentColor" stroke-width="2"/>
+      <text class="atom" x="355" y="48" text-anchor="middle">N</text>
+      <text class="lbl" x="355" y="186" text-anchor="middle">Pyridin/Pyrazin</text>
+
+      <line class="rarrow" x1="430" y1="95" x2="565" y2="95" marker-end="url(#h1)"/>
+      <text class="rxn" x="497" y="45">① Kondensation, –H₂O</text>
+      <text class="rxn" x="497" y="62">② Diels-Alder-artiger Ringschluss</text>
+      <text class="rxn" x="497" y="79">③ Oxidation, –2H</text>
+
+      <!-- IQ product: imidazole fused to pyridine fused to benzo ring -->
+      <polygon points="600,95 618,70 648,78 648,112 618,120" fill="none" stroke="var(--warn)" stroke-width="2"/>
+      <polygon points="648,78 648,112 676,128 704,112 704,78 676,62" fill="none" stroke="var(--warn)" stroke-width="2"/>
+      <polygon points="704,78 704,112 732,128 760,112 760,78 732,62" fill="none" stroke="var(--warn)" stroke-width="2"/>
+      <line class="bond" x1="600" y1="95" x2="578" y2="100"/><text class="lbl" x="552" y="104">H₃C–N</text>
+      <line class="bond" x1="618" y1="70" x2="618" y2="45"/><text class="atom warnc" x="618" y="34" text-anchor="middle">NH₂</text>
+      <text class="atom warnc" x="618" y="120" text-anchor="middle">N</text>
+      <text class="lbl" x="676" y="155" text-anchor="middle" font-weight="700" fill="var(--warn)">IQ</text>
+      <text class="lbl" x="676" y="171" text-anchor="middle" font-size="10">2-Amino-3-methylimidazo[4,5-f]chinolin</text>
+
+      <defs><marker id="h1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"/></marker></defs>
+    </svg>
+    <figcaption>Kreatinin liefert Imidazolring und 2-Amino-Gruppe (rechts im Molekül erhalten), die Ring-NH kondensiert mit dem Strecker-Aldehyd; Ringschluss mit dem Pyridin/Pyrazin-Baustein und Oxidation ergeben das vollaromatische IQ.</figcaption>
+  </div>
+
+  <div class="callout merk">
+    <span class="lbl">Die Pointe</span>
+    Kreatinin ist die zwingende Zutat — deshalb entstehen HAA <strong>nur</strong> in Fleisch/Fisch, nirgends sonst. Zucker ist optional: die reaktiven Carbonyle können auch aus Fettoxidation stammen. Aminosäure + Kreatinin sind Pflicht.
+  </div>
+</section>
+
+<!-- ================= TEIL 3 ================= -->
+<section class="part" id="teil3">
+  <div class="part-head"><span class="part-num">Teil 3 / 3</span></div>
+  <h2>Maillard als Werkzeug</h2>
+  <p>Dieselbe Chemie, die Lysin zerstört und AGEs/Acrylamid bildet, lässt sich <strong>dosiert</strong> einsetzen, um Proteine E-Nummern-frei funktionell zu verbessern: Protein + Zucker gezielt reagieren lassen — das hydrophile, sterisch sperrige Zuckeranhängsel verändert Löslichkeit, Grenzflächenaktivität und Vernetzung.</p>
+
+  <div class="fig-scroll">
+    <svg viewBox="0 0 480 110" role="img" aria-label="Ein Lysin-Rest im Protein reagiert mit einem reduzierenden Zucker zu einem glykierten Protein mit veränderten funktionellen Eigenschaften" style="min-width:440px;max-width:100%;height:auto;color:var(--ink)">
+      <path class="bond" d="M10,60 q20,-20 40,0 q20,20 40,0" />
+      <text class="lbl" x="50" y="90" text-anchor="middle">Protein (Lysin-ε-NH₂)</text>
+      <line class="bond" x1="90" y1="60" x2="110" y2="40"/><text class="atom accentc" x="110" y="30">NH₂</text>
+      <text x="150" y="55" font-family="var(--font-serif)" font-size="18" fill="var(--ink-dim)" text-anchor="middle">+</text>
+      <polygon points="180,45 205,35 230,45 230,65 205,75 180,65" fill="none" stroke="currentColor" stroke-width="2"/>
+      <text class="lbl" x="205" y="90" text-anchor="middle">Zucker</text>
+      <line class="rarrow" x1="255" y1="55" x2="315" y2="55" marker-end="url(#f1)"/>
+      <text class="rxn" x="285" y="43">Maillard, kontrolliert</text>
+      <path class="bond" d="M330,60 q20,-20 40,0 q20,20 40,0" />
+      <line class="bond" x1="370" y1="60" x2="386" y2="38"/><text class="atom accentc" x="374" y="26">NH</text>
+      <line class="bond" x1="393" y1="30" x2="410" y2="22" stroke="var(--accent)"/>
+      <polygon points="410,15 430,7 450,15 450,32 430,40 410,32" fill="none" stroke="var(--accent)" stroke-width="2"/>
+      <text class="lbl" x="370" y="90" text-anchor="middle">glykiertes Protein</text>
+      <defs><marker id="f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"/></marker></defs>
+    </svg>
+  </div>
+
+  <table>
+    <thead><tr><th>Protein</th><th>verbesserte Eigenschaft</th></tr></thead>
+    <tbody>
+      <tr><td>Molkenprotein</td><td>Textur & Gelbildung (Rich & Foegeding)</td></tr>
+      <tr><td>Ovalbumin</td><td>Textur / Gel</td></tr>
+      <tr><td>Lysozym</td><td>Emulgierfähigkeit</td></tr>
+      <tr><td>Karpfenmuskeleiweiß</td><td>Löslichkeit</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout merk">
+    <span class="lbl">Merksatz</span>
+    Dieselbe Chemie, die Lysin zerstört, macht ein Protein löslicher, emulgierfähiger oder gelfähiger — Maillard als E-Nummern-freier Funktionalisierer.
+  </div>
+
+  <div class="grid2" style="margin-top:24px;">
+    <div class="kv"><div class="k">Toxikologie, ein Satz</div><div class="v">Acrylamid entsteht aus Asparagin per Strecker-Abbau + β-Eliminierung (&gt;120 °C, Kartoffel), wird durch P450 zum genotoxischen Glycidamid; entdeckt über Hämoglobin-Addukte schwedischer Tunnelarbeiter. HAA (IQ) brauchen zwingend Kreatinin, daher nur Fleisch/Fisch.</div></div>
+    <div class="kv"><div class="k">Anwendung, ein Satz</div><div class="v">Gezielte Maillard-Modifikation verbessert Textur (Molkenprotein), Emulgierung (Lysozym) und Löslichkeit (Karpfeneiweiß) — ohne Zusatzstoffe.</div></div>
+  </div>
+</section>
+
+<hr class="div"/>
+<section class="part" id="protokoll">
+  <div class="part-head"><span class="part-num">Tagesabschluss</span></div>
+  <h2>Protokoll — Maillard-Tag (LT-M), rückwärts</h2>
+  <div class="log">
+    <div><span class="done">✓</span> Block 6 — Crosslinks (GOLD/MODIC/Glucosepan/Pentosidin) + Toxikologie — Kür</div>
+    <div><span class="done">✓</span> Block 5 — CML (2 Wege) + Amadori-Nachweis — Standard/Pflicht</div>
+    <div><span class="done">✓</span> Block 4 — 1-DG-Dreifachverzweigung + HMF — Standard</div>
+    <div><span class="done">✓</span> Block 3 — Strecker + Pyrazin + Melanoidine — Pflicht</div>
+    <div><span class="done">✓</span> Block 2 — pH-Gabelung, 3-DG (Pflicht) + 1-DG — Pflicht</div>
+    <div><span class="done">✓</span> Block 1 — Frühphase: Ringöffnung → Amadori — Pflicht</div>
+    <div class="hr">──────────────────────────────</div>
+    <div>Maillard-Kaskade: komplett · VL1–VL4 abgedeckt</div>
+  </div>
+</section>
+
+<footer>LMC StEx · Maillard-Reaktion, Block 6 · Acrylamid, HAA, Funktionalisierung</footer>
