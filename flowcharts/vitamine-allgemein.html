@@ -1,0 +1,1078 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vitamine allgemein – interaktive Übersicht</title>
+</head>
+<body>
+<style>
+:root{
+  --bg:#f3f4ea; --bg-elevated:#fffefa; --bg-inset:#eceadb;
+  --border:#ddd9c4; --border-strong:#c7c2a4;
+  --text:#7d8471; --text-muted:#96998a;
+  --heading:#6B8C0C; --accent:#E2185E; --accent-ink:#ffffff;
+  --ink:#34362b;
+  --rose:#d17484; --rose-bg:#f6e2e1;
+  --sage2:#7c8a5a; --sage2-bg:#e9ecda;
+  --mauve:#8d5aae; --blue:#4f7896; --clay:#b06a55; --gold:#b89a3a;
+  --shadow:0 1px 2px rgba(51,53,43,.07), 0 10px 28px -14px rgba(51,53,43,.22);
+  --font-heading: Georgia, 'Iowan Old Style', 'Noto Serif', 'Times New Roman', serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1b1c14; --bg-elevated:#242519; --bg-inset:#2c2d1e;
+    --border:#3c3d2a; --border-strong:#4d4e37;
+    --text:#b7bba3; --text-muted:#8b8f78;
+    --heading:#a3d13a; --accent:#ff5286; --accent-ink:#241019;
+    --ink:#eef0e2;
+    --rose:#e2a29b; --rose-bg:#3a2a26;
+    --sage2:#c3cba0; --sage2-bg:#333425;
+    --mauve:#c1a0d9; --blue:#9dc0da; --clay:#d9a08d; --gold:#e2cd7c;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px -14px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1b1c14; --bg-elevated:#242519; --bg-inset:#2c2d1e;
+  --border:#3c3d2a; --border-strong:#4d4e37;
+  --text:#b7bba3; --text-muted:#8b8f78;
+  --heading:#a3d13a; --accent:#ff5286; --accent-ink:#241019;
+  --ink:#eef0e2;
+  --rose:#e2a29b; --rose-bg:#3a2a26;
+  --sage2:#c3cba0; --sage2-bg:#333425;
+  --mauve:#c1a0d9; --blue:#9dc0da; --clay:#d9a08d; --gold:#e2cd7c;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px -14px rgba(0,0,0,.5);
+}
+
+*{box-sizing:border-box;}
+.page{background:var(--bg); color:var(--text); font-family:var(--font-body); line-height:1.55; font-size:16px; min-height:100%;}
+.page :focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+h1,h2,h3,h4{font-family:var(--font-heading); color:var(--heading); font-weight:700; text-wrap:balance; margin:0;}
+a{color:inherit;}
+p{margin:0 0 .8em; max-width:64ch;}
+p:last-child{margin-bottom:0;}
+.page ::selection{background:var(--accent); color:var(--accent-ink);}
+
+/* ---------- header ---------- */
+.site-header{position:sticky; top:0; z-index:40; background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--border);}
+.header-inner{max-width:1180px; margin:0 auto; padding:18px 24px 14px; display:flex; align-items:flex-start; justify-content:space-between; gap:16px;}
+.brand-kicker{display:block; font-size:12px; letter-spacing:.09em; text-transform:uppercase; color:var(--rose); font-weight:600; margin-bottom:4px;}
+.brand h1{font-size:clamp(22px,3.4vw,32px); line-height:1.15;}
+.brand-sub{display:block; font-family:var(--font-body); font-weight:400; font-style:italic; color:var(--text); font-size:.52em; margin-top:2px;}
+.theme-toggle{flex:0 0 auto; width:42px; height:42px; border-radius:50%; border:1px solid var(--border-strong); background:var(--bg-elevated); color:var(--ink); display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:var(--shadow);}
+.theme-toggle:hover{border-color:var(--accent);}
+.theme-toggle svg{width:20px; height:20px;}
+.theme-toggle .icon-moon{display:none;}
+:root[data-theme="dark"] .theme-toggle .icon-sun{display:none;}
+:root[data-theme="dark"] .theme-toggle .icon-moon{display:block;}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .theme-toggle .icon-sun{display:none;}
+  :root:not([data-theme="light"]) .theme-toggle .icon-moon{display:block;}
+}
+
+.section-nav{max-width:1180px; margin:0 auto; padding:0 24px 14px; display:flex; gap:8px; overflow-x:auto; scrollbar-width:thin;}
+.nav-pill{flex:0 0 auto; font-size:13.5px; font-weight:600; padding:7px 14px; border-radius:999px; border:1px solid var(--border); background:var(--bg-elevated); color:var(--text-muted); text-decoration:none; white-space:nowrap; transition:color .15s, border-color .15s, background .15s;}
+.nav-pill:hover{color:var(--ink); border-color:var(--border-strong);}
+.nav-pill.active{color:var(--accent-ink); background:var(--heading); border-color:var(--heading);}
+
+/* ---------- layout ---------- */
+main{max-width:1180px; margin:0 auto; padding:8px 24px 40px;}
+.section{padding:52px 0; border-bottom:1px solid var(--border);}
+.section:last-of-type{border-bottom:none;}
+.section-head{display:flex; gap:16px; margin-bottom:26px;}
+.section-num{flex:0 0 auto; width:34px; height:34px; border-radius:9px; background:var(--bg-inset); color:var(--heading); font-family:var(--font-heading); font-weight:700; display:flex; align-items:center; justify-content:center; font-size:16px;}
+.section-head h2{font-size:clamp(20px,2.6vw,27px); margin-bottom:6px;}
+.lede{color:var(--text); max-width:74ch;}
+
+/* ---------- diagrams ---------- */
+.diagram-figure{margin:0 0 22px; background:var(--bg-elevated); border:1px solid var(--border); border-radius:16px; padding:18px; box-shadow:var(--shadow); overflow-x:auto;}
+.diagram-figure svg{display:block; width:100%; height:auto; min-width:640px; color:var(--ink);}
+.diagram-figure figcaption{font-size:13px; color:var(--text-muted); margin-top:10px; padding-top:10px; border-top:1px dashed var(--border);}
+.node-box{fill:var(--bg-elevated); stroke:var(--border-strong); stroke-width:1.4;}
+.node-box.core{stroke:var(--accent); stroke-width:2;}
+.node-box.core-fill{fill:var(--rose-bg);}
+.node-text{font-family:var(--font-body); font-size:13px; fill:currentColor;}
+.node-text.label{font-weight:700; font-size:14px;}
+.node-sub{font-size:10.5px; fill:var(--text-muted);}
+.tree-node{cursor:pointer;}
+.tree-node:hover .node-box{stroke:var(--accent); stroke-width:2;}
+.edge-line{fill:none; stroke:var(--border-strong); stroke-width:1.4;}
+.edge-label{font-size:10px; fill:var(--text-muted); font-style:italic;}
+.mech-box{fill:var(--bg-inset); stroke:var(--border-strong); stroke-width:1.3;}
+.mech-box.hi{fill:var(--rose-bg); stroke:var(--accent);}
+.mech-title{font-size:12.5px; font-weight:700; fill:var(--ink);}
+.mech-sub{font-size:10px; fill:var(--text-muted);}
+.mech-label{font-size:10.5px; fill:var(--text-muted);}
+.edge-redox{fill:none; stroke:var(--blue); stroke-width:1.8; marker-end:url(#arr-redox);}
+.edge-degrad{fill:none; stroke:var(--clay); stroke-width:1.8; marker-end:url(#arr-degrad);}
+.edge-cycle{fill:none; stroke:var(--mauve); stroke-width:1.6; stroke-dasharray:5 4; marker-end:url(#arr-cycle);}
+.edge-struct{fill:none; stroke:var(--border-strong); stroke-width:1.6; marker-end:url(#arr-ink);}
+.mech-legend{display:flex; flex-wrap:wrap; gap:14px 22px; font-size:12.5px; color:var(--text-muted); margin-bottom:20px;}
+.mech-legend .legend-item .legend-line{color:inherit;}
+.mech-legend .redox .legend-line{color:var(--blue);}
+.mech-legend .degrad .legend-line{color:var(--clay);}
+.mech-legend .cycle .legend-line{color:var(--mauve);}
+.mech-legend .struct .legend-line{color:var(--border-strong);}
+
+/* ---------- overview tree ---------- */
+.node-box.fett{fill:var(--rose-bg); stroke:var(--rose);}
+.node-box.wasser{fill:var(--sage2-bg); stroke:var(--sage2);}
+.node-box.branch{fill:var(--bg-inset); stroke:var(--border-strong); stroke-width:1.6;}
+.node-box.root{fill:var(--heading); stroke:var(--heading);}
+.node-text.on-root{fill:var(--bg-elevated);}
+
+/* ---------- matrix network ---------- */
+.netnode{cursor:pointer;}
+.netnode rect{fill:var(--bg-elevated); stroke:var(--border-strong); stroke-width:1.3; transition:opacity .18s, stroke .18s;}
+.netnode.food rect{fill:var(--bg-inset);}
+.netnode text{font-size:12.5px; fill:var(--ink); transition:opacity .18s;}
+.netnode.dim{opacity:.32;}
+.netnode.hi rect{stroke:var(--accent); stroke-width:2.2;}
+.netedge{fill:none; stroke:var(--border-strong); stroke-width:1.3; opacity:.45; transition:opacity .18s, stroke .18s, stroke-width .18s;}
+.netedge.hi{stroke:var(--accent); stroke-width:2.2; opacity:1;}
+.netedge.dim{opacity:.08;}
+
+/* ---------- legend ---------- */
+.legend{display:flex; flex-wrap:wrap; gap:10px 20px; margin-bottom:26px; font-size:13px; color:var(--text-muted);}
+.legend-item{display:flex; align-items:center; gap:7px;}
+.legend-swatch{width:16px; height:16px; border-radius:5px; flex:0 0 auto; border:1.4px solid var(--border-strong);}
+.legend-line{width:22px; height:0; border-top:2.4px solid currentColor; flex:0 0 auto;}
+.legend-line.dashed{border-top-style:dashed;}
+
+/* ---------- callouts ---------- */
+.callout-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px;}
+.callout{background:var(--bg-elevated); border:1px solid var(--border); border-left:4px solid var(--sage2); border-radius:12px; padding:16px 18px; box-shadow:var(--shadow);}
+.callout h4{font-size:14.5px; margin-bottom:6px; color:var(--ink); font-family:var(--font-body); font-weight:700;}
+.callout p{font-size:14px;}
+.callout.accent{border-left-color:var(--accent); background:var(--rose-bg);}
+.callout.accent h4{color:var(--accent);}
+
+/* ---------- flow chips (simple linear reactions) ---------- */
+.flow-row{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:10px 0; font-size:13px;}
+.flow-chip{background:var(--bg-inset); border:1px solid var(--border); border-radius:8px; padding:5px 10px; font-weight:600; color:var(--ink); white-space:nowrap;}
+.flow-chip.core{background:var(--rose-bg); border-color:var(--rose); color:var(--ink);}
+.flow-arrow{display:flex; flex-direction:column; align-items:center; color:var(--text-muted); font-size:10.5px; white-space:nowrap;}
+.flow-arrow::after{content:"→"; font-size:15px; line-height:1;}
+
+/* ---------- vitamin cards (accordion) ---------- */
+.vcard{background:var(--bg-elevated); border:1px solid var(--border); border-radius:14px; margin-bottom:14px; box-shadow:var(--shadow); scroll-margin-top:120px; overflow:hidden;}
+.vcard[open]{border-color:var(--border-strong);}
+.vcard.flash{animation:flash 1.4s ease;}
+@keyframes flash{0%{box-shadow:0 0 0 3px var(--accent);} 100%{box-shadow:var(--shadow);}}
+.vcard > summary{cursor:pointer; list-style:none; padding:16px 20px; display:flex; align-items:center; gap:14px;}
+.vcard > summary::-webkit-details-marker{display:none;}
+.vcard-badge{flex:0 0 auto; width:46px; height:46px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-family:var(--font-heading); font-weight:700; font-size:15px; background:var(--bg-inset); color:var(--ink); border:1.5px solid var(--border-strong);}
+.vcard-badge.core{background:var(--rose-bg); color:var(--accent); border-color:var(--accent);}
+.vcard-title{flex:1 1 auto; min-width:0;}
+.vcard-title h3{font-size:17px; color:var(--ink); font-family:var(--font-body); font-weight:700;}
+.vcard-title .vcard-sub{font-size:12.5px; color:var(--text-muted); font-style:italic;}
+.vcard-tags{display:flex; gap:6px; flex-wrap:wrap;}
+.tag{font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; padding:3px 8px; border-radius:999px;}
+.tag.draw{background:var(--accent); color:var(--accent-ink);}
+.tag.fett{background:var(--rose-bg); color:var(--rose);}
+.tag.wasser{background:var(--sage2-bg); color:var(--sage2);}
+.chevron{flex:0 0 auto; width:20px; height:20px; color:var(--text-muted); transition:transform .2s;}
+.vcard[open] .chevron{transform:rotate(90deg);}
+.vcard-body{padding:0 22px 22px; border-top:1px solid var(--border);}
+.vcard-body h4{font-family:var(--font-body); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--heading); margin:18px 0 8px;}
+.vcard-body h4:first-child{margin-top:18px;}
+.vcard-body p{font-size:14.5px;}
+.vcard-body ul{margin:0 0 .8em; padding-left:1.15em; font-size:14.5px;}
+.vcard-body li{margin-bottom:.4em;}
+.chips{display:flex; flex-wrap:wrap; gap:7px; margin-top:6px;}
+.chip{font-size:12.5px; background:var(--bg-inset); border:1px solid var(--border); border-radius:8px; padding:4px 10px; color:var(--text);}
+
+.vcard-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:14px; align-items:start;}
+.vcard.compact .vcard-body p, .vcard.compact .vcard-body li{font-size:14px;}
+
+/* ---------- matrix ---------- */
+.matrix-info{background:var(--bg-inset); border:1px solid var(--border); border-radius:12px; padding:14px 18px; font-size:14px; margin-bottom:18px; min-height:26px;}
+.matrix-info b{color:var(--ink);}
+.matrix-info .principle{color:var(--text-muted); font-size:13px; display:block; margin-top:4px;}
+details.table-toggle{background:var(--bg-elevated); border:1px solid var(--border); border-radius:14px; padding:4px 20px; box-shadow:var(--shadow);}
+details.table-toggle summary{cursor:pointer; padding:14px 0; font-weight:700; color:var(--ink); font-size:14px;}
+.tablewrap{overflow-x:auto; padding-bottom:16px;}
+table{border-collapse:collapse; width:100%; font-size:13.5px; min-width:640px;}
+th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--border); vertical-align:top;}
+th{font-family:var(--font-body); text-transform:uppercase; font-size:11px; letter-spacing:.04em; color:var(--text-muted);}
+td:first-child, th:first-child{font-family:var(--font-mono); font-weight:600; color:var(--ink);}
+
+/* ---------- footer ---------- */
+.site-footer{max-width:1180px; margin:0 auto; padding:26px 24px 50px; font-size:12.5px; color:var(--text-muted);}
+
+@media(max-width:640px){
+  .header-inner{padding:14px 16px 10px;}
+  main{padding:4px 16px 30px;}
+  .section{padding:38px 0;}
+}
+</style>
+<div class="page" id="vitamine-page">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <marker id="arr-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--border-strong)"></path></marker>
+      <marker id="arr-redox" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"></path></marker>
+      <marker id="arr-degrad" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--clay)"></path></marker>
+      <marker id="arr-cycle" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--mauve)"></path></marker>
+    </defs>
+  </svg>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-kicker">LMC · StEx Kompendium · Prof. LebCHE</span>
+        <h1>Vitamine allgemein<span class="brand-sub">Struktur &amp; Redoxfunktion — interaktive Übersicht</span></h1>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Farbschema umschalten">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"></circle><path d="M12 2.5v3M12 18.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2.5 12h3M18.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"></path></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5Z"></path></svg>
+      </button>
+    </div>
+    <nav class="section-nav" aria-label="Abschnitte">
+      <a href="#uebersicht" class="nav-pill" data-section="uebersicht">1 · Übersicht</a>
+      <a href="#kernvitamine" class="nav-pill" data-section="kernvitamine">2 · Kernvitamine</a>
+      <a href="#weitere" class="nav-pill" data-section="weitere">3 · Weitere Vitamine</a>
+      <a href="#begleitstoffe" class="nav-pill" data-section="begleitstoffe">4 · Begleitstoffe</a>
+      <a href="#matrix" class="nav-pill" data-section="matrix">5 · Matrix</a>
+      <a href="#pruefungslogik" class="nav-pill" data-section="pruefungslogik">6 · Prüfungslogik</a>
+    </nav>
+  </header>
+  <main>
+    <section id="uebersicht" class="section">
+      <div class="section-head">
+        <span class="section-num">1</span>
+        <div>
+          <h2>Einordnung: ein Sonderfall bei Glomb</h2>
+          <p class="lede">„Vitamine allgemein“ liegt an letzter Stelle der Häufigkeitsrangliste — nur ca. 3 von 55 ausgewerteten Prüfungsberichten führen es als Hauptthema. Trotzdem taucht es fast immer als spontane Einzelfrage auf, typischerweise als Assoziationssprung aus einem Hauptthema heraus. Lernziel ist daher nicht Tiefe, sondern sofortige, souveräne Abrufbarkeit von Struktur, Redoxprinzip und Lebensmittelbezug.</p>
+        </div>
+      </div>
+
+      <figure class="diagram-figure">
+        <svg id="overview-tree" viewBox="0 0 1040 430" role="img" aria-label="Klassifikationsbaum: Vitamine gliedern sich in fettlösliche (A, D, E, K) und wasserlösliche (B-Komplex, C) Vitamine; anklickbare Knoten führen zur jeweiligen Detailkarte."></svg>
+        <figcaption>Klicke einen Vitamin-Knoten, um zur Detailkarte zu springen. Farbig umrandete Knoten = redoxaktive Kernvitamine (Abschnitt 2); Sternchen = laut Themenkatalog explizit als Struktur zum Zeichnen gefordert.</figcaption>
+      </figure>
+
+      <div class="legend" aria-hidden="false">
+        <span class="legend-item"><span class="legend-swatch" style="background:var(--bg-elevated); border-color:var(--accent); border-width:2px;"></span>Kernvitamin (redoxaktiv, Pflichtstruktur)</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:var(--rose-bg); border-color:var(--rose);"></span>Fettlöslich</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:var(--sage2-bg); border-color:var(--sage2);"></span>Wasserlöslich</span>
+        <span class="legend-item">★ = explizit zum Zeichnen gefordert (Niacin/NAD, Riboflavin/FAD)</span>
+      </div>
+
+      <div class="callout-grid">
+        <div class="callout">
+          <h4>Klassifikationsprinzip</h4>
+          <p><b style="color:var(--rose)">Fettlöslich (A, D, E, K):</b> häufig Isopren-basiert, teils hormonähnlich (v. a. D). Speicherung im Fettgewebe → reales Überdosierungsrisiko (Hypervitaminosen).</p>
+          <p><b style="color:var(--sage2)">Wasserlöslich (B-Komplex, C):</b> strukturell heterogen, keine gemeinsame Grundstruktur. Geringe Speicherkapazität, Überschuss wird renal ausgeschieden → ständige Zufuhr nötig.</p>
+        </div>
+        <div class="callout">
+          <h4>Begriff „Provitamin“</h4>
+          <p>Eine Vorstufe, die der Körper selbst in die aktive Form überführt — die vitaminaktive Struktur liegt bereits nahezu fertig vor.</p>
+          <div class="flow-row">
+            <span class="flow-chip">β-Carotin</span><span class="flow-arrow"></span><span class="flow-chip core">Vitamin A</span>
+          </div>
+          <div class="flow-row">
+            <span class="flow-chip">7-Dehydrocholesterin</span><span class="flow-arrow">UV-B</span><span class="flow-chip">Prävitamin D3</span><span class="flow-arrow">thermisch</span><span class="flow-chip core">Vitamin D3</span>
+          </div>
+        </div>
+        <div class="callout">
+          <h4>Echte Eigensynthese (De-novo)</h4>
+          <p>Nur zwei Vitamine kann der Körper unter Bedingungen relevant selbst <em>neu aufbauen</em> — strikt zu trennen vom Provitamin-Prinzip, bei dem die Struktur nur umgewandelt wird.</p>
+          <div class="flow-row">
+            <span class="flow-chip">Tryptophan</span><span class="flow-arrow">~60:1</span><span class="flow-chip core">Niacin</span>
+          </div>
+          <p style="margin-top:8px; font-size:13px;">Vitamin D3 zählt strukturell zur Provitamin-Route (s. links), wird aber ebenfalls oft als „Eigensynthese“ genannt — zweistufig photochemisch/thermisch.</p>
+        </div>
+        <div class="callout accent">
+          <h4>Begriffsklärung vermeiden</h4>
+          <p>Glomb vermeidet bewusst die unpräzise Sammelbezeichnung „Vitamin-B-Gruppe“. Immer konkrete Namen verwenden: Thiamin, Riboflavin, Niacin, Pyridoxal, Folsäure, Cobalamin, Biotin, Pantothensäure.</p>
+        </div>
+      </div>
+    </section>
+    <section id="kernvitamine" class="section">
+      <div class="section-head">
+        <span class="section-num">2</span>
+        <div>
+          <h2>Die vier redoxaktiven Kernvitamine</h2>
+          <p class="lede">Das Rückgrat des Themas: Ascorbinsäure und Tocopherol als die beiden großen Antioxidans-Partner (wässrige vs. lipophile Phase), Riboflavin/FAD und Niacin/NAD als die zentralen Redox-Coenzyme des Stoffwechsels. Niacin/NAD und Riboflavin/FAD sind laut Themenkatalog explizit als Struktur zum Zeichnen gefordert.</p>
+        </div>
+      </div>
+
+      <div class="mech-legend">
+        <span class="legend-item redox"><span class="legend-line"></span>Elektronen-/H-Transfer (Redoxschritt)</span>
+        <span class="legend-item degrad"><span class="legend-line"></span>Abbau-/Fragmentierungsweg</span>
+        <span class="legend-item cycle"><span class="legend-line dashed"></span>Regenerations-/Recycling-Schritt</span>
+        <span class="legend-item struct"><span class="legend-line"></span>Strukturelle Umwandlung</span>
+      </div>
+
+      <details class="vcard" id="card-c" open>
+        <summary>
+          <span class="vcard-badge core">C</span>
+          <span class="vcard-title"><h3>Ascorbinsäure / Dehydroascorbinsäure</h3><span class="vcard-sub">Vitamin C — der Dauerbrenner</span></span>
+          <span class="vcard-tags"><span class="tag wasser">wasserlöslich</span></span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+        </summary>
+        <div class="vcard-body">
+          <h4>Struktur</h4>
+          <p>L-threo-Ascorbinsäure: fünfgliedriger γ-Lactonring mit Endiol-Struktur an C2–C3 (zwei benachbarte enolische OH-Gruppen, konjugiert mit der C=C-Doppelbindung). Zwei chirale Zentren erlauben formal vier Stereoisomere; biologisch aktiv ist ausschließlich die L-threo-Form. Die D-erythro-Form (Iso-Ascorbinsäure) ist chemisch ebenso antioxidativ, aber biologisch nur schwach aktiv — die Stereochemie entscheidet über die Vitaminwirkung, nicht über die Redoxchemie.</p>
+
+          <h4>Redoxprinzip &amp; Abbau (ohne Mechanismus)</h4>
+          <p>Die elektronenreiche Endiol-Gruppe gibt formal zweimal je ein Proton und ein Elektron ab (netto 2 H): zunächst ein sechsfach delokalisiertes, gut stabilisiertes Radikal, danach Dehydroascorbinsäure (2,3-Diketostruktur). Das Redoxpaar ist vollständig reversibel — ein Zwei-Elektronen/Zwei-Protonen-System, ähnlich einem Reduktonprinzip. Dehydroascorbinsäure ist instabil: der Lactonring öffnet hydrolytisch zu 2,3-Diketogulonsäure, die überwiegend (Hauptweg ca. 53 %) über oxidative α-Dicarbonylspaltung zu Oxalsäure + L-Threonsäure zerfällt, daneben über Decarboxylierung/β-Spaltung (ca. 18 %).</p>
+
+          <figure class="diagram-figure" style="margin-top:14px;">
+            <svg viewBox="0 0 760 300" role="img" aria-label="Ascorbinsäure gibt zwei Mal je ein Elektron und Proton ab und wird über ein delokalisiertes Radikal zu Dehydroascorbinsäure oxidiert; diese öffnet hydrolytisch zu 2,3-Diketogulonsäure, die zu 53% über α-Spaltung zu Oxalsäure und L-Threonsäure und zu 18% über Decarboxylierung weiter zerfällt.">
+              <rect class="mech-box hi" x="10" y="45" width="150" height="60" rx="10"></rect>
+              <text class="mech-title" x="85" y="70" text-anchor="middle">Ascorbinsäure</text>
+              <text class="mech-sub" x="85" y="88" text-anchor="middle">Endiol, e⁻-reich</text>
+
+              <path class="edge-redox" d="M160,75 H205"></path>
+              <text class="mech-label" x="182" y="66" text-anchor="middle">−H•,−e⁻</text>
+
+              <rect class="mech-box" x="210" y="45" width="150" height="60" rx="10"></rect>
+              <text class="mech-title" x="285" y="70" text-anchor="middle">Ascorbylradikal</text>
+              <text class="mech-sub" x="285" y="88" text-anchor="middle">6× delokalisiert, stabil</text>
+
+              <path class="edge-redox" d="M360,75 H405"></path>
+              <text class="mech-label" x="382" y="66" text-anchor="middle">−H•,−e⁻</text>
+
+              <rect class="mech-box hi" x="410" y="45" width="150" height="60" rx="10"></rect>
+              <text class="mech-title" x="485" y="66" text-anchor="middle">Dehydroascorbin-</text>
+              <text class="mech-title" x="485" y="80" text-anchor="middle">säure</text>
+              <text class="mech-sub" x="485" y="96" text-anchor="middle">2,3-Diketo</text>
+
+              <path class="edge-struct" d="M485,105 V160"></path>
+              <text class="mech-label" x="475" y="137" text-anchor="end">Ringöffnung,</text>
+              <text class="mech-label" x="475" y="150" text-anchor="end">Hydrolyse</text>
+
+              <rect class="mech-box" x="410" y="163" width="150" height="60" rx="10"></rect>
+              <text class="mech-title" x="485" y="188" text-anchor="middle">2,3-Diketogulon-</text>
+              <text class="mech-title" x="485" y="202" text-anchor="middle">säure</text>
+
+              <path class="edge-degrad" d="M560,180 C 585,170 595,150 598,138"></path>
+              <rect class="mech-box" x="600" y="103" width="150" height="60" rx="10"></rect>
+              <text class="mech-title" x="675" y="123" text-anchor="middle">Oxalsäure +</text>
+              <text class="mech-title" x="675" y="137" text-anchor="middle">L-Threonsäure</text>
+              <text class="mech-sub" x="675" y="153" text-anchor="middle">Hauptweg, α-Spaltung, ~53 %</text>
+
+              <path class="edge-degrad" d="M560,208 C 585,218 595,228 598,232"></path>
+              <rect class="mech-box" x="600" y="205" width="150" height="60" rx="10"></rect>
+              <text class="mech-title" x="675" y="228" text-anchor="middle">Decarboxylierung</text>
+              <text class="mech-sub" x="675" y="244" text-anchor="middle">β-Spaltung, ~18 %</text>
+              <text class="mech-sub" x="675" y="257" text-anchor="middle">(weitere Fragmente)</text>
+
+              <path class="edge-cycle" d="M85,45 C 85,8 485,8 485,45"></path>
+              <rect x="185" y="2" width="200" height="14" rx="4" fill="var(--bg-elevated)"></rect>
+              <text class="mech-label" x="285" y="12" text-anchor="middle" fill="var(--mauve)">reversibles Redoxpaar (2 H⁺/2 e⁻)</text>
+            </svg>
+            <figcaption>Redox-Kaskade von Ascorbinsäure zu Dehydroascorbinsäure (reversibel) und weiterer, irreversibler Zerfall von 2,3-Diketogulonsäure in zwei parallele Abbauwege.</figcaption>
+          </figure>
+
+          <h4>Funktion &amp; Kehrseite</h4>
+          <ul>
+            <li><b>Antioxidans als Synergist:</b> regeneriert radikalisierte phenolische Antioxidantien (v. a. Tocopherole) zurück in ihre aktive Form — fängt lipophile Radikale dabei nicht selbst ab (falsches Kompartiment), sondern „recycelt“ den eigentlichen Radikalfänger.</li>
+            <li><b>Prooxidative Kehrseite:</b> bei hoher Metallionen- und niedriger Antioxidans-Konzentration reduziert Ascorbinsäure Fe³⁺ zu Fe²⁺, welches Hydroperoxide über Fenton-Chemie zu reaktiven Radikalen spaltet.</li>
+          </ul>
+          <div class="flow-row">
+            <span class="flow-chip">Fe³⁺ + Ascorbinsäure</span><span class="flow-arrow"></span><span class="flow-chip">Fe²⁺ + Ascorbylradikal</span>
+          </div>
+          <div class="flow-row">
+            <span class="flow-chip">Fe²⁺ + ROOH</span><span class="flow-arrow"></span><span class="flow-chip">Fe³⁺ + RO• + OH⁻</span>
+          </div>
+          <p>Lehrbuchbeispiel: jedes gute Reduktionsmittel kann gegenüber Übergangsmetallen prinzipiell auch prooxidativ wirken — allein die Konzentrationsverhältnisse entscheiden über die Richtung.</p>
+
+          <h4>Stabilität, Abbau &amp; Nachweis (vertiefend)</h4>
+          <p>Abhängig von Temperatur, Salz-/Zuckergehalt, pH, O₂, Enzymen (Ascorbinsäureoxidase), Metallkatalysatoren (Cu, Fe) u. a. — eindämmbar durch Blanchieren (Enzyminaktivierung) und Sauerstoffausschluss. Zweiter, nichtoxidativer Abbauweg: „Ascorbinsäure-Bräunung“ in sauren, sauerstoffarmen Lebensmitteln (z. B. Zitrussäfte) über Xylosen/Desoxypentosen/Ethylglyoxal zu Reduktonen, Furfural und Furancarbonsäuren — analog zur Maillard-Reaktion, aber ohne Aminkomponente. Nachweis: photometrisch (Kondensation mit 1,2-Phenylendiamin → Chinoxalin-Derivat), enzymatisch, HPLC/GLC. Bedarf ca. 100 mg/Tag.</p>
+
+          <h4>Querverbindungen</h4>
+          <div class="chips">
+            <span class="chip"><b>Fett/Antioxidantien:</b> Synergist-Fall — Kernverankerung des Themas</span>
+            <span class="chip"><b>Fleisch:</b> Umrötung, reduziert Nitrit zu NO, mindert Nitrosaminbildung</span>
+            <span class="chip"><b>Getreide/Backwaren:</b> Mehlbehandlungsmittel — Wirkrichtung invers (Oxidationsmittel via Glutathion-Dehydrogenase, festigt Teig)</span>
+            <span class="chip"><b>Wein:</b> konzeptueller Vergleich zu SO₂ (reduktive Stabilisierung)</span>
+          </div>
+        </div>
+      </details>
+      <details class="vcard" id="card-e">
+        <summary>
+          <span class="vcard-badge core">E</span>
+          <span class="vcard-title"><h3>Tocopherole</h3><span class="vcard-sub">Vitamin E — das lipophile Gegenstück</span></span>
+          <span class="vcard-tags"><span class="tag fett">fettlöslich</span></span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+        </summary>
+        <div class="vcard-body">
+          <h4>Struktur</h4>
+          <p>Chromanol-Grundgerüst (6-Chromenol): aromatischer Ring mit phenolischer OH-Gruppe, über ein Ringsauerstoffatom mit gesättigtem Pyranring verknüpft (formal eine Hydrochinonether-Struktur), dazu eine gesättigte Isoprenoid-Seitenkette (C16, 3 Stereozentren). Das Methylierungsmuster definiert vier Homologe: α (5,7,8-trimethyliert), β (5,8-), γ (7,8-), δ (nur 8-). Natürlich liegt ausschließlich die R,R,R-Konfiguration vor; synthetisches „all-rac-α-Tocopherol“ ist ein Gemisch aller acht Stereoisomere (ca. 50 % Wirksamkeit).</p>
+
+          <h4>Redoxprinzip (ohne Mechanismus)</h4>
+          <p>Reaktives Zentrum ist die phenolische OH-Gruppe: guter H-Donor, weil das resultierende Phenoxyl-Radikal über den aromatischen Ring und den Ringsauerstoff mesomeriestabilisiert ist. Bemerkenswert ist die Umkehrung von biologischer Aktivität und antioxidativer Stärke: α-Tocopherol hat die höchste Vitaminwirkung, aber die schwächste antioxidative Wirksamkeit — δ-Tocopherol genau umgekehrt.</p>
+
+          <figure class="diagram-figure" style="margin-top:14px;">
+            <svg viewBox="0 0 760 300" role="img" aria-label="Tocopherol gibt ein Wasserstoffatom ab und bildet ein mesomeriestabilisiertes Phenoxyl-Radikal. Bei alpha-Tocopherol sind die Ringpositionen blockiert, wodurch ein reaktives, prooxidatives Radikal entsteht; bei delta-Tocopherol sind sie frei, wodurch stabile Dimere und hohe antioxidative Kapazität entstehen. Ascorbinsäure oder Reduktone regenerieren das Phenoxyl-Radikal zurück zu Tocopherol.">
+              <rect class="mech-box hi" x="10" y="120" width="150" height="58" rx="10"></rect>
+              <text class="mech-title" x="85" y="145" text-anchor="middle">Tocopherol-OH</text>
+              <text class="mech-sub" x="85" y="163" text-anchor="middle">phenolisch</text>
+
+              <path class="edge-redox" d="M160,149 H215"></path>
+              <text class="mech-label" x="188" y="141" text-anchor="middle">H-Abgabe</text>
+
+              <rect class="mech-box" x="220" y="120" width="170" height="58" rx="10"></rect>
+              <text class="mech-title" x="305" y="145" text-anchor="middle">Phenoxyl-Radikal</text>
+              <text class="mech-sub" x="305" y="163" text-anchor="middle">mesomeriestabilisiert</text>
+
+              <path class="edge-degrad" d="M390,132 C 410,100 415,70 425,58"></path>
+              <rect class="mech-box" x="430" y="24" width="200" height="68" rx="10"></rect>
+              <text class="mech-title" x="530" y="46" text-anchor="middle">α: Ring blockiert</text>
+              <text class="mech-sub" x="530" y="63" text-anchor="middle">Ringöffnung → reaktives</text>
+              <text class="mech-sub" x="530" y="77" text-anchor="middle">tert. Radikal (prooxidativ)</text>
+
+              <path class="edge-struct" d="M390,166 C 410,198 415,225 425,237"></path>
+              <rect class="mech-box" x="430" y="208" width="200" height="68" rx="10"></rect>
+              <text class="mech-title" x="530" y="230" text-anchor="middle">δ: Ring frei</text>
+              <text class="mech-sub" x="530" y="247" text-anchor="middle">stabile C–C-Dimere →</text>
+              <text class="mech-sub" x="530" y="261" text-anchor="middle">antioxidative Kapazität ↑</text>
+
+              <path class="edge-cycle" d="M305,120 C 305,86 85,86 85,118"></path>
+              <rect x="90" y="76" width="220" height="14" rx="4" fill="var(--bg-elevated)"></rect>
+              <text class="mech-label" x="195" y="86" text-anchor="middle" fill="var(--mauve)">Regeneration: + Ascorbinsäure/Reduktone</text>
+            </svg>
+            <figcaption>Phenoxyl-Radikal-Bildung mit Verzweigung α- vs. δ-Tocopherol (blockierte vs. freie Ringpositionen) und Regenerationskreislauf über Ascorbinsäure.</figcaption>
+          </figure>
+
+          <h4>Wirksamkeitstabelle &amp; Tocotrienole (vertiefend)</h4>
+          <p>Die Umkehrung von biologischer und antioxidativer Aktivität als Zahlenbild (relative Werte):</p>
+          <div class="tablewrap" style="margin-bottom:10px;">
+            <table>
+              <thead><tr><th>Tocopherol</th><th>Biologische Wirkung</th><th>Antioxidative Wirkung</th></tr></thead>
+              <tbody>
+                <tr><td>α</td><td>100</td><td>1</td></tr>
+                <tr><td>β</td><td>15–27</td><td>~10</td></tr>
+                <tr><td>γ</td><td>3–20</td><td>~25</td></tr>
+                <tr><td>δ</td><td>0,3–2</td><td>100</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Der Bedarf wird deshalb in IE-Äquivalenten bezogen auf all-rac-α-Tocopherol angegeben — ein biologisches, kein antioxidatives Maß. Tocotrienole besitzen dasselbe Chromanol-Grundgerüst, aber eine ungesättigte Isoprenoid-Seitenkette (3 Doppelbindungen). α-Tocopherol kann direkt mit Triplett-Sauerstoff (³O₂) reagieren und dabei in ein reaktives tertiäres Alkylradikal übergehen — seine Rolle als „Opferstruktur“ im Fettverderb.</p>
+
+          <h4>Vorkommen &amp; Querverbindungen</h4>
+          <p>Tocopherole werden ausschließlich von Pflanzen (und einigen Mikroorganismen) gebildet — nie tierisch. Der Tocopherolgehalt eines Öls korreliert typischerweise mit dessen Gehalt an mehrfach ungesättigten Fettsäuren: die Natur liefert Antioxidans und leicht oxidierbares Substrat meist im selben Paket.</p>
+          <div class="chips">
+            <span class="chip"><b>Fett/Antioxidantien:</b> Leitbeispiel, Zusammenspiel mit Ascorbinsäure &amp; Komplexbildnern (Citronensäure gegen Fenton-Chemie)</span>
+            <span class="chip"><b>Tee:</b> Catechine — gleiches Prinzip (delokalisierbares Phenoxyl-Radikal), aber wasserlöslicher Flavan-3-ol</span>
+            <span class="chip"><b>Sonnencreme (Reservefrage):</b> Hautschutz gegen UV-induzierte Lipidperoxidation</span>
+          </div>
+        </div>
+      </details>
+      <details class="vcard" id="card-b2">
+        <summary>
+          <span class="vcard-badge core">B2 ★</span>
+          <span class="vcard-title"><h3>Riboflavin / FAD</h3><span class="vcard-sub">Vitamin B2 — der Ein- und Zweielektronen-Künstler</span></span>
+          <span class="vcard-tags"><span class="tag wasser">wasserlöslich</span><span class="tag draw">Zeichnen-Pflicht</span></span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+        </summary>
+        <div class="vcard-body">
+          <h4>Struktur</h4>
+          <p>Isoalloxazin-Ringsystem (dreifach kondensierter Heterocyclus mit zwei Carbonylgruppen), N10-verknüpft mit Ribitol — einem Zuckeralkohol, keinem echten Zucker (Riboflavin ist damit kein klassisches Nukleosid). Phosphorylierung ergibt FMN (Flavinmononukleotid); die zusätzliche Verknüpfung mit AMP über eine Pyrophosphatbrücke ergibt FAD (Flavinadenindinukleotid).</p>
+
+          <h4>Redoxprinzip (ohne Mechanismus)</h4>
+          <p>Das Isoalloxazin-System trägt ein Redukton-Motiv: zwei benachbarte, konjugierte Carbonyl-/Imin-Positionen, reversibel reduzierbar. Entscheidende Besonderheit gegenüber Niacin/NAD: Riboflavin kann sowohl <b>Ein-Elektronen-</b> (über eine radikalische Semichinon-Zwischenstufe) als auch <b>Zwei-Elektronen-Übergänge</b> katalysieren — es vermittelt zwischen der „Zwei-Elektronen-Welt“ (Substrate, NADH) und der „Ein-Elektronen-Welt“ (Sauerstoffradikale, Cytochrome).</p>
+
+          <figure class="diagram-figure" style="margin-top:14px;">
+            <svg viewBox="0 0 760 260" role="img" aria-label="Isoalloxazin kann entweder über eine radikalische Semichinon-Zwischenstufe zwei einzelne Ein-Elektronen-Schritte durchlaufen, oder direkt einen Zwei-Elektronen-Schritt — beide Wege führen zur reduzierten Form FADH2.">
+              <rect class="mech-box hi" x="10" y="95" width="170" height="60" rx="10"></rect>
+              <text class="mech-title" x="95" y="120" text-anchor="middle">Isoalloxazin</text>
+              <text class="mech-sub" x="95" y="138" text-anchor="middle">oxidiert (FAD)</text>
+
+              <path class="edge-redox" d="M182,100 C 230,75 260,55 298,45"></path>
+              <text class="mech-label" x="230" y="70" text-anchor="middle">1 e⁻</text>
+              <rect class="mech-box" x="300" y="18" width="190" height="55" rx="10"></rect>
+              <text class="mech-title" x="395" y="40" text-anchor="middle">Semichinon-Radikal</text>
+              <text class="mech-sub" x="395" y="56" text-anchor="middle">Ein-Elektronen-Welt</text>
+              <path class="edge-redox" d="M492,45 C 540,52 590,72 638,92"></path>
+              <text class="mech-label" x="560" y="63" text-anchor="middle">1 e⁻</text>
+
+              <path class="edge-redox" d="M182,142 C 300,182 460,182 638,145"></path>
+              <text class="mech-label" x="410" y="192" text-anchor="middle">2 e⁻ (direkt) — Zwei-Elektronen-Welt</text>
+
+              <rect class="mech-box hi" x="580" y="95" width="170" height="60" rx="10"></rect>
+              <text class="mech-title" x="665" y="120" text-anchor="middle">FADH₂</text>
+              <text class="mech-sub" x="665" y="138" text-anchor="middle">reduziert</text>
+            </svg>
+            <figcaption>Riboflavin/FAD vermittelt zwischen Ein-Elektronen- (Semichinon-Radikal) und Zwei-Elektronen-Redoxwelten — beide Wege führen zu FADH₂.</figcaption>
+          </figure>
+
+          <p>Anwendungsbeispiel: Cofaktor der Acyl-CoA-Dehydrogenase in der Fettsäure-β-Oxidation (Einführung einer Doppelbindung in α,β-Position zur Carbonylfunktion).</p>
+
+          <h4>Semichinon, prosthetische Bindung &amp; Photolyse (vertiefend)</h4>
+          <p>Ob der H-/Elektronenübertrag im Einzelfall eher radikalisch (schrittweise, über Semichinon) oder ionisch (hydridartig, konzertiert) zu formulieren ist, markiert die Vorlesung explizit als offene Frage — es genügt, diese Ambivalenz benennen zu können. In vielen Flavoenzymen liegt FAD/FMN als <b>prosthetische Gruppe kovalent</b> gebunden vor — im Unterschied zu NAD(P), das stets als frei diffundierendes Co-Substrat fungiert.</p>
+          <div class="flow-row">
+            <span class="flow-chip">Ribitylrest (N10)</span><span class="flow-arrow">saure Photolyse</span><span class="flow-chip">Lumichrom</span>
+          </div>
+          <div class="flow-row">
+            <span class="flow-chip">N10-Methylgruppe</span><span class="flow-arrow">alkalische Photolyse</span><span class="flow-chip">Lumiflavin</span>
+          </div>
+
+          <h4>Stabilität, Analytik &amp; Querverbindungen</h4>
+          <p>Riboflavin ist hitzestabil, aber lichtempfindlich (Photolyse) und besitzt eine ausgeprägte Eigenfluoreszenz — direkt analytisch nutzbar.</p>
+          <div class="chips">
+            <span class="chip"><b>Milch:</b> Hauptquelle für Riboflavin — daher keine durchsichtigen Glasflaschen; Lichteinstrahlung erzeugt „Lichtgeschmack“ (ranzig/käsig)</span>
+            <span class="chip"><b>Bier/Getreide:</b> auch im Malz vorhanden, untergeordnet gegenüber Thiamin</span>
+          </div>
+        </div>
+      </details>
+      <details class="vcard" id="card-b3">
+        <summary>
+          <span class="vcard-badge core">B3 ★</span>
+          <span class="vcard-title"><h3>Niacin / NAD(P)</h3><span class="vcard-sub">Vitamin B3 — der Hydrid-Transporteur</span></span>
+          <span class="vcard-tags"><span class="tag wasser">wasserlöslich</span><span class="tag draw">Zeichnen-Pflicht</span></span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+        </summary>
+        <div class="vcard-body">
+          <h4>Struktur</h4>
+          <p>Nicotinsäure (Pyridin-3-carbonsäure) und Nicotinsäureamid sind beide vitaminwirksam. Die aktive Coenzymform entsteht, indem Nicotinamid über eine Ribose-Phosphat-Brücke mit Adenin verknüpft wird (= NAD, formal ein Dinukleotid, strukturell analog zu FAD, jedoch mit Pyridin- statt Isoalloxazin-Kopfgruppe). Eine zusätzliche Phosphatgruppe an der Adenosin-Ribose ergibt NADP.</p>
+
+          <h4>Redoxprinzip (ohne Mechanismus)</h4>
+          <p>Das Redoxzentrum sitzt am quartären Pyridinium-Stickstoff, Position 4. Die Reduktion erfolgt durch Hydridübertragung (H⁻, formal 2 e⁻ + 1 H⁺ gemeinsam) an C4 — dabei geht die Aromatizität des Pyridinrings verloren: aus dem planaren, aromatischen Nicotinamid-Kation wird ein nicht-aromatisches 1,4-Dihydropyridin. Ein reiner Zwei-Elektronen-Schritt <b>ohne Radikal-Zwischenstufe</b> — der zentrale Unterschied zu Riboflavin.</p>
+
+          <figure class="diagram-figure" style="margin-top:14px;">
+            <svg viewBox="0 0 640 210" role="img" aria-label="Das aromatische Nicotinamid-Kation nimmt am quartären Pyridinium-Stickstoff ein Hydrid-Ion auf und wird zum nicht-aromatischen 1,4-Dihydropyridin (NADH/NADPH); das Absorptionsmaximum verschiebt sich dabei von 260 auf 340 Nanometer.">
+              <rect class="mech-box hi" x="20" y="65" width="230" height="72" rx="10"></rect>
+              <text class="mech-title" x="135" y="92" text-anchor="middle">Nicotinamid-Kation</text>
+              <text class="mech-sub" x="135" y="109" text-anchor="middle">aromatisch, Pyridinium N⁺</text>
+              <text class="mech-sub" x="135" y="123" text-anchor="middle">λmax 260 nm (oxidiert)</text>
+
+              <path class="edge-redox" d="M252,101 H388"></path>
+              <text class="mech-label" x="320" y="93" text-anchor="middle">Hydridübertragung H⁻ → C4</text>
+
+              <rect class="mech-box hi" x="390" y="65" width="230" height="72" rx="10"></rect>
+              <text class="mech-title" x="505" y="92" text-anchor="middle">1,4-Dihydropyridin</text>
+              <text class="mech-sub" x="505" y="109" text-anchor="middle">NAD(P)H, nicht-aromatisch</text>
+              <text class="mech-sub" x="505" y="123" text-anchor="middle">λmax 340 nm (reduziert)</text>
+            </svg>
+            <figcaption>Zwei-Elektronen-Hydridtransfer ohne Radikal-Zwischenstufe; der Aromatizitätsverlust verschiebt das Absorptionsmaximum von 260 auf 340 nm — Grundprinzip vieler Dehydrogenase-Assays.</figcaption>
+          </figure>
+
+          <p>Analytische Konsequenz: photometrisch direkt verfolgbar (z. B. Lactatdehydrogenase: Milchsäure ⇌ Brenztraubensäure). Merkregel: <b>NAD</b> meist katabolisch (Energiegewinnung), <b>NADP</b> meist anabolisch (Biosynthesen).</p>
+          <div class="flow-row">
+            <span class="flow-chip">Tryptophan</span><span class="flow-arrow">De-novo, ~60:1</span><span class="flow-chip core">Niacin</span>
+          </div>
+          <p>Niacin ist — neben Vitamin D — das einzige Vitamin mit relevanter körpereigener Synthese, allerdings mit sehr schlechter Ausbeute. Mangel führt zu Pellagra.</p>
+
+          <h4>Bedarf, Stabilität &amp; Vorkommen (vertiefend)</h4>
+          <p>Bedarf ca. 15–18 mg/Tag. Niacin kommt in nahezu jedem Lebensmittel vor; tierische Produkte sind wegen ihrer zentralen Rolle in Redoxprozessen besonders reich daran. Nicotinsäure/-amid und NAD/NADP sind ausgesprochen stabil — kaum chemischer Abbau; Verluste entstehen praktisch nur physikalisch (Auslaugung, Tropfverluste). Dieser Kontrast zur Empfindlichkeit von Ascorbinsäure, Riboflavin und Folsäure ist ein guter Vergleichssatz für Struktur-Stabilitäts-Zusammenhänge.</p>
+
+          <h4>Querverbindungen</h4>
+          <div class="chips">
+            <span class="chip"><b>Kaffee (prüfungsrelevantester Fall):</b> Trigonellin (bis ~1,2 % im Rohkaffee) wird beim Rösten stark abgebaut (50–70 %) unter Freisetzung von Nicotinsäure</span>
+            <span class="chip"><b>Milchsäuregärung/Käse:</b> NAD⁺/NADH als Cofaktor der Lactatdehydrogenase</span>
+            <span class="chip"><b>Gärungslebensmittel (Bier, Wein, Käse):</b> NAD(H) als universeller Redox-Shuttle</span>
+          </div>
+        </div>
+      </details>
+    </section>
+    <section id="weitere" class="section">
+      <div class="section-head">
+        <span class="section-num">3</span>
+        <div>
+          <h2>Weitere strukturrelevante Vitamine</h2>
+          <p class="lede">Diese Vitamine sind entweder keine klassischen Redoxvitamine oder werden bei Glomb nie isoliert, sondern stets eingebettet in die Reaktion abgefragt, zu der sie gehören — deshalb direkt zusammen mit dieser Reaktion lernen, nie als isolierte Struktur.</p>
+        </div>
+      </div>
+      <div class="vcard-grid">
+
+        <details class="vcard compact" id="card-b1">
+          <summary>
+            <span class="vcard-badge">B1</span>
+            <span class="vcard-title"><h3>Thiamin</h3><span class="vcard-sub">Thiazolium-Pyrimidin, aktiv als TPP</span></span>
+            <span class="vcard-tags"><span class="tag wasser">wasserlöslich</span></span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+          </summary>
+          <div class="vcard-body">
+            <p>Aktive Form Thiaminpyrophosphat (TPP, historisch „Cocarboxylase“). Kein klassischer Redoxschritt, sondern eine <b>Umpolung</b>: das Thiazolium-C2-H ist ungewöhnlich acide; das entstehende Ylid wirkt nucleophil und kehrt die native Elektrophilie von Carbonylkohlenstoffen um.</p>
+            <div class="flow-row">
+              <span class="flow-chip">Thiazolium-C2-H</span><span class="flow-arrow">Deprotonierung</span><span class="flow-chip core">Ylid (nucleophil)</span><span class="flow-arrow">Addition</span><span class="flow-chip">Carbonyl-C</span>
+            </div>
+            <p>Zentral für Decarboxylierungen (z. B. Pyruvat → Acetaldehyd) und die Fuselalkohol-Bildung im Wein (Transaminierung/Decarboxylierung von Valin/Isoleucin). Empfindlich gegenüber nucleophiler Substitution und Oxidation (→ Thiochrom, fluoreszierend, analytisch genutzt).</p>
+            <div class="chips">
+              <span class="chip"><b>Wein:</b> Fuselalkohol-Pflichtmechanismus, TPP-abhängig</span>
+              <span class="chip"><b>Bier/Getreide:</b> Malzkeimung</span>
+            </div>
+          </div>
+        </details>
+
+        <details class="vcard compact" id="card-b6">
+          <summary>
+            <span class="vcard-badge">B6</span>
+            <span class="vcard-title"><h3>Pyridoxal-Vitamere</h3><span class="vcard-sub">Pyridoxal / Pyridoxol / Pyridoxamin, aktiv als PLP</span></span>
+            <span class="vcard-tags"><span class="tag wasser">wasserlöslich</span></span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+          </summary>
+          <div class="vcard-body">
+            <p>Bildet mit Aminosäuren eine Schiff-Base (Pyridoxalphosphat, PLP) und ermöglicht darüber drei Reaktionstypen:</p>
+            <div class="flow-row">
+              <span class="flow-chip core">Schiff-Base (PLP + Aminosäure)</span>
+            </div>
+            <div class="flow-row"><span class="flow-arrow">→</span><span class="flow-chip">Transaminierung</span></div>
+            <div class="flow-row"><span class="flow-arrow">→</span><span class="flow-chip">Decarboxylierung → biogene Amine (z. B. Histamin aus Histidin)</span></div>
+            <div class="flow-row"><span class="flow-arrow">→</span><span class="flow-chip">Eliminierung</span></div>
+            <div class="chips">
+              <span class="chip"><b>Milch/Käse:</b> biogene Amine in gereiftem Käse</span>
+            </div>
+          </div>
+        </details>
+
+        <details class="vcard compact" id="card-biotin">
+          <summary>
+            <span class="vcard-badge">Bio</span>
+            <span class="vcard-title"><h3>Biotin</h3><span class="vcard-sub">Bicyclisch, Ureido- + Tetrahydrothiophenring</span></span>
+            <span class="vcard-tags"><span class="tag wasser">wasserlöslich</span></span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+          </summary>
+          <div class="vcard-body">
+            <p>Bicyclische Struktur mit Harnstoff-Ring (Ureido) und Tetrahydrothiophenring, Seitenkette Valeriansäure. Funktion: Carboxylierungen (z. B. Acetyl-CoA-Carboxylase in der Fettsäuresynthese, Pyruvat-Carboxylase im Citratzyklus) — kein Redoxvitamin im engeren Sinn. Bedarf ca. 50–100 µg/Tag.</p>
+            <div class="flow-row">
+              <span class="flow-chip">rohes Eiklar (Avidin)</span><span class="flow-arrow">bindet fast irreversibel</span><span class="flow-chip core">Biotin</span>
+            </div>
+            <p>Klinisch relevant: die Avidin-Biotin-Wechselwirkung — hoher Rohei-Verzehr kann einen Mangel auslösen.</p>
+          </div>
+        </details>
+
+        <details class="vcard compact" id="card-folsaeure">
+          <summary>
+            <span class="vcard-badge">FS</span>
+            <span class="vcard-title"><h3>Folsäure</h3><span class="vcard-sub">Pteridin + p-Aminobenzoesäure + Glutamat(e)</span></span>
+            <span class="vcard-tags"><span class="tag wasser">wasserlöslich</span></span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+          </summary>
+          <div class="vcard-body">
+            <p>Aktive Form Tetrahydrofolsäure (THF). Funktion: Übertragung von C1-Einheiten (Formyl-, Methylen-, Methylgruppen) — wichtig für Nucleotid- und Methioninsynthese. Oxidationsempfindlich, strukturell vergleichbar mit Ascorbinsäure — eine nützliche Analogie für die Prüfung. Bedarf ca. 150 µg/Tag; Hauptquelle Blattgemüse, in gebundener Form auch in Fleisch.</p>
+            <div class="chips">
+              <span class="chip"><b>Vergleich:</b> oxidationsempfindlich wie Vitamin C</span>
+            </div>
+          </div>
+        </details>
+
+        <details class="vcard compact" id="card-pantothensaeure">
+          <summary>
+            <span class="vcard-badge">PaS</span>
+            <span class="vcard-title"><h3>Pantothensäure</h3><span class="vcard-sub">Baustein von Coenzym A</span></span>
+            <span class="vcard-tags"><span class="tag wasser">wasserlöslich</span></span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+          </summary>
+          <div class="vcard-body">
+            <p>Die Amidbindung ist außerhalb von pH 4–7 oder beim Erhitzen spaltbar (→ β-Alanin + Pantoinsäure). Funktion über Thioesterbildung mit Carbonsäuren (Aktivierung von Acylresten).</p>
+          </div>
+        </details>
+
+        <details class="vcard compact" id="card-b12">
+          <summary>
+            <span class="vcard-badge">B12</span>
+            <span class="vcard-title"><h3>Cobalamin</h3><span class="vcard-sub">Cobalt-Zentralatom</span></span>
+            <span class="vcard-tags"><span class="tag wasser">wasserlöslich</span></span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+          </summary>
+          <div class="vcard-body">
+            <p>Einziges Vitamin mit Umlagerungs-/Methylierungsfunktion. Beispiele: Methylmalonyl-CoA ⇌ Succinyl-CoA (Racemase/Mutase) sowie Homocystein → Methionin. Bedarf sehr gering (ca. 1–2 µg/Tag); die Aufnahme ist an den Intrinsic Factor gekoppelt — dessen Fehlen kann trotz ausreichender Zufuhr einen Mangel auslösen.</p>
+          </div>
+        </details>
+
+      </div>
+    </section>
+    <section id="begleitstoffe" class="section">
+      <div class="section-head">
+        <span class="section-num">4</span>
+        <div>
+          <h2>Fettlösliche „Begleitstoff-Vitamine“</h2>
+          <p class="lede">Struktur &amp; Bildung, kurz — Vitamin A, D und K werden bei Glomb seltener isoliert abgefragt, sind aber über ihre Bildungswege und Querverbindungen prüfungsrelevant.</p>
+        </div>
+      </div>
+      <div class="vcard-grid">
+
+        <details class="vcard compact" id="card-a">
+          <summary>
+            <span class="vcard-badge">A</span>
+            <span class="vcard-title"><h3>Vitamin A / Carotinoide</h3><span class="vcard-sub">Retinol · Retinal · Retinsäure</span></span>
+            <span class="vcard-tags"><span class="tag fett">fettlöslich</span></span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+          </summary>
+          <div class="vcard-body">
+            <p>Retinol, Retinal und Retinsäure unterscheiden sich nur in der funktionellen Gruppe an C15 (CH₂OH / CHO / COOH). Die pflanzliche Vorstufe β-Carotin (isoprenbasiert, lange Kette konjugierter Doppelbindungen) wird zentral gespalten (15,15'-Dioxygenase) zu All-trans-Retinal.</p>
+            <div class="flow-row">
+              <span class="flow-chip">β-Carotin</span><span class="flow-arrow">zentrale Spaltung</span><span class="flow-chip core">All-trans-Retinal</span><span class="flow-arrow">C15-Gruppe</span><span class="flow-chip">Retinol / Retinsäure</span>
+            </div>
+            <p>Der Sehprozess beruht auf der 11-cis/11-trans-Isomerisierung des Retinals — ein photochemischer, kein klassischer Redoxschritt. Carotinoide wirken als Radikalfänger und als Quencher von Singulett-Sauerstoff: sie nehmen dessen Energie auf und geben sie als Wärme ab (physikalisches statt chemisches Quenching).</p>
+            <p>Bedarf: etwa zur Hälfte tierisch (Retinylester), zur Hälfte pflanzlich (Provitamine, v. a. β-Carotin).</p>
+            <div class="chips">
+              <span class="chip"><b>Tee &amp; Wein:</b> β-Carotin → β-Ionon (Aromastoff) — derselbe Spaltungstyp wie bei der Retinal-Bildung</span>
+            </div>
+          </div>
+        </details>
+
+        <details class="vcard compact" id="card-d">
+          <summary>
+            <span class="vcard-badge">D</span>
+            <span class="vcard-title"><h3>Vitamin D</h3><span class="vcard-sub">Secosteroid</span></span>
+            <span class="vcard-tags"><span class="tag fett">fettlöslich</span></span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+          </summary>
+          <div class="vcard-body">
+            <p>Neben Niacin das einzige Vitamin mit relevanter endogener Synthese — strukturell ein „aufgebrochenes“ Steroidgerüst (Secosteroid), direkter Bezug zur Cholesterin-/Steroidchemie.</p>
+            <div class="flow-row">
+              <span class="flow-chip">7-Dehydrocholesterin</span><span class="flow-arrow">UV-B, photochemisch</span><span class="flow-chip">Prävitamin D3</span><span class="flow-arrow">thermische Isomerisierung</span><span class="flow-chip core">Vitamin D3</span>
+            </div>
+          </div>
+        </details>
+
+        <details class="vcard compact" id="card-k">
+          <summary>
+            <span class="vcard-badge">K</span>
+            <span class="vcard-title"><h3>Vitamin K</h3><span class="vcard-sub">Naphthochinon-Grundgerüst</span></span>
+            <span class="vcard-tags"><span class="tag fett">fettlöslich</span></span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+          </summary>
+          <div class="vcard-body">
+            <p>Formal ebenfalls redoxaktiv (Chinon/Hydrochinon-System). Funktion in der Blutgerinnung (γ-Carboxylierung von Glutamatresten). Bei Glomb eher Randnotiz, nicht kernprüfungsrelevant.</p>
+          </div>
+        </details>
+
+      </div>
+    </section>
+    <section id="matrix" class="section">
+      <div class="section-head">
+        <span class="section-num">5</span>
+        <div>
+          <h2>Querverbindungs-Matrix</h2>
+          <p class="lede">Vitamin × Lebensmittel/Getränk — bündelt alle Querverbindungen als schnellen Abrufanker. Klicke einen Knoten, um seine Verbindungen und das jeweilige Prinzip hervorzuheben.</p>
+        </div>
+      </div>
+      <figure class="diagram-figure">
+        <svg id="matrix-network" viewBox="0 0 1040 560" role="img" aria-label="Bipartites Netzwerk: acht Kernvitamine links, elf Lebensmittel/Getränke rechts, verbunden durch anklickbare Kanten mit dem jeweiligen Verbindungsprinzip."></svg>
+        <figcaption>Vitamine (links) und ihre Hauptlebensmittel (rechts). Anklicken hebt die Kanten hervor und zeigt das Verbindungsprinzip im Infofeld darunter.</figcaption>
+      </figure>
+      <div id="matrix-info" class="matrix-info">Klicke ein Vitamin oder Lebensmittel im Netzwerk an, um die Querverbindungen anzuzeigen.</div>
+
+      <details class="table-toggle">
+        <summary>Als Tabelle anzeigen</summary>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Vitamin</th><th>Hauptverbindung(en)</th><th>Prinzip der Verbindung</th></tr></thead>
+            <tbody>
+              <tr><td>Ascorbinsäure (C)</td><td>Fett/Öl · Fleisch · Getreide · Wein</td><td>Synergist zu Tocopherol · Umrötung · Mehlbehandlung (Wirkrichtung umgekehrt) · Kontrast zu SO₂</td></tr>
+              <tr><td>Tocopherole (E)</td><td>Fett/Öl · Tee</td><td>Lipid-Radikalfänger · Strukturvergleich zu Catechinen</td></tr>
+              <tr><td>Riboflavin/FAD (B2)</td><td>Milch · Bier/Getreide</td><td>Hauptquelle + Lichtgeschmack · Malz-Cofaktor</td></tr>
+              <tr><td>Niacin/NAD (B3)</td><td>Kaffee · Käse/Gärung</td><td>Trigonellin-Abbau beim Rösten · LDH-Cofaktor</td></tr>
+              <tr><td>Thiamin (B1)</td><td>Wein · Bier/Getreide</td><td>Fuselalkohol-Bildung (TPP) · Malzkeimung</td></tr>
+              <tr><td>Pyridoxal (B6)</td><td>Milch/Käse</td><td>Biogene Amine bei der Reifung</td></tr>
+              <tr><td>Folsäure</td><td>Getreide/Blattgemüse</td><td>Strukturanalogie: oxidationsempfindlich wie Vitamin C</td></tr>
+              <tr><td>Vitamin A/Carotinoide</td><td>Tee · Wein</td><td>β-Ionon-Aromabildung durch oxidativen Carotinoid-Abbau (Bezug Retinal-Bildung)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+    <section id="pruefungslogik" class="section">
+      <div class="section-head">
+        <span class="section-num">6</span>
+        <div>
+          <h2>Prüfungslogik nach Glomb — Meta-Ebene</h2>
+          <p class="lede">Wie das Thema in der mündlichen Prüfung tatsächlich vorkommt.</p>
+        </div>
+      </div>
+      <div class="callout-grid meta">
+        <div class="callout">
+          <h4>Seltenes Hauptthema, häufige Einzelfrage</h4>
+          <p>Vitamine allgemein sind selten Hauptthema, aber fast immer als spontane Einzelfrage eingestreut — typischer Assoziationssprung aus einem Hauptthema heraus.</p>
+        </div>
+        <div class="callout accent">
+          <h4>Pflicht-Zeichnungen</h4>
+          <p>Niacin/NAD und Riboflavin/FAD sind laut Themenkatalog explizit als Struktur zum Zeichnen gefordert (auch mündlich skizzieren).</p>
+        </div>
+        <div class="callout">
+          <h4>B1/B6 nie isoliert</h4>
+          <p>Werden fast nie isoliert gefragt, sondern eingebettet in den Fuselalkohol- bzw. den Kontext biogener Amine — deshalb immer gemeinsam mit der jeweiligen Reaktion lernen.</p>
+        </div>
+        <div class="callout">
+          <h4>Vitamin C: eigenständiger Dauerbrenner</h4>
+          <p>Gilt als „eigenständiger Dauerbrenner“ im Antioxidantien-Kontext — bei jedem Fett-/Antioxidantien-Gespräch damit rechnen, unabhängig davon, ob „Vitamine“ als Thema angekündigt war.</p>
+        </div>
+        <div class="callout">
+          <h4>Dokumentierter Bonusfragen-Block</h4>
+          <p>Glomb führt Vitaminstrukturen (B1/B6/B2/Niacin) explizit als eigenen Reservefragen-Typ — neben Sonnencreme (Fettoxidation/Antioxidantien) und Zahnpasta (Kakao/Bleichung). Wer diese vier Strukturen sitzen hat, deckt einen kompletten, dokumentierten Bonusfragen-Block ab.</p>
+        </div>
+        <div class="callout">
+          <h4>Ehrlichkeit statt Raten</h4>
+          <p>Wenn eine Randstruktur (z. B. Cobalamin, Biotin) nicht sitzt: ehrlich zugeben und sofort zur nächsten Verbindung weitergehen — ein ruhiges „das weiß ich gerade nicht genau“ wirkt deutlich besser als Raten.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p>Quelle: „Vitamine allgemein (Struktur/Redoxfunktion) — Kompendium&rdquo;, Prof. LebCHE — LMC StEx Kompendium. Niveau: mittel — Strukturen, Redoxprinzipien und Querverbindungen ohne vollständige Elektronenpfeil-Mechanismen.</p>
+  </footer>
+</div>
+<script>
+(function(){
+  var root = document.documentElement;
+  var toggle = document.getElementById('theme-toggle');
+  function effectiveTheme(){
+    var explicit = root.getAttribute('data-theme');
+    if(explicit) return explicit;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  try{
+    var stored = localStorage.getItem('vitamine-theme');
+    if(stored === 'light' || stored === 'dark'){ root.setAttribute('data-theme', stored); }
+  }catch(e){}
+  if(toggle){
+    toggle.addEventListener('click', function(){
+      var next = effectiveTheme() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try{ localStorage.setItem('vitamine-theme', next); }catch(e){}
+    });
+  }
+})();
+
+(function(){
+  var sections = document.querySelectorAll('main .section[id]');
+  var pills = document.querySelectorAll('.nav-pill');
+  var map = {};
+  pills.forEach(function(p){ map[p.dataset.section] = p; });
+  if(!('IntersectionObserver' in window)) return;
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        pills.forEach(function(p){ p.classList.remove('active'); });
+        var pill = map[entry.target.id];
+        if(pill) pill.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-35% 0px -55% 0px', threshold:0});
+  sections.forEach(function(s){ observer.observe(s); });
+})();
+
+function openCard(id){
+  var card = document.getElementById('card-' + id);
+  if(!card) return;
+  card.open = true;
+  card.scrollIntoView({behavior:'smooth', block:'start'});
+  card.classList.remove('flash');
+  void card.offsetWidth;
+  card.classList.add('flash');
+}
+
+(function(){
+  var svg = document.getElementById('overview-tree');
+  if(!svg) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs, text){
+    var e = document.createElementNS(NS, tag);
+    for(var k in attrs) e.setAttribute(k, attrs[k]);
+    if(text !== undefined) e.textContent = text;
+    return e;
+  }
+  function bezier(x1,y1,x2,y2){
+    var dy = Math.max(24, (y2 - y1) / 2);
+    return 'M' + x1 + ',' + y1 + ' C ' + x1 + ',' + (y1+dy) + ' ' + x2 + ',' + (y2-dy) + ' ' + x2 + ',' + y2;
+  }
+
+  var root = {cx:520, cy:57, w:190, h:46, label:'VITAMINE'};
+  var branches = [
+    {id:'fett', cx:230, cy:156, w:280, h:52, label:'Fettlöslich', sub:'A · D · E · K — Speicherung im Fettgewebe'},
+    {id:'wasser', cx:810, cy:156, w:320, h:52, label:'Wasserlöslich', sub:'B-Komplex · C — renale Ausscheidung'}
+  ];
+  var leaves = [
+    {id:'e', label:'E', sub:'Tocopherole', group:'fett', core:true, cx:90, cy:277},
+    {id:'a', label:'A', sub:'Carotinoide', group:'fett', core:false, cx:205, cy:277},
+    {id:'d', label:'D', sub:'Calciferol', group:'fett', core:false, cx:320, cy:277},
+    {id:'k', label:'K', sub:'Naphthochinon', group:'fett', core:false, cx:435, cy:277},
+
+    {id:'c', label:'C', sub:'Ascorbinsäure', group:'wasser', core:true, cx:590, cy:277},
+    {id:'b2', label:'B2 ★', sub:'Riboflavin/FAD', group:'wasser', core:true, cx:690, cy:277},
+    {id:'b3', label:'B3 ★', sub:'Niacin/NAD', group:'wasser', core:true, cx:790, cy:277},
+    {id:'b1', label:'B1', sub:'Thiamin', group:'wasser', core:false, cx:890, cy:277},
+    {id:'b6', label:'B6', sub:'Pyridoxal', group:'wasser', core:false, cx:990, cy:277},
+
+    {id:'biotin', label:'Biotin', sub:'', group:'wasser', core:false, cx:640, cy:391},
+    {id:'folsaeure', label:'Folsäure', sub:'', group:'wasser', core:false, cx:740, cy:391},
+    {id:'pantothensaeure', label:'Pantothensäure', sub:'', group:'wasser', core:false, cx:855, cy:391},
+    {id:'b12', label:'B12', sub:'Cobalamin', group:'wasser', core:false, cx:960, cy:391}
+  ];
+
+  var leafW = 92, leafH = 54;
+
+  var edgeLayer = el('g', {});
+  svg.appendChild(edgeLayer);
+  edgeLayer.appendChild(el('path', {d: bezier(root.cx, root.cy + root.h/2, branches[0].cx, branches[0].cy - branches[0].h/2), class:'edge-line'}));
+  edgeLayer.appendChild(el('path', {d: bezier(root.cx, root.cy + root.h/2, branches[1].cx, branches[1].cy - branches[1].h/2), class:'edge-line'}));
+  leaves.forEach(function(lf){
+    var branch = branches.filter(function(b){ return b.id === lf.group; })[0];
+    edgeLayer.appendChild(el('path', {d: bezier(branch.cx, branch.cy + branch.h/2, lf.cx, lf.cy - leafH/2), class:'edge-line'}));
+  });
+
+  var rootG = el('g', {});
+  rootG.appendChild(el('rect', {class:'node-box root', x:root.cx-root.w/2, y:root.cy-root.h/2, width:root.w, height:root.h, rx:12}));
+  rootG.appendChild(el('text', {class:'node-text label on-root', x:root.cx, y:root.cy+5, 'text-anchor':'middle'}, root.label));
+  svg.appendChild(rootG);
+
+  branches.forEach(function(b){
+    var g = el('g', {});
+    g.appendChild(el('rect', {class:'node-box branch', x:b.cx-b.w/2, y:b.cy-b.h/2, width:b.w, height:b.h, rx:12}));
+    g.appendChild(el('text', {class:'node-text label', x:b.cx, y:b.cy-2, 'text-anchor':'middle'}, b.label));
+    g.appendChild(el('text', {class:'node-sub', x:b.cx, y:b.cy+15, 'text-anchor':'middle'}, b.sub));
+    svg.appendChild(g);
+  });
+
+  leaves.forEach(function(lf){
+    var g = el('g', {class:'tree-node', tabindex:'0', role:'button', 'aria-label': 'Zu ' + lf.label + ' springen'});
+    var boxClass = 'node-box ' + (lf.core ? 'core' : lf.group);
+    g.appendChild(el('rect', {class:boxClass, x:lf.cx-leafW/2, y:lf.cy-leafH/2, width:leafW, height:leafH, rx:10}));
+    g.appendChild(el('text', {class:'node-text label', x:lf.cx, y:lf.cy - (lf.sub ? 3 : -4), 'text-anchor':'middle'}, lf.label));
+    if(lf.sub){ g.appendChild(el('text', {class:'node-sub', x:lf.cx, y:lf.cy+13, 'text-anchor':'middle'}, lf.sub)); }
+    g.addEventListener('click', function(){ openCard(lf.id); });
+    g.addEventListener('keydown', function(ev){ if(ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); openCard(lf.id); } });
+    svg.appendChild(g);
+  });
+})();
+
+(function(){
+  var svg = document.getElementById('matrix-network');
+  var info = document.getElementById('matrix-info');
+  if(!svg || !info) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs, text){
+    var e = document.createElementNS(NS, tag);
+    for(var k in attrs) e.setAttribute(k, attrs[k]);
+    if(text !== undefined) e.textContent = text;
+    return e;
+  }
+
+  var vitamins = [
+    {id:'c', label:'Ascorbinsäure (C)'},
+    {id:'e', label:'Tocopherole (E)'},
+    {id:'b2', label:'Riboflavin/FAD (B2)'},
+    {id:'b3', label:'Niacin/NAD (B3)'},
+    {id:'b1', label:'Thiamin (B1)'},
+    {id:'b6', label:'Pyridoxal (B6)'},
+    {id:'folsaeure', label:'Folsäure'},
+    {id:'a', label:'Vitamin A/Carotinoide'}
+  ];
+  var foods = [
+    {id:'fett', label:'Fett/Öl'},
+    {id:'fleisch', label:'Fleisch'},
+    {id:'getreide', label:'Getreide'},
+    {id:'wein', label:'Wein'},
+    {id:'tee', label:'Tee'},
+    {id:'milch', label:'Milch'},
+    {id:'bier', label:'Bier/Getreide'},
+    {id:'kaffee', label:'Kaffee'},
+    {id:'kaese', label:'Käse/Gärung'},
+    {id:'milchkaese', label:'Milch/Käse'},
+    {id:'blattgemuese', label:'Getreide/Blattgemüse'}
+  ];
+  var edges = [
+    {v:'c', f:'fett', p:'Synergist zu Tocopherol'},
+    {v:'c', f:'fleisch', p:'Umrötung (Nitrosylmyoglobin), mindert Nitrosaminbildung'},
+    {v:'c', f:'getreide', p:'Mehlbehandlungsmittel — Wirkrichtung invers (Oxidationsmittel)'},
+    {v:'c', f:'wein', p:'Konzeptueller Kontrast zu SO₂'},
+    {v:'e', f:'fett', p:'Lipid-Radikalfänger'},
+    {v:'e', f:'tee', p:'Strukturvergleich zu Catechinen'},
+    {v:'b2', f:'milch', p:'Hauptquelle + Lichtgeschmack'},
+    {v:'b2', f:'bier', p:'Malz-Cofaktor'},
+    {v:'b3', f:'kaffee', p:'Trigonellin-Abbau beim Rösten'},
+    {v:'b3', f:'kaese', p:'LDH-Cofaktor bei der Milchsäuregärung'},
+    {v:'b1', f:'wein', p:'Fuselalkohol-Bildung (TPP-abhängig)'},
+    {v:'b1', f:'bier', p:'Malzkeimung'},
+    {v:'b6', f:'milchkaese', p:'Biogene Amine bei der Reifung'},
+    {v:'folsaeure', f:'blattgemuese', p:'Strukturanalogie: oxidationsempfindlich wie Vitamin C'},
+    {v:'a', f:'tee', p:'β-Ionon-Aromabildung (oxidativer Carotinoid-Abbau)'},
+    {v:'a', f:'wein', p:'β-Ionon-Aromabildung (oxidativer Carotinoid-Abbau)'}
+  ];
+
+  var leftX = 145, rightX = 895, boxWL = 240, boxWR = 200, boxH = 34;
+  var topL = 34, botL = 526, topR = 20, botR = 540;
+  vitamins.forEach(function(v, i){ v.cy = vitamins.length>1 ? topL + (botL-topL)*i/(vitamins.length-1) : (topL+botL)/2; v.cx = leftX; });
+  foods.forEach(function(f, i){ f.cy = foods.length>1 ? topR + (botR-topR)*i/(foods.length-1) : (topR+botR)/2; f.cx = rightX; });
+
+  var byId = {};
+  vitamins.forEach(function(v){ byId['v_'+v.id] = v; });
+  foods.forEach(function(f){ byId['f_'+f.id] = f; });
+
+  var edgeLayer = el('g', {});
+  svg.appendChild(edgeLayer);
+  var edgeEls = edges.map(function(edge){
+    var v = byId['v_'+edge.v], f = byId['f_'+edge.f];
+    var x1 = v.cx + boxWL/2, y1 = v.cy, x2 = f.cx - boxWR/2, y2 = f.cy;
+    var mx = (x1+x2)/2;
+    var d = 'M'+x1+','+y1+' C '+mx+','+y1+' '+mx+','+y2+' '+x2+','+y2;
+    var p = el('path', {d:d, class:'netedge'});
+    p.dataset.v = edge.v; p.dataset.f = edge.f;
+    edgeLayer.appendChild(p);
+    return {edge:edge, path:p};
+  });
+
+  function makeNode(n, isFood){
+    var w = isFood ? boxWR : boxWL;
+    var g = el('g', {class:'netnode' + (isFood?' food':''), tabindex:'0', role:'button', 'aria-label':n.label});
+    g.dataset.id = n.id;
+    g.dataset.kind = isFood ? 'food' : 'vitamin';
+    g.appendChild(el('rect', {x:n.cx-w/2, y:n.cy-boxH/2, width:w, height:boxH, rx:9}));
+    g.appendChild(el('text', {x:n.cx, y:n.cy+4, 'text-anchor':'middle'}, n.label));
+    svg.appendChild(g);
+    return g;
+  }
+  var vitaminEls = vitamins.map(function(v){ return makeNode(v, false); });
+  var foodEls = foods.map(function(f){ return makeNode(f, true); });
+
+  var selected = null;
+
+  function reset(){
+    vitaminEls.concat(foodEls).forEach(function(n){ n.classList.remove('dim','hi'); });
+    edgeEls.forEach(function(e){ e.path.classList.remove('dim','hi'); });
+    info.innerHTML = 'Klicke ein Vitamin oder Lebensmittel im Netzwerk an, um die Querverbindungen anzuzeigen.';
+    selected = null;
+  }
+
+  function select(kind, id){
+    if(selected && selected.kind === kind && selected.id === id){ reset(); return; }
+    selected = {kind:kind, id:id};
+    var connectedFoods = {}, connectedVitamins = {};
+    var rows = [];
+    edgeEls.forEach(function(e){
+      var match = (kind === 'vitamin' && e.edge.v === id) || (kind === 'food' && e.edge.f === id);
+      e.path.classList.toggle('hi', match);
+      e.path.classList.toggle('dim', !match);
+      if(match){ connectedFoods[e.edge.f]=true; connectedVitamins[e.edge.v]=true; rows.push(e.edge); }
+    });
+    vitaminEls.forEach(function(n){
+      var isSel = kind==='vitamin' && n.dataset.id===id;
+      var isConn = kind==='food' && connectedVitamins[n.dataset.id];
+      n.classList.toggle('hi', isSel || isConn);
+      n.classList.toggle('dim', !(isSel || isConn));
+    });
+    foodEls.forEach(function(n){
+      var isSel = kind==='food' && n.dataset.id===id;
+      var isConn = kind==='vitamin' && connectedFoods[n.dataset.id];
+      n.classList.toggle('hi', isSel || isConn);
+      n.classList.toggle('dim', !(isSel || isConn));
+    });
+    var label = kind==='vitamin' ? byId['v_'+id].label : byId['f_'+id].label;
+    var html = '<b>' + label + '</b>';
+    rows.forEach(function(r){
+      var other = kind==='vitamin' ? byId['f_'+r.f].label : byId['v_'+r.v].label;
+      html += '<span class="principle">→ ' + other + ' — ' + r.p + '</span>';
+    });
+    info.innerHTML = html;
+  }
+
+  vitaminEls.forEach(function(n){
+    n.addEventListener('click', function(){ select('vitamin', n.dataset.id); });
+    n.addEventListener('keydown', function(ev){ if(ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); select('vitamin', n.dataset.id); } });
+  });
+  foodEls.forEach(function(n){
+    n.addEventListener('click', function(){ select('food', n.dataset.id); });
+    n.addEventListener('keydown', function(ev){ if(ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); select('food', n.dataset.id); } });
+  });
+})();
+</script>
+
+</body>
+</html>
