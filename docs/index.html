@@ -1,0 +1,2275 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fleisch &amp; Fleischerzeugnisse — Mechanismen-Kompendium</title>
+<meta name="description" content="Interaktives Mechanismen-Kompendium für das Staatsexamen Lebensmittelchemie: 32 Reaktionsmechanismen aus dem Fleisch-Kontext, Pfeil für Pfeil." />
+<style>
+/* ============================= TOKENS ============================= */
+:root{
+  --bg: #f6f4ec;
+  --bg-elevated: #fffdf7;
+  --surface: #efeadd;
+  --surface-2: #e4ddc9;
+  --border: #d5cdb2;
+  --border-strong: #c1b696;
+  --text: #404536;
+  --text-secondary: #6e7460;
+  --text-muted: #97957e;
+  --heading: #5c7a0a;
+  --heading-dim: #7a9a26;
+  --accent: #d1155a;
+  --accent-ink: #fff6f9;
+  --accent-soft: #f6d9e4;
+  --nucleophile: #3f6c8c;
+  --nucleophile-soft: #dbe8f1;
+  --electrophile: #a05c46;
+  --electrophile-soft: #f0ddd2;
+  --radical: #7c4f96;
+  --radical-soft: #e9def0;
+  --leaving: #7d8471;
+  --leaving-soft: #e6e5d6;
+  --ring-shadow: 0 1px 2px rgba(64,58,30,0.06), 0 6px 20px -8px rgba(64,58,30,0.18);
+  --focus-ring: #3f6c8c;
+  --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg: #1d1f17;
+    --bg-elevated: #24261c;
+    --surface: #292b20;
+    --surface-2: #333527;
+    --border: #454735;
+    --border-strong: #565842;
+    --text: #e9e6d8;
+    --text-secondary: #b7bda2;
+    --text-muted: #888c73;
+    --heading: #a8d24e;
+    --heading-dim: #8fb83a;
+    --accent: #ff6d95;
+    --accent-ink: #2a0f18;
+    --accent-soft: #452331;
+    --nucleophile: #86c3ff;
+    --nucleophile-soft: #223347;
+    --electrophile: #e2a084;
+    --electrophile-soft: #3c2c22;
+    --radical: #c9a3e3;
+    --radical-soft: #362a41;
+    --leaving: #b7bda2;
+    --leaving-soft: #33362a;
+    --ring-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -10px rgba(0,0,0,0.5);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg: #1d1f17;
+  --bg-elevated: #24261c;
+  --surface: #292b20;
+  --surface-2: #333527;
+  --border: #454735;
+  --border-strong: #565842;
+  --text: #e9e6d8;
+  --text-secondary: #b7bda2;
+  --text-muted: #888c73;
+  --heading: #a8d24e;
+  --heading-dim: #8fb83a;
+  --accent: #ff6d95;
+  --accent-ink: #2a0f18;
+  --accent-soft: #452331;
+  --nucleophile: #86c3ff;
+  --nucleophile-soft: #223347;
+  --electrophile: #e2a084;
+  --electrophile-soft: #3c2c22;
+  --radical: #c9a3e3;
+  --radical-soft: #362a41;
+  --leaving: #b7bda2;
+  --leaving-soft: #33362a;
+  --ring-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -10px rgba(0,0,0,0.5);
+  color-scheme: dark;
+}
+
+/* ============================= RESET/BASE ============================= */
+*{ box-sizing: border-box; }
+html,body{ margin:0; padding:0; }
+body{
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15.5px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+h1,h2,h3,h4{
+  font-family: var(--serif);
+  color: var(--heading);
+  font-weight: 700;
+  text-wrap: balance;
+  margin: 0 0 .4em 0;
+}
+a{ color: var(--nucleophile); }
+::selection{ background: var(--accent-soft); color: var(--text); }
+button{ font-family: inherit; }
+:focus-visible{ outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+.subscript{ font-size: .72em; vertical-align: sub; }
+.superscript{ font-size: .72em; vertical-align: super; }
+
+/* ============================= LAYOUT ============================= */
+.topbar{
+  position: sticky; top:0; z-index: 40;
+  display:flex; align-items:center; gap: 14px;
+  padding: 10px 18px;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
+}
+.topbar .brand{ display:flex; flex-direction:column; gap:1px; margin-right:auto; min-width:0; }
+.topbar .brand .kicker{
+  font-size: 11px; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--text-muted); font-weight: 600;
+}
+.topbar .brand h1{
+  font-size: 18px; margin:0; color: var(--heading); line-height:1.2;
+  white-space: nowrap; overflow:hidden; text-overflow: ellipsis;
+}
+.topbar .examiner{ font-size: 12.5px; color: var(--text-secondary); white-space:nowrap; }
+.menu-btn{
+  display:none; align-items:center; justify-content:center;
+  width: 36px; height:36px; border-radius: 9px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  cursor:pointer;
+}
+
+.theme-toggle{
+  position: relative;
+  display:inline-flex; align-items:center; gap:8px;
+  padding: 6px 12px 6px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  cursor: pointer;
+  color: var(--text);
+  flex-shrink: 0;
+}
+.theme-toggle .knob{
+  width: 26px; height:26px; border-radius:50%;
+  background: var(--accent); color: var(--accent-ink);
+  display:flex; align-items:center; justify-content:center;
+  font-size: 14px;
+  transition: transform .25s ease;
+}
+.theme-toggle .label{ font-size: 12.5px; font-weight:600; color: var(--text-secondary); min-width: 62px; text-align:left; }
+.theme-toggle:hover{ border-color: var(--accent); }
+
+.app{
+  display:grid;
+  grid-template-columns: 300px minmax(0,1fr);
+  min-height: calc(100vh - 57px);
+}
+.sidebar{
+  border-right: 1px solid var(--border);
+  background: var(--bg-elevated);
+  padding: 14px 10px 40px;
+  overflow-y: auto;
+}
+.sidebar-intro{
+  padding: 6px 10px 14px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 10px;
+}
+.filter-row{
+  display:flex; gap:6px; padding: 0 10px 12px;
+}
+.filter-chip{
+  font-size: 11.5px; font-weight:700; letter-spacing:.02em;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-secondary);
+  border-radius: 999px;
+  padding: 5px 11px;
+  cursor:pointer;
+}
+.filter-chip[aria-pressed="true"]{
+  background: var(--accent); color: var(--accent-ink); border-color: var(--accent);
+}
+.teil-group{ margin-bottom: 4px; }
+.teil-header{
+  display:flex; align-items:baseline; gap:8px;
+  padding: 9px 10px 4px;
+  font-size: 11px; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--text-muted); font-weight: 700;
+}
+.teil-header .teil-name{ color: var(--text-secondary); text-transform:none; letter-spacing:0; font-size:11.5px; font-weight:600; }
+.mech-link{
+  display:flex; align-items:center; gap:8px;
+  width:100%; text-align:left;
+  padding: 7px 10px; margin: 1px 0;
+  border-radius: 8px; border: 1px solid transparent;
+  background: transparent; color: var(--text);
+  font-size: 13.3px; cursor:pointer; line-height:1.3;
+}
+.mech-link:hover{ background: var(--surface); }
+.mech-link[aria-current="true"]{
+  background: var(--surface-2); border-color: var(--border-strong);
+  font-weight: 700;
+}
+.mech-link .num{
+  flex-shrink:0; width:20px; height:20px; border-radius:6px;
+  background: var(--surface-2); color: var(--text-secondary);
+  display:flex; align-items:center; justify-content:center;
+  font-size: 10.5px; font-weight:700; font-variant-numeric: tabular-nums;
+}
+.mech-link[aria-current="true"] .num{ background: var(--accent); color: var(--accent-ink); }
+.mech-link .star{ color: var(--accent); flex-shrink:0; font-size:12px; }
+.mech-link .t{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+main.stage{ padding: 26px 30px 80px; min-width:0; }
+.stage-inner{ max-width: 860px; margin: 0 auto; }
+
+.mech-head{ margin-bottom: 18px; }
+.mech-tags{ display:flex; flex-wrap:wrap; gap:7px; margin-bottom:10px; }
+.tag{
+  font-size: 11.5px; font-weight:700; letter-spacing:.02em;
+  padding: 3px 9px; border-radius: 999px;
+  background: var(--surface-2); color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+.tag.blitz{ background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+.mech-head h2{ font-size: 25px; margin-bottom: 4px; }
+.mech-head .zusammenhang{
+  color: var(--text-secondary); font-size: 14.5px; line-height:1.6;
+  border-left: 3px solid var(--border-strong);
+  padding: 2px 0 2px 14px; margin-top: 10px;
+}
+.mech-head .zusammenhang b, .mech-head .zusammenhang strong{ color: var(--text); }
+
+.card{
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--ring-shadow);
+}
+
+.diagram-card{ padding: 4px 4px 0; margin: 22px 0 0; overflow:hidden; }
+.diagram-toolbar{
+  display:flex; align-items:center; justify-content:space-between;
+  gap: 10px; padding: 10px 14px 6px;
+}
+.step-pill{
+  font-size: 12px; font-weight:700; color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.step-pill b{ color: var(--accent); }
+.grundmuster-chip{
+  display:inline-flex; align-items:center; gap:5px;
+  font-size: 11px; font-weight:700; padding: 3px 9px; border-radius:999px;
+}
+.gm-nu{ background: var(--nucleophile-soft); color: var(--nucleophile); }
+.gm-pi{ background: var(--radical-soft); color: var(--radical); }
+.gm-proto{ background: var(--leaving-soft); color: var(--leaving); }
+.gm-lg{ background: var(--electrophile-soft); color: var(--electrophile); }
+.gm-redox{ background: var(--accent-soft); color: var(--accent); }
+
+.diagram-wrap{
+  padding: 4px 6px 8px;
+  overflow-x: auto;
+}
+.diagram-wrap svg{ display:block; width:100%; height:auto; max-width: 100%; }
+.diagram-wrap svg text{ font-family: var(--sans); fill: currentColor; }
+.diagram-wrap svg .formula{ font-family: var(--mono); }
+
+.step-text{
+  padding: 4px 18px 18px;
+  font-size: 15px; line-height: 1.65;
+}
+.step-text .arrow-badge{
+  display:inline-flex; align-items:center; justify-content:center;
+  background: var(--accent); color: var(--accent-ink);
+  font-weight: 800; font-size: 12px;
+  padding: 2px 9px; border-radius: 999px; margin-right:8px;
+}
+.step-text.is-result .arrow-badge{ background: var(--heading); }
+
+.step-nav{
+  display:flex; align-items:center; gap: 8px;
+  padding: 4px 14px 16px;
+}
+.step-btn{
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 9px;
+  padding: 8px 14px;
+  font-weight: 700; font-size: 13.5px;
+  cursor: pointer;
+  display:flex; align-items:center; gap:6px;
+}
+.step-btn:hover:not(:disabled){ border-color: var(--accent); color: var(--accent); }
+.step-btn:disabled{ opacity:.35; cursor:not-allowed; }
+.step-dots{ display:flex; gap:6px; margin: 0 4px; flex-wrap:wrap; }
+.step-dot{
+  width:9px; height:9px; border-radius:50%;
+  background: var(--border-strong); border:none; cursor:pointer; padding:0;
+}
+.step-dot[aria-current="true"]{ background: var(--accent); width:20px; border-radius:5px; }
+.step-dot.is-result{ background: var(--heading-dim); }
+.kbd-hint{ font-size:11.5px; color: var(--text-muted); margin-left:auto; white-space:nowrap; }
+.kbd-hint kbd{
+  font-family: var(--mono); background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 4px; padding: 1px 5px; font-size: 10.5px;
+}
+
+.recap{ margin-top: 26px; }
+.recap h3{ font-size: 14px; text-transform:uppercase; letter-spacing:.06em; color: var(--text-muted); font-family: var(--sans); font-weight:800; }
+.recap-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+.recap-list li{
+  display:flex; gap:12px; padding: 12px 14px;
+  background: var(--bg-elevated); border:1px solid var(--border); border-radius: 12px;
+  font-size: 13.8px; line-height:1.55; cursor:pointer;
+}
+.recap-list li:hover{ border-color: var(--border-strong); }
+.recap-list li.active{ border-color: var(--accent); background: var(--accent-soft); }
+.recap-list .n{
+  flex-shrink:0; width:26px; height:26px; border-radius:50%;
+  background: var(--surface-2); color:var(--text-secondary);
+  display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px;
+}
+.recap-list li.active .n{ background: var(--accent); color: var(--accent-ink); }
+.recap-list .gm{ flex-shrink:0; align-self:flex-start; margin-top:2px; }
+
+.endboxes{ display:grid; grid-template-columns: 1fr; gap: 14px; margin-top: 22px; }
+@media (min-width: 640px){ .endboxes{ grid-template-columns: 1fr 1fr; } }
+.endbox{ padding: 14px 16px; border-radius: 12px; font-size: 13.6px; line-height:1.6; }
+.endbox h4{ font-family: var(--sans); font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
+.endbox.netto{ background: var(--surface); border:1px solid var(--border); }
+.endbox.netto h4{ color: var(--heading); }
+.endbox.quer{ background: var(--nucleophile-soft); border:1px solid var(--nucleophile); }
+.endbox.quer h4{ color: var(--nucleophile); }
+
+.legend{
+  display:flex; flex-wrap:wrap; gap: 10px 16px;
+  margin: 26px 0 6px; padding: 12px 16px;
+  background: var(--surface); border:1px solid var(--border); border-radius:12px;
+  font-size: 12px; color: var(--text-secondary);
+}
+.legend .item{ display:flex; align-items:center; gap:6px; }
+.legend .swatch{ width:12px; height:12px; border-radius:3px; }
+
+footer.page-footer{
+  text-align:center; padding: 30px 20px 60px; color: var(--text-muted); font-size:12px;
+}
+
+.welcome{ padding: 10px 2px 40px; }
+.welcome .lede{ font-size: 16px; color: var(--text-secondary); max-width: 62ch; }
+.welcome .grid{
+  display:grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
+  gap: 12px; margin-top: 22px;
+}
+.welcome .grid a{
+  text-decoration:none; color:inherit;
+  background: var(--bg-elevated); border:1px solid var(--border); border-radius:12px;
+  padding: 14px 16px; display:block; cursor:pointer;
+}
+.welcome .grid a:hover{ border-color: var(--accent); }
+.welcome .grid .tt{ font-weight:800; color:var(--heading); font-size:13.5px; margin-bottom:4px; }
+.welcome .grid .ss{ font-size:12.5px; color:var(--text-secondary); }
+
+@media (max-width: 900px){
+  .app{ grid-template-columns: 1fr; }
+  .sidebar{
+    position: fixed; inset: 57px 0 0 0; z-index: 30;
+    transform: translateX(-100%); transition: transform .2s ease;
+    width: min(84vw, 340px); box-shadow: var(--ring-shadow);
+  }
+  .sidebar.open{ transform: translateX(0); }
+  .menu-btn{ display:inline-flex; }
+  main.stage{ padding: 20px 16px 70px; }
+  .topbar .examiner{ display:none; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="Menü öffnen" aria-expanded="false">☰</button>
+  <div class="brand">
+    <span class="kicker">Mechanismen-Kompendium</span>
+    <h1>Fleisch &amp; Fleischerzeugnisse</h1>
+  </div>
+  <span class="examiner">Staatsexamen Lebensmittelchemie · Prüfer Prof. Dr. M. Glomb</span>
+  <button class="theme-toggle" id="themeToggle" aria-pressed="false" aria-label="Hell/Dunkel umschalten">
+    <span class="knob" id="themeKnob">☀</span>
+    <span class="label" id="themeLabel">Hell</span>
+  </button>
+</div>
+
+<div class="app">
+  <nav class="sidebar" id="sidebar" aria-label="Mechanismen-Navigation"></nav>
+  <main class="stage" id="stage"></main>
+</div>
+
+<script>
+/* ======================================================================
+   ENGINE — layout helpers, SVG mechanism renderer
+   ====================================================================== */
+const ROLE_VAR = {
+  nu: 'var(--nucleophile)', el: 'var(--electrophile)', rad: 'var(--radical)',
+  lg: 'var(--leaving)', plain: 'currentColor', product: 'var(--heading)'
+};
+
+function fmt(label){
+  // convert markup like C2^+ or O^- or H2O or N^.  into tspans (super/sub)
+  // ^x = superscript, _x = subscript, use unicode already mostly; keep simple
+  return String(label);
+}
+
+// Place n points evenly on a circle
+function ringPoints(cx, cy, r, n, startAngle=-90){
+  const pts=[];
+  for(let i=0;i<n;i++){
+    const a = (startAngle + i*(360/n)) * Math.PI/180;
+    pts.push({x: cx + r*Math.cos(a), y: cy + r*Math.sin(a)});
+  }
+  return pts;
+}
+
+// station(): builds an array of atom objects with computed positions from a compact spec
+// spec: {id, x, y, layout: 'point'|'chain'|'vchain'|'zigzag'|'ring', spacing, r, entries:[{id,label,role,charge}], bondOrders:[1,2,...] between consecutive entries, closeRing:bool}
+function station(spec){
+  const atoms = [];
+  const n = spec.entries.length;
+  let pts = [];
+  if(spec.layout === 'point'){
+    pts = [{x: spec.x, y: spec.y}];
+  } else if(spec.layout === 'chain'){
+    const sp = spec.spacing || 46;
+    for(let i=0;i<n;i++) pts.push({x: spec.x + i*sp, y: spec.y});
+  } else if(spec.layout === 'vchain'){
+    const sp = spec.spacing || 40;
+    for(let i=0;i<n;i++) pts.push({x: spec.x, y: spec.y + i*sp});
+  } else if(spec.layout === 'zigzag'){
+    const sp = spec.spacing || 40;
+    const amp = spec.amp || 20;
+    for(let i=0;i<n;i++) pts.push({x: spec.x + i*sp, y: spec.y + (i%2===0?0:-amp)});
+  } else if(spec.layout === 'ring'){
+    pts = ringPoints(spec.x, spec.y, spec.r || 34, n, spec.startAngle);
+  }
+  spec.entries.forEach((e,i)=>{
+    atoms.push({ id: e.id, x: pts[i].x + (e.dx||0), y: pts[i].y + (e.dy||0),
+      label: e.label, role: e.role || 'plain', station: spec.id, sub: e.sub || null });
+  });
+  // auto bonds between consecutive entries
+  const bonds = [];
+  if(spec.layout !== 'point' && spec.autoBond !== false){
+    for(let i=0;i<n-1;i++){
+      const order = (spec.bondOrders && spec.bondOrders[i]) || 1;
+      bonds.push({ id: spec.id+'_b'+i, a: spec.entries[i].id, b: spec.entries[i+1].id, order });
+    }
+    if(spec.closeRing){
+      const order = (spec.bondOrders && spec.bondOrders[n-1]) || 1;
+      bonds.push({ id: spec.id+'_bC', a: spec.entries[n-1].id, b: spec.entries[0].id, order });
+    }
+  }
+  return { atoms, bonds };
+}
+
+function buildDiagram(diagramSpec){
+  let atoms = [], bonds = [];
+  (diagramSpec.stations||[]).forEach(s=>{
+    const built = station(s);
+    atoms = atoms.concat(built.atoms);
+    bonds = bonds.concat(built.bonds);
+  });
+  (diagramSpec.freeAtoms||[]).forEach(a=> atoms.push(Object.assign({role:'plain', station:'_free'}, a)));
+  (diagramSpec.extraBonds||[]).forEach(b=> bonds.push(Object.assign({order:1}, b)));
+  return { atoms, bonds, labels: diagramSpec.labels||[], viewBox: diagramSpec.viewBox||'0 0 720 220' };
+}
+
+function atomById(atoms, id){ return atoms.find(a=>a.id===id); }
+
+// Compute cumulative bond/charge state BEFORE a given step index (0-based; state before step 0 = initial)
+function stateBefore(mech, stepIndex){
+  const built = buildDiagram(mech.diagram);
+  // Events are tagged with the 1-based Pfeil-number that causes them.
+  // stateBefore(k) (k = 0-based UI step index) applies events from steps 1..k.
+  let bonds = built.bonds.slice();
+  let charges = {}; // atomId -> [sign,...]
+  const events = mech.diagram.events || [];
+  for(let s=1; s<=stepIndex; s++){
+    events.filter(e=>e.step===s).forEach(e=>{
+      if(e.type==='bondRemove'){ bonds = bonds.filter(b=>b.id!==e.id); }
+      if(e.type==='bondAdd'){ bonds.push({id:e.id, a:e.a, b:e.b, order:e.order||1}); }
+      if(e.type==='bondOrder'){ const b=bonds.find(x=>x.id===e.id); if(b) b.order=e.order; }
+      if(e.type==='chargeAdd'){ (charges[e.atom] = charges[e.atom]||[]).push(e.sign); }
+      if(e.type==='chargeRemove'){ if(charges[e.atom]) charges[e.atom].pop(); }
+      if(e.type==='moveAtom'){ const a=atomById(built.atoms,e.atom); if(a){ a.x += e.dx||0; a.y += e.dy||0; } }
+    });
+  }
+  return { atoms: built.atoms, bonds, charges, viewBox: built.viewBox, labels: built.labels };
+}
+
+function drawArrowPath(from, to, curveDir){
+  const mx = (from.x+to.x)/2, my=(from.y+to.y)/2;
+  const dx = to.x-from.x, dy = to.y-from.y;
+  const len = Math.hypot(dx,dy) || 1;
+  const nx = -dy/len, ny = dx/len;
+  const bend = curveDir==null ? -Math.min(46, Math.max(26,len*0.4)) : curveDir;
+  const cx = mx + nx*bend, cy = my + ny*bend;
+  return `M ${from.x.toFixed(1)} ${from.y.toFixed(1)} Q ${cx.toFixed(1)} ${cy.toFixed(1)} ${to.x.toFixed(1)} ${to.y.toFixed(1)}`;
+}
+
+function svgDefs(){
+  return `<defs>
+    <marker id="arrHead" markerWidth="9" markerHeight="9" refX="6.5" refY="3.5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="var(--accent)"></path>
+    </marker>
+    <marker id="arrHeadGhost" markerWidth="9" markerHeight="9" refX="6.5" refY="3.5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor" opacity="0.55"></path>
+    </marker>
+    <marker id="fishHook" markerWidth="9" markerHeight="9" refX="6" refY="3.5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,1 L7,3.5 L0,4.2 Z" fill="var(--accent)"></path>
+    </marker>
+  </defs>`;
+}
+
+function bondLine(a,b,order){
+  const dx=b.x-a.x, dy=b.y-a.y, len=Math.hypot(dx,dy)||1;
+  const nx=-dy/len, ny=dx/len;
+  const pad = 15; // shrink to atom label edge
+  const ax=a.x+dx/len*pad, ay=a.y+dy/len*pad, bx=b.x-dx/len*pad, by=b.y-dy/len*pad;
+  if(order===2){
+    const off=3.2;
+    return `<line x1="${(ax+nx*off).toFixed(1)}" y1="${(ay+ny*off).toFixed(1)}" x2="${(bx+nx*off).toFixed(1)}" y2="${(by+ny*off).toFixed(1)}" stroke="currentColor" stroke-width="1.6"/>`+
+           `<line x1="${(ax-nx*off).toFixed(1)}" y1="${(ay-ny*off).toFixed(1)}" x2="${(bx-nx*off).toFixed(1)}" y2="${(by-ny*off).toFixed(1)}" stroke="currentColor" stroke-width="1.6"/>`;
+  }
+  return `<line x1="${ax.toFixed(1)}" y1="${ay.toFixed(1)}" x2="${bx.toFixed(1)}" y2="${by.toFixed(1)}" stroke="currentColor" stroke-width="1.6"/>`;
+}
+
+function chargeBadge(atom, sign, idx){
+  const r=8;
+  const ox = atom.x + 15, oy = atom.y - 15 - idx*18;
+  const fill = sign==='+' ? 'var(--electrophile)' : (sign==='-'?'var(--nucleophile)':'var(--radical)');
+  return `<circle cx="${ox}" cy="${oy}" r="${r}" fill="${fill}" opacity="0.92"></circle>
+          <text x="${ox}" y="${oy+3.6}" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--bg-elevated)">${sign}</text>`;
+}
+
+function renderAtomLabel(atom){
+  const color = ROLE_VAR[atom.role] || 'currentColor';
+  let sub = '';
+  if(atom.sub){ sub = `<tspan baseline-shift="sub" font-size="8">${atom.sub}</tspan>`; }
+  return `<text x="${atom.x}" y="${atom.y+4.5}" text-anchor="middle" font-size="13.5" font-weight="700" fill="${color}" class="formula">${atom.label}${sub}</text>`;
+}
+
+// Render one step's SVG (state shown = stateBefore(stepIndex), arrows = that step's arrows)
+function renderMechSVG(mech, stepIndex, showGhostArrows){
+  const isResult = stepIndex >= mech.steps.length;
+  const st = stateBefore(mech, Math.min(stepIndex, mech.steps.length));
+  let svg = `<svg viewBox="${st.viewBox}" role="img" aria-label="${(mech.title||'').replace(/"/g,'')} — Diagrammstufe ${Math.min(stepIndex+1, mech.steps.length)} von ${mech.steps.length}">`;
+  svg += svgDefs();
+  // ghost bonds/arrows from earlier steps (faint), current step arrows highlighted
+  if(showGhostArrows){
+    for(let s=1; s<=stepIndex; s++){
+      const step = mech.steps[s-1];
+      if(!step) continue;
+      (step.arrows||[]).forEach(ar=>{
+        const from = atomById(st.atoms, ar.from);
+        const to = atomById(st.atoms, ar.to);
+        if(from && to){
+          const path = drawArrowPath(from, to, ar.bend);
+          svg += `<path d="${path}" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.22" marker-end="url(#${ar.kind==='fishhook'?'fishHook':'arrHeadGhost'})"></path>`;
+        }
+      });
+    }
+  }
+  // bonds
+  st.bonds.forEach(b=>{
+    const a=atomById(st.atoms,b.a), c=atomById(st.atoms,b.b);
+    if(a&&c) svg += bondLine(a,c,b.order);
+  });
+  // current step arrows (on top of bonds, drawn before atom labels so labels stay legible)
+  if(!isResult){
+    const step = mech.steps[stepIndex];
+    (step.arrows||[]).forEach(ar=>{
+      const from = atomById(st.atoms, ar.from);
+      const to = atomById(st.atoms, ar.to);
+      if(from && to){
+        const path = drawArrowPath(from, to, ar.bend);
+        const marker = ar.kind==='fishhook' ? 'fishHook' : 'arrHead';
+        svg += `<path d="${path}" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" marker-end="url(#${marker})"></path>`;
+      }
+    });
+  }
+  // atoms + charges
+  st.atoms.forEach(a=>{
+    svg += renderAtomLabel(a);
+    const ch = st.charges[a.id];
+    if(ch){ ch.forEach((sign,i)=> svg += chargeBadge(a, sign, i)); }
+  });
+  // free labels (species captions)
+  st.labels.forEach(l=>{
+    svg += `<text x="${l.x}" y="${l.y}" text-anchor="${l.anchor||'middle'}" font-size="${l.size||11}" fill="var(--text-muted)" font-style="italic">${l.text}</text>`;
+  });
+  svg += `</svg>`;
+  return svg;
+}
+
+/* ======================================================================
+   GRUNDMUSTER (basic pattern) chip helper
+   ====================================================================== */
+const GM = {
+  nu: {cls:'gm-nu', label:'Nukleophiler Angriff'},
+  pi: {cls:'gm-pi', label:'π-Bindung klappt um'},
+  proto: {cls:'gm-proto', label:'Prototropie'},
+  lg: {cls:'gm-lg', label:'Abgangsgruppe / Wasserabspaltung'},
+  redox: {cls:'gm-redox', label:'1-Elektronen-Redox'}
+};
+function gmChip(key){
+  const g = GM[key]; if(!g) return '';
+  return `<span class="grundmuster-chip ${g.cls}">${g.label}</span>`;
+}
+
+window.__ENGINE_READY = true;
+</script>
+
+<script id="data-script">
+/* MECHANISMS data will be appended here */
+const MECHANISMS = [
+{
+  id:'m01', num:1, teil:'A', blitz:false,
+  title:'Post-mortem-Glykolyse: Pyruvat → Lactat (Laktatdehydrogenase, LDH)',
+  zusammenhang:'Nach der Schlachtung entfällt die Sauerstoffversorgung. Die Glykolyse läuft unverändert bis Pyruvat, aber die oxidative Decarboxylierung ist blockiert. Um die Glykolyse am Laufen zu halten, muss NAD⁺ regeneriert werden — die LDH reduziert Pyruvat zu Lactat und oxidiert dabei NADH zu NAD⁺. Endergebnis: pro Glucose zwei Lactat, pH-Abfall von ca. 6,5 auf 5,2–5,4 — die Kausalkette des Rigor. Substrate: Pyruvat (C2 = Ketogruppe, elektrophil), NADH (Dihydronicotinamid, Position C4 trägt das übertragbare Hydrid); die pro-R-Wasserstoffseite des NADH ist die reaktive.',
+  diagram:{
+    viewBox:'-40 0 600 220',
+    stations:[
+      { id:'nadh', x:90, y:110, layout:'chain', spacing:70, bondOrders:[1], entries:[
+        {id:'C4', label:'C4', role:'nu'}, {id:'H4', label:'H⁻', role:'nu'}
+      ]},
+      { id:'pyr', x:320, y:80, layout:'vchain', spacing:70, bondOrders:[2], entries:[
+        {id:'C2', label:'C2', role:'el'}, {id:'O2', label:'O', role:'plain'}
+      ]}
+    ],
+    freeAtoms:[ {id:'Hp', x:430, y:180, label:'H⁺', role:'el'} ],
+    labels:[ {x:120,y:160,text:'NADH (Dihydronicotinamid)'}, {x:320,y:190,text:'Pyruvat'} ],
+    events:[
+      { step:1, type:'bondRemove', id:'nadh_b0' },
+      { step:1, type:'bondAdd', id:'h4c2', a:'H4', b:'C2', order:1 },
+      { step:2, type:'bondOrder', id:'pyr_b0', order:1 },
+      { step:2, type:'chargeAdd', atom:'O2', sign:'-' },
+      { step:3, type:'bondAdd', id:'o2Hp', a:'O2', b:'Hp', order:1 },
+      { step:3, type:'chargeRemove', atom:'O2' }
+    ]
+  },
+  steps:[
+    { text:'Das freie Elektronenpaar der C4–H σ-Bindung des NADH-Dihydronicotinamids wird als Hydrid (2 Elektronen + Proton) auf das Carbonyl-C2 des Pyruvats übertragen. Angriff: nukleophil, von der si-Seite. Gleichzeitig kollabiert die C=O π-Bindung.',
+      arrows:[{from:'H4', to:'C2', kind:'full'}], gm:['nu'] },
+    { text:'Das π-Elektronenpaar der C=O Doppelbindung des Pyruvats klappt auf den Sauerstoff um; dort baut sich formal eine negative Ladung (Alkoxid) auf. Pyruvat wird dadurch am C2 sp³-hybridisiert.',
+      arrows:[{from:'C2', to:'O2', kind:'full'}], gm:['pi'] },
+    { text:'Ein Proton aus einer aktiven-Zentrum-Säure (im Enzym His-Rest, im Reagenzglas ein Puffer-H⁺) wird auf das Alkoxid übertragen — Bindungsbildung O–H am ehemaligen Carbonyl-Sauerstoff. Damit ist L-Lactat (2-Hydroxypropansäure, S-Konfiguration) entstanden.',
+      arrows:[{from:'O2', to:'Hp', kind:'full'}], gm:['proto'] },
+    { text:'Am NADH ist die C4–H-Bindung gelöst worden, das C4 wird sp²-hybridisiert, und die Elektronen des gebrochenen C4–H werden mit dem verbleibenden Ringsystem in Konjugation gebracht: die Nicotinamid-Aromatizität stellt sich wieder her — NAD⁺ entsteht. Die positive Ladung sitzt formal am Pyridinium-Stickstoff.',
+      arrows:[], gm:['pi'] }
+  ],
+  netto:'Pyruvat + NADH + H⁺ → Lactat + NAD⁺. Reversible Reaktion; im lebenden Muskel unter O₂-Mangel dieselbe Richtung wie post mortem. Die Milchsäure protoniert Proteinbase-Gruppen und trägt maßgeblich zum pH-Abfall bei; Phosphorsäure aus ATP/Kreatinphosphat-Zerfall liefert den Rest.',
+  querverbindung:'Dieselbe LDH-Chemie mit Hydridtransfer aus NADH sehen wir bei der alkoholischen Gärung (dort Acetaldehyd-Dehydrogenase, Wein/Bier), bei der Kakaofermentation und im Sauerteig. Immer dasselbe Problem: NAD⁺ muss regeneriert werden. Nur die „Elektronenmülldeponie" ändert sich — Lactat (Fleisch, Joghurt), Ethanol (Wein, Bier, Brot), Acetat (Essig) oder Succinat (Fermentation).'
+},
+{
+  id:'m02', num:2, teil:'A', blitz:false,
+  title:'Kreatinphosphat → Kreatin (Phosphotransfer über Kreatinkinase)',
+  zusammenhang:'Kreatinphosphat ist der kurzfristige ATP-Puffer im Muskel. Post mortem läuft die Reaktion in Richtung ATP-Regeneration, bis das Kreatinphosphat aufgebraucht ist. Danach beginnt der irreversible ATP-Abbau. Substrate: Kreatinphosphat (N-Phosphoguanidin — die Guanidingruppe des Kreatins trägt am Nη einen Phosphatester), ADP mit β-Phosphat als nukleophilem Zentrum.',
+  diagram:{
+    viewBox:'0 0 560 200',
+    stations:[
+      { id:'cp', x:260, y:90, layout:'chain', spacing:110, bondOrders:[1], entries:[
+        {id:'P', label:'P', role:'el'}, {id:'N', label:'N(Guanidin)', role:'plain'}
+      ]}
+    ],
+    freeAtoms:[
+      {id:'Oadp', x:90, y:120, label:'O⁻(ADP)', role:'nu'},
+      {id:'Hp', x:430, y:160, label:'H⁺', role:'el'}
+    ],
+    labels:[ {x:90,y:160,text:'ADP β-Phosphat'}, {x:315,y:60,text:'Kreatinphosphat'} ],
+    events:[
+      { step:1, type:'bondAdd', id:'oadpP', a:'Oadp', b:'P', order:1 },
+      { step:2, type:'bondRemove', id:'cp_b0' },
+      { step:2, type:'chargeAdd', atom:'N', sign:'-' },
+      { step:3, type:'bondAdd', id:'nHp', a:'N', b:'Hp', order:1 },
+      { step:3, type:'chargeRemove', atom:'N' }
+    ]
+  },
+  steps:[
+    { text:'Das freie Elektronenpaar am terminalen O⁻ des β-Phosphats von ADP greift den elektrophilen Phosphor des N-P-Phosphats an. Der Phosphor ist wegen der drei doppelgebundenen bzw. einfach-negativ geladenen Sauerstoffatome stark polarisiert.',
+      arrows:[{from:'Oadp', to:'P', kind:'full'}], gm:['nu'] },
+    { text:'Am angegriffenen Phosphor bildet sich eine trigonal-bipyramidale Übergangsstruktur (SN2 am Phosphor, „in-line-attack"). Die N-P-σ-Bindung zum Guanidinstickstoff wird als Abgangsgruppe gelöst; ihre Elektronen wandern auf das N zurück.',
+      arrows:[{from:'P', to:'N', kind:'full'}], gm:['lg'] },
+    { text:'Rückbildung: Aus dem freigesetzten Guanidinstickstoff mit dem neuen Elektronenpaar wird nach Protonierung (aus Wasser bzw. His-Puffer) das freie Kreatin — ein Guanidin mit voll basischer NH₂-Gruppe. Am neu geknüpften Sauerstoff-Phosphor sitzt ATP.',
+      arrows:[{from:'N', to:'Hp', kind:'full'}], gm:['proto'] }
+  ],
+  netto:'Kreatinphosphat + ADP → Kreatin + ATP. Sobald der Kreatinphosphatpool leer ist (bei kleinen Tierkörpern nach Minuten, beim Rind langsamer), bricht der ATP-Nachschub zusammen — der Aktin-Myosin-Komplex bleibt verhakt, Rigor mortis setzt ein.',
+  querverbindung:null
+},
+{
+  id:'m03', num:3, teil:'A', blitz:false,
+  title:'ATP → ADP → AMP → IMP (hydrolytische Desaminierung durch AMP-Desaminase)',
+  zusammenhang:'ATP wird zunächst zu ADP und AMP hydrolysiert (klassische Phosphatester-Hydrolyse durch Kinasen und Phosphatasen, hier nicht gesondert dargestellt), dann wird AMP zu IMP desaminiert. IMP ist der zentrale Umami-Marker (Liebigs Isolierung aus Fleischextrakt) und wird enzymatisch zu Inosin, Hypoxanthin und Harnsäure weiter abgebaut. Substrat: AMP — das C6 des Purinrings trägt eine NH₂-Gruppe; die C6–N-Bindung ist durch den Ringstickstoff (N1) elektronenarm.',
+  diagram:{
+    viewBox:'0 0 560 220',
+    stations:[
+      { id:'ring', x:330, y:70, layout:'vchain', spacing:70, bondOrders:[2], entries:[
+        {id:'C6', label:'C6', role:'el'}, {id:'N1', label:'N1', role:'plain'}
+      ]}
+    ],
+    freeAtoms:[
+      {id:'Nh2', x:410, y:70, label:'NH₂', role:'lg'},
+      {id:'Ow', x:150, y:100, label:'H₂O', role:'nu'},
+      {id:'Base', x:150, y:190, label:'Base (Zn–OH)', role:'el'}
+    ],
+    extraBonds:[ {id:'c6Nh2', a:'C6', b:'Nh2', order:1} ],
+    labels:[ {x:330,y:190,text:'Adenin-Ring (C6)'} ],
+    events:[
+      { step:1, type:'bondAdd', id:'owC6', a:'Ow', b:'C6', order:1 },
+      { step:2, type:'bondOrder', id:'ring_b0', order:1 },
+      { step:2, type:'chargeAdd', atom:'N1', sign:'-' },
+      { step:4, type:'bondRemove', id:'c6Nh2' },
+      { step:4, type:'moveAtom', atom:'Nh2', dx:50, dy:-40 },
+      { step:4, type:'bondOrder', id:'ring_b0', order:2 },
+      { step:4, type:'chargeRemove', atom:'N1' },
+      { step:5, type:'bondOrder', id:'owC6', order:2 }
+    ]
+  },
+  steps:[
+    { text:'Ein Wassermolekül greift mit einem freien Elektronenpaar am O nukleophil das C6 des Purinrings an. Das C6 ist als vinyloge Guanidinstruktur elektrophil — die N1=C6-π-Bindung polarisiert das C6.',
+      arrows:[{from:'Ow', to:'C6', kind:'full'}], gm:['nu'] },
+    { text:'Gleichzeitig klappt das π-Elektronenpaar der N1=C6-Doppelbindung auf den N1 um. Am C6 entsteht sp³-Hybridisierung; N1 trägt formal ein zusätzliches freies Elektronenpaar (Deprotonierung folgt).',
+      arrows:[{from:'C6', to:'N1', kind:'full'}], gm:['pi'] },
+    { text:'Das Wasser-Proton wird durch eine Base am aktiven Zentrum (Zn²⁺-koordiniertes Hydroxid im biologischen Enzym) abgezogen — Bildung eines Alkoxids am C6 unter Erhalt der neuen C6–OH-Bindung.',
+      arrows:[{from:'Ow', to:'Base', kind:'full'}], gm:['proto'] },
+    { text:'Rückrestituierung der Aromatizität: Das freie Elektronenpaar am ehemaligen N1 wird als σ-Bindung zurück ins Ringsystem geführt, gleichzeitig verlässt die Amino-Gruppe (NH₂) als NH₃. Der C6–NH₂-σ-Bindung folgen die Elektronen zum Stickstoff des Ammoniaks; C6 wird wieder sp²-hybridisiert.',
+      arrows:[{from:'C6', to:'Nh2', kind:'full'}], gm:['lg'] },
+    { text:'Am C6 bleibt eine C=O-Doppelbindung (Enol → Keto-Tautomerie): Das Alkoxid am C6 protoniert sich um, das Proton am ehemaligen N1 wandert ab, und der Ring reorganisiert sich zum stabilen 6-oxo-Purin. Ergebnis: Hypoxanthin-Ringsystem am Nucleotid = IMP.',
+      arrows:[], gm:['proto'] }
+  ],
+  netto:'AMP + H₂O → IMP + NH₃. An C6 sitzt jetzt statt der NH₂- eine Carbonyl-/OH-Gruppe (im Keto-Tautomer vorherrschend) — der Unterschied Adenin ↔ Hypoxanthin. Adenosin trägt an C6 NH₂, Inosin an C6 =O; Nukleobasen-Wörterbuch: Adenin/Hypoxanthin, Guanin/Xanthin — jeweils die desaminierten Formen.',
+  querverbindung:null
+},
+{
+  id:'m04', num:4, teil:'A', blitz:false,
+  title:"IMP → Inosin + Pᵢ (5'-Nucleotidase, Phosphomonoester-Hydrolyse)",
+  zusammenhang:"Substrat: IMP mit 5'-Phosphomonoester. Der Phosphor ist am C5'-O-Ester elektrophil.",
+  diagram:{
+    viewBox:'0 0 560 220',
+    stations:[
+      { id:'p', x:280, y:90, layout:'chain', spacing:90, bondOrders:[1], entries:[
+        {id:'P', label:'P', role:'el'}, {id:'O5', label:"O5′", role:'plain'}
+      ]}
+    ],
+    freeAtoms:[
+      {id:'Ow', x:110, y:120, label:'H₂O', role:'nu'},
+      {id:'Rib', x:370, y:170, label:"Ribose-C5′", role:'lg'},
+      {id:'Base', x:150, y:175, label:'Base', role:'el'}
+    ],
+    extraBonds:[ {id:'o5Rib', a:'O5', b:'Rib', order:1} ],
+    labels:[ {x:280,y:60,text:"5′-Phosphomonoester (IMP)"} ],
+    events:[
+      { step:1, type:'bondAdd', id:'owP', a:'Ow', b:'P', order:1 },
+      { step:2, type:'bondRemove', id:'p_b0' },
+      { step:2, type:'chargeAdd', atom:'O5', sign:'-' },
+      { step:3, type:'chargeRemove', atom:'O5' }
+    ]
+  },
+  steps:[
+    { text:"Das freie Elektronenpaar am O eines Wassermoleküls greift den elektrophilen Phosphor des 5'-Phosphats nukleophil an — SN2 am Phosphor über trigonal-bipyramidale Übergangsstruktur.",
+      arrows:[{from:'Ow', to:'P', kind:'full'}], gm:['nu'] },
+    { text:"Die O–P-σ-Bindung zwischen dem 5'-Kohlenstoff-Sauerstoff und dem Phosphor bricht; die Elektronen der Bindung wandern zurück zum 5'-Sauerstoff und lassen dort ein Alkoxid entstehen.",
+      arrows:[{from:'P', to:'O5', kind:'full'}], gm:['lg'] },
+    { text:"Protonübertragung: Das Wasser-Proton wird an eine Base (H₂O, His-Rest im Enzym) abgegeben; das 5'-Alkoxid nimmt ein Proton auf und wird zur freien 5'-OH. Es entsteht Inosin (Ribose + Hypoxanthin) und anorganisches Phosphat.",
+      arrows:[{from:'Ow', to:'Base', kind:'full'}], gm:['proto'] }
+  ],
+  netto:'IMP + H₂O → Inosin + Pᵢ (anorganisches Phosphat).',
+  querverbindung:null
+},
+{
+  id:'m05', num:5, teil:'A', blitz:false,
+  title:'Inosin → Hypoxanthin + Ribose-1-phosphat (Purin-Nucleosid-Phosphorylase, PNP)',
+  zusammenhang:"PNP nutzt Phosphat als Nukleophil, nicht Wasser — das erhält das Ribose-1-phosphat als energiereiches Intermediat für den Nucleotid-Recycling-Weg. Post mortem läuft die Reaktion aber einfach ab. Substrat: Inosin — die N9 des Hypoxanthin-Rings ist über eine N-glykosidische Bindung am anomeren C1' der Ribose angebunden.",
+  diagram:{
+    viewBox:'0 0 560 200',
+    stations:[
+      { id:'sug', x:280, y:90, layout:'chain', spacing:110, bondOrders:[1], entries:[
+        {id:'C1', label:"C1′", role:'el'}, {id:'N9', label:'N9(Hypoxanthin)', role:'lg'}
+      ]}
+    ],
+    freeAtoms:[
+      {id:'Pi', x:110, y:120, label:'Pᵢ', role:'nu'},
+      {id:'Hsrc', x:390, y:180, label:'H⁺(Wasser/His)', role:'el'}
+    ],
+    labels:[ {x:280,y:60,text:"Inosin (anomeres C1′)"} ],
+    events:[
+      { step:1, type:'bondAdd', id:'piC1', a:'Pi', b:'C1', order:1 },
+      { step:2, type:'bondRemove', id:'sug_b0' },
+      { step:3, type:'bondAdd', id:'n9H', a:'N9', b:'Hsrc', order:1 }
+    ]
+  },
+  steps:[
+    { text:"Das Phosphat-Sauerstoff-freie Elektronenpaar greift das anomere C1' der Ribose nukleophil an (SN1-artig, oft aber synchron: „SN1 mit assistierendem Nukleophil”).",
+      arrows:[{from:'Pi', to:'C1', kind:'full'}], gm:['nu'] },
+    { text:"Die C1'–N9-σ-Bindung bricht; die Elektronen fließen auf den N9 des Hypoxanthin-Rings. Am C1' bildet sich transient ein Oxocarbenium-Ion (α-Ringsauerstoff-stabilisiertes Kation), das durch das ankommende Phosphat sofort abgefangen wird.",
+      arrows:[{from:'C1', to:'N9', kind:'full'}], gm:['lg'] },
+    { text:'Bindungsknüpfung: C1′–O–Pᵢ neu; α-Konfiguration am anomeren Zentrum überwiegt (Enzym-gesteuert). Am N9 des Hypoxanthins liegt jetzt ein freies Elektronenpaar → Protonierung durch Wasser/His liefert das freie Hypoxanthin.',
+      arrows:[{from:'N9', to:'Hsrc', kind:'full'}], gm:['proto'] }
+  ],
+  netto:'Inosin + Pᵢ → Hypoxanthin + Ribose-1-phosphat.',
+  querverbindung:null
+},
+{
+  id:'m06', num:6, teil:'A', blitz:false,
+  title:'Hypoxanthin → Xanthin → Harnsäure (Xanthinoxidase, Molybdän-Flavo-Enzym)',
+  zusammenhang:'Xanthinoxidase (XO) enthält ein Mo=S/O-Zentrum, zwei [2Fe–2S]-Cluster und ein FAD. Sie oxidiert Hypoxanthin an C2 zu Xanthin und dann an C8 zu Harnsäure. Wichtig: XO ist eine Oxidase, keine Oxygenase — der eingeführte Sauerstoff stammt aus Wasser, nicht aus O₂. O₂ wird nur zur Reoxidation des Mo gebraucht und dabei zu H₂O₂ und Superoxid reduziert.',
+  diagram:{
+    viewBox:'0 0 620 240',
+    stations:[
+      { id:'mo', x:90, y:110, layout:'chain', spacing:100, bondOrders:[1], entries:[
+        {id:'Mo', label:'Mo(VI)=S', role:'rad'}, {id:'Ooh', label:'OH', role:'nu'}
+      ]},
+      { id:'ring', x:380, y:70, layout:'vchain', spacing:70, bondOrders:[2], entries:[
+        {id:'C2', label:'C2', role:'el'}, {id:'N1', label:'N1', role:'plain'}
+      ]}
+    ],
+    freeAtoms:[
+      {id:'H2', x:460, y:70, label:'H', role:'plain'},
+      {id:'FAD', x:90, y:200, label:'FAD', role:'rad'}
+    ],
+    extraBonds:[ {id:'c2H2', a:'C2', b:'H2', order:1} ],
+    labels:[ {x:380,y:190,text:'Purinring (C2, dann analog C8)'}, {x:140,y:150,text:'Molybdopterin-Zentrum'} ],
+    events:[
+      { step:1, type:'bondAdd', id:'oohC2', a:'Ooh', b:'C2', order:1 },
+      { step:2, type:'bondOrder', id:'ring_b0', order:1 },
+      { step:2, type:'chargeAdd', atom:'N1', sign:'-' },
+      { step:3, type:'bondRemove', id:'c2H2' },
+      { step:3, type:'bondAdd', id:'h2Mo', a:'H2', b:'Mo', order:1 },
+      { step:3, type:'chargeAdd', atom:'Mo', sign:'-' },
+      { step:4, type:'bondOrder', id:'ring_b0', order:2 },
+      { step:4, type:'chargeRemove', atom:'N1' },
+      { step:5, type:'chargeRemove', atom:'Mo' },
+      { step:5, type:'chargeAdd', atom:'FAD', sign:'•' }
+    ]
+  },
+  steps:[
+    { text:'Das Molybdän-gebundene Sulfido-/Hydroxo-Zentrum (Mo(VI)=S mit koordiniertem OH⁻) fungiert als Elektrophil-Aktivator. Ein Elektronenpaar des Mo–OH nukleophil-hydroxidischen Sauerstoffs greift das C2 (bzw. später C8) des Purinrings an.',
+      arrows:[{from:'Ooh', to:'C2', kind:'full'}], gm:['nu'] },
+    { text:'Simultan tautomerisiert der Ring: Ein Elektronenpaar der N1=C2-π-Bindung klappt auf N1 um; C2 wird sp³.',
+      arrows:[{from:'C2', to:'N1', kind:'full'}], gm:['pi'] },
+    { text:'Hydridübertragung: Die C2–H-σ-Bindung bricht heterolytisch — das Hydrid (2 Elektronen) wandert auf das Molybdän-Sulfido-Zentrum; formal wird Mo(VI) zu Mo(IV) reduziert. Damit ist die C–H-Bindung durch eine C–OH-Bindung ersetzt.',
+      arrows:[{from:'H2', to:'Mo', kind:'full'}], gm:['redox'] },
+    { text:'Aromatizität stellt sich wieder her: Das Elektronenpaar am N1 klappt zurück in den Ring; C2 wird wieder sp²; die C2–OH tautomerisiert zum 2-oxo-Purin = Xanthin (Keto-Form vorherrschend).',
+      arrows:[{from:'N1', to:'C2', kind:'full'}], gm:['pi'] },
+    { text:'Reoxidation des Mo(IV): Die zwei Elektronen wandern über die [2Fe–2S]-Cluster zum FAD, das zu FADH₂ reduziert wird. FADH₂ reduziert seinerseits O₂ zu Superoxid (O₂•⁻) und H₂O₂.',
+      arrows:[{from:'Mo', to:'FAD', kind:'fishhook'}], gm:['redox'] },
+    { text:'Zweiter Zyklus: identisches Prinzip an C8 → Xanthin wird zu Harnsäure oxidiert. Die reaktive C–H-Position wechselt, aber die Chemie ist identisch.',
+      arrows:[], gm:['redox'] }
+  ],
+  netto:'Hypoxanthin + H₂O + Mo(VI) → Xanthin + Mo(IV) (Hydridtransfer); Mo(IV) + O₂ (via Fe/S, FAD) → Mo(VI) + O₂•⁻/H₂O₂. Zweiter, identischer Zyklus an C8: Xanthin → Harnsäure.',
+  querverbindung:'Molybdopterin-Chemie taucht auch bei Aldehydoxidasen (Alkohol/Aldehyd-Oxidation) und bei Nitratreduktasen auf — im Wein-Kontext relevant für biogene Amine und Sulfitchemie. Das gleiche Elektronenrelais (Mo → Fe/S → Flavin → O₂) ist ein Universalprinzip der Redox-Enzyme.'
+},
+{
+  id:'m07', num:7, teil:'A', blitz:false,
+  title:'Kreatin → Kreatinin (intramolekulare Cyclisierung zum Lactam)',
+  zusammenhang:'Bei physiologischem pH und nachher im sauren Milieu geht Kreatin (offenkettige Carbonsäure mit N-Methyl-Guanidin) langsam in das cyclische Lactam Kreatinin über. Beide Stoffe liegen im Fleisch vor, Kreatinin dominiert im Fleischsaft — es ist die Bezugssubstanz zur Fleischanteilsbestimmung. Kreatin: HN=C(NH₂)–N(CH₃)–CH₂–COOH. Der N-methylierte Stickstoff ist nukleophil; die Carbonsäure ist elektrophil (intramolekularer 5-Ring-Übergang, meist ohne vorherige Aktivierung).',
+  diagram:{
+    viewBox:'0 0 560 240',
+    stations:[
+      { id:'cooh', x:300, y:70, layout:'vchain', spacing:70, bondOrders:[2], entries:[
+        {id:'C', label:'C', role:'el'}, {id:'O', label:'O', role:'plain'}
+      ]}
+    ],
+    freeAtoms:[
+      {id:'N', x:110, y:140, label:'N(CH₃)', role:'nu'},
+      {id:'Oh', x:390, y:140, label:'OH', role:'lg'},
+      {id:'Hp', x:300, y:210, label:'H⁺', role:'el'}
+    ],
+    extraBonds:[ {id:'cOh', a:'C', b:'Oh', order:1} ],
+    labels:[ {x:110,y:190,text:'Guanidin-N (Kreatin)'}, {x:300,y:40,text:'Carbonsäure-C'} ],
+    events:[
+      { step:1, type:'bondAdd', id:'nC', a:'N', b:'C', order:1 },
+      { step:2, type:'bondOrder', id:'cooh_b0', order:1 },
+      { step:2, type:'chargeAdd', atom:'O', sign:'-' },
+      { step:2, type:'chargeAdd', atom:'N', sign:'+' },
+      { step:3, type:'bondAdd', id:'oHp', a:'O', b:'Hp', order:1 },
+      { step:3, type:'chargeRemove', atom:'O' },
+      { step:3, type:'chargeRemove', atom:'N' },
+      { step:4, type:'bondRemove', id:'cOh' },
+      { step:4, type:'moveAtom', atom:'Oh', dx:40, dy:-45 },
+      { step:4, type:'moveAtom', atom:'Hp', dx:70, dy:-70 },
+      { step:4, type:'bondOrder', id:'nC', order:2 }
+    ]
+  },
+  steps:[
+    { text:'Das freie Elektronenpaar am tertiären Stickstoff (N-Methyl-N, verbunden mit der Guanidin- und der CH₂-COOH-Seitenkette) greift den elektrophilen Carbonyl-C der COOH-Gruppe an. Intramolekularer 5-Ring-Übergang.',
+      arrows:[{from:'N', to:'C', kind:'full'}], gm:['nu'] },
+    { text:'Das π-Elektronenpaar der C=O klappt auf den Sauerstoff um; tetraedrisches Intermediat mit positiv geladenem Stickstoff und negativ geladenem Sauerstoff (Alkoxid am ehemaligen Carbonyl-C).',
+      arrows:[{from:'C', to:'O', kind:'full'}], gm:['pi'] },
+    { text:'Prototropie: Das Alkoxid wird protoniert (aus Wasser oder H₃O⁺), der Ring-Stickstoff verliert sein Proton — jetzt ist die C–OH-Gruppe eine gute Abgangsgruppe.',
+      arrows:[{from:'O', to:'Hp', kind:'full'}], gm:['proto'] },
+    { text:'Wasser-Abspaltung: Das freie Elektronenpaar am Stickstoff klappt in die C–N-Doppelbindung; gleichzeitig wandert das Elektronenpaar der C–OH-σ-Bindung mit dem Sauerstoff als H₂O-Abgangsgruppe weg. Es entsteht das cyclische Kreatinin — ein 5-Ring-Lactam mit exocyclischer Iminogruppe.',
+      arrows:[{from:'N', to:'C', kind:'full'}], gm:['lg'] }
+  ],
+  netto:'Kreatin → Kreatinin + H₂O (intramolekulare Cyclisierung zum 5-Ring-Lactam). Kreatinin liegt in mehreren Tautomeren vor; das amidin-artige Tautomer ist im wässrigen Medium dominierend — Grundlage der Jaffé-Reaktion (Kap. 8).',
+  querverbindung:null
+},
+{
+  id:'m08', num:8, teil:'A', blitz:true,
+  title:'Jaffé-Reaktion: Kreatinin + Pikrinsäure → Meisenheimer-artiger Farbkomplex',
+  zusammenhang:'Photometrische Bestimmung von Kreatinin (Fleischanteil, klinische Nierendiagnostik) im alkalischen Milieu mit Pikrinsäure (2,4,6-Trinitrophenol). Absorptionsmaximum λ ≈ 510 nm (orange-rot). Pikrinsäure trägt drei stark elektronenziehende Nitrogruppen — der Aromat ist außergewöhnlich elektrophil, insbesondere ortho/para zur OH-Gruppe. Im alkalischen Milieu liegt das Pikrat-Anion vor; Kreatinin wird durch die Base an seiner CH-aciden Position (α-CH₂ zum Guanidin-C und zum Amid-C) deprotoniert und stellt ein nukleophiles Carbanion bereit.',
+  diagram:{
+    viewBox:'0 0 640 260',
+    stations:[
+      { id:'pic', x:470, y:150, layout:'ring', r:60, bondOrders:[2,1,2,1,2,1], closeRing:true, entries:[
+        {id:'C1', label:'C–O⁻', role:'plain'}, {id:'C2', label:'C', role:'plain'}, {id:'C3', label:'C3', role:'el'},
+        {id:'C4', label:'C4', role:'plain'}, {id:'C5', label:'C', role:'plain'}, {id:'C6', label:'C', role:'plain'}
+      ]}
+    ],
+    freeAtoms:[
+      {id:'OHm', x:100, y:150, label:'OH⁻', role:'nu'},
+      {id:'Cc', x:250, y:150, label:'CH₂(Kreatinin)', role:'el'},
+      {id:'No2', x:600, y:230, label:'NO₂', role:'plain'}
+    ],
+    extraBonds:[ {id:'c4No2', a:'C4', b:'No2', order:1} ],
+    labels:[ {x:470,y:60,text:'Pikrat-Anion (2,4,6-Trinitrophenolat)'}, {x:250,y:195,text:'Kreatinin (CH-acide Position)'} ],
+    events:[
+      { step:1, type:'chargeAdd', atom:'Cc', sign:'-' },
+      { step:2, type:'bondAdd', id:'ccC3', a:'Cc', b:'C3', order:1 },
+      { step:2, type:'chargeRemove', atom:'Cc' },
+      { step:2, type:'chargeAdd', atom:'C4', sign:'-' },
+      { step:3, type:'chargeRemove', atom:'C4' },
+      { step:3, type:'chargeAdd', atom:'No2', sign:'-' },
+      { step:3, type:'bondOrder', id:'pic_b2', order:1 }
+    ]
+  },
+  steps:[
+    { text:'OH⁻ (aus NaOH) deprotoniert die CH₂-Gruppe des Kreatinins zwischen den elektronenziehenden Zentren (Guanidin-C und Amid-C) — der pKa ist herabgesetzt. Das entstehende Carbanion wird durch beide Nachbarzentren mesomer stabilisiert.',
+      arrows:[{from:'OHm', to:'Cc', kind:'full'}], gm:['proto'] },
+    { text:'Das freie Elektronenpaar am Carbanion greift die 3-Position des Pikrat-Aromaten an (ortho zur OH-Gruppe, para zu einer NO₂-Gruppe). Am angegriffenen sp²-C entsteht sp³-Hybridisierung — der Meisenheimer-Komplex.',
+      arrows:[{from:'Cc', to:'C3', kind:'full'}], gm:['nu'] },
+    { text:'Delokalisierung: Die π-Elektronen des ehemaligen Aromaten verschieben sich auf die Nitrogruppen. Der so gebildete Meisenheimer-artige Chinon-Nitronat-Komplex trägt das Chromophor. Farbe: orange-rot mit λ_max ca. 510 nm.',
+      arrows:[{from:'C4', to:'No2', kind:'full'}], gm:['pi'] }
+  ],
+  netto:'Kreatinin + Pikrat reagieren im Verhältnis 1:1 zu einem Meisenheimer-artigen π-Addukt; die Absorption bei 510 nm ist proportional zum Kreatiningehalt.',
+  querverbindung:'Meisenheimer-artige Komplexe kennen wir aus dem Sanger-Reagenz (1-Fluor-2,4-dinitrobenzol) zur N-terminalen Endgruppenbestimmung von Peptiden — dort mit Amin als Nukleophil statt CH-acider Position, und mit Fluorid als Abgangsgruppe (echte SNAr). Ehrlich-Reagenz und Chloramin-T-Chemie (BEFFE) folgen ebenfalls dem SNAr- bzw. Elektrophil-Angriff-Muster.'
+},
+{
+  id:'m09', num:9, teil:'A', blitz:true,
+  title:'Cystein-Protease-Mechanismus (Calpaine, Kathepsine, Papain, Bromelain)',
+  zusammenhang:'Fleischreifung: postmortal ausgetretenes Ca²⁺ aktiviert Calpaine (CASF — calcium activated sarcoplasmic factor); lysosomale Kathepsine wirken parallel. Sie bauen Titin, Nebulin, Desmin, Troponin ab (Actin und Myosin selbst kaum). Exogen zugesetzte Cystein-Proteasen (Papain aus Papaya, Bromelain aus Ananas) folgen demselben Mechanismus. Katalytische Triade: Cys–His–Asn (bzw. Asp). Der Cys-Thiol wird durch His als Base deprotoniert; das entstehende Thiolat-Anion ist ein hervorragendes Nukleophil.',
+  diagram:{
+    viewBox:'0 0 640 280',
+    stations:[
+      { id:'pep', x:330, y:60, layout:'vchain', spacing:80, bondOrders:[2], entries:[
+        {id:'C', label:'C', role:'el'}, {id:'O', label:'O', role:'plain'}
+      ]}
+    ],
+    freeAtoms:[
+      {id:'His', x:90, y:60, label:'His-N', role:'nu'},
+      {id:'Cys', x:90, y:170, label:'Cys-S', role:'nu'},
+      {id:'Npep', x:430, y:100, label:'N(Peptid)', role:'lg'},
+      {id:'Ow2', x:90, y:260, label:'H₂O', role:'nu'}
+    ],
+    extraBonds:[ {id:'cNpep', a:'C', b:'Npep', order:1} ],
+    labels:[ {x:330,y:190,text:'Peptidbindung (Carbonyl)'}, {x:90,y:30,text:'katalytische Triade'} ],
+    events:[
+      { step:1, type:'chargeAdd', atom:'His', sign:'+' },
+      { step:1, type:'chargeAdd', atom:'Cys', sign:'-' },
+      { step:2, type:'bondAdd', id:'cysC', a:'Cys', b:'C', order:1 },
+      { step:2, type:'chargeRemove', atom:'Cys' },
+      { step:3, type:'bondOrder', id:'pep_b0', order:1 },
+      { step:3, type:'chargeAdd', atom:'O', sign:'-' },
+      { step:4, type:'bondOrder', id:'pep_b0', order:2 },
+      { step:4, type:'chargeRemove', atom:'O' },
+      { step:4, type:'bondRemove', id:'cNpep' },
+      { step:4, type:'moveAtom', atom:'Npep', dx:40, dy:-30 },
+      { step:4, type:'chargeAdd', atom:'Npep', sign:'-' },
+      { step:5, type:'chargeRemove', atom:'His' },
+      { step:5, type:'chargeRemove', atom:'Npep' },
+      { step:5, type:'moveAtom', atom:'Npep', dx:60, dy:-30 },
+      { step:6, type:'chargeAdd', atom:'His', sign:'+' },
+      { step:6, type:'bondAdd', id:'owC', a:'Ow2', b:'C', order:1 },
+      { step:7, type:'bondOrder', id:'pep_b0', order:1 },
+      { step:7, type:'chargeAdd', atom:'O', sign:'-' },
+      { step:8, type:'bondRemove', id:'cysC' },
+      { step:8, type:'bondOrder', id:'pep_b0', order:2 },
+      { step:8, type:'chargeRemove', atom:'O' },
+      { step:8, type:'chargeAdd', atom:'Cys', sign:'-' },
+      { step:8, type:'chargeRemove', atom:'His' }
+    ]
+  },
+  steps:[
+    { text:'Das freie Elektronenpaar am Imidazol-N des His deprotoniert den Cys-SH → Cys-S⁻ (Thiolat). Das Thiolat ist ein weiches, sehr starkes Nukleophil.',
+      arrows:[{from:'His', to:'Cys', kind:'full'}], gm:['proto'] },
+    { text:'Das freie Elektronenpaar am Cys-S⁻ greift den Carbonyl-C der zu spaltenden Peptidbindung nukleophil an.',
+      arrows:[{from:'Cys', to:'C', kind:'full'}], gm:['nu'] },
+    { text:'Das π-Elektronenpaar der C=O Doppelbindung klappt auf den Carbonyl-Sauerstoff um; tetraedrisches Intermediat mit sp³-C und Alkoxid am O. Die Oxyanion-Tasche des Enzyms (Backbone-NH-Gruppen) stabilisiert die negative Ladung.',
+      arrows:[{from:'C', to:'O', kind:'full'}], gm:['pi'] },
+    { text:'Zusammenbruch des Tetraeders: Das Elektronenpaar am O klappt zurück zur C=O; gleichzeitig wandert das Elektronenpaar der C–N-σ-Bindung (die Peptidbindung selbst) auf den N. Bindung C–N ist gebrochen. Am Cys-S bleibt ein Thioester (Acyl-Enzym-Intermediat) mit dem N-terminalen Peptidfragment.',
+      arrows:[{from:'O', to:'C', kind:'full'},{from:'C', to:'Npep', kind:'full'}], gm:['lg'] },
+    { text:'Der freigesetzte Peptidstickstoff (mit neuem freien Elektronenpaar) wird durch das protonierte His-N-H sofort protoniert — das C-terminale Fragment mit neuer α-Amino-Gruppe verlässt das aktive Zentrum.',
+      arrows:[{from:'His', to:'Npep', kind:'full'}], gm:['proto'] },
+    { text:'Deacylierung: Ein Wassermolekül tritt ein. Das His deprotoniert das Wasser; das entstehende Hydroxid greift den Thioester-Carbonyl-C nukleophil an.',
+      arrows:[{from:'His', to:'Ow2', kind:'full'},{from:'Ow2', to:'C', kind:'full'}], gm:['nu'] },
+    { text:'π-Elektronen der C=O klappen auf O um; zweites tetraedrisches Intermediat.',
+      arrows:[{from:'C', to:'O', kind:'full'}], gm:['pi'] },
+    { text:'Rückkollaps: O-Elektronenpaar klappt zurück in die C=O; C–S-σ-Bindung bricht, die Elektronen wandern auf den Cys-S — Thiolat wird regeneriert. Das N-terminale Peptidfragment verlässt das Enzym als freie Carbonsäure, nachdem das His-H⁺ das Alkoxid protoniert hat.',
+      arrows:[{from:'C', to:'Cys', kind:'full'}], gm:['lg'] }
+  ],
+  netto:'Peptid-CO-NH-Peptid + H₂O → Peptid-COOH + H₂N-Peptid, über ein kovalentes Acyl-Enzym(Cys-S-CO-)-Intermediat; His-Imidazol pendelt dabei zwischen Base und Säure. Calpaine benötigen Ca²⁺, weil es eine allosterische Konformationsänderung auslöst, die die katalytische Diade Cys–His erst richtig ausrichtet — deshalb ist das postmortale Ca²⁺-Austreten der Trigger für die Fleischreifung.',
+  querverbindung:'Denselben Mechanismus zeigen Ficin (Feige) und Kiwi-Aktinidin — daher werden diese Früchte auch als Fleisch-Tenderizer benutzt und dürfen nicht in Gelatine-Desserts, weil sie das Gelatineprotein zerlegen. Bei Milchgerinnung ist der zugrundeliegende Enzymtyp anders (Chymosin = Aspartat-Protease), das Prinzip einer selektiven Spaltung eines Zielproteins (κ-Casein) ist aber vergleichbar.'
+},
+{
+  id:'m10', num:10, teil:'B', blitz:true,
+  title:'Prolyl-4-Hydroxylase — Hydroxylierung von Prolin zu 4-Hydroxyprolin',
+  zusammenhang:'Kollagen enthält ca. 12,5 % 4-Hydroxyprolin. Die Hydroxylierung erfolgt posttranslational durch die Prolyl-4-Hydroxylase — ein Nicht-Häm-Fe(II)-Enzym mit α-Ketoglutarat und Sauerstoff als Cosubstraten. Ascorbinsäure ist essenziell, um das Fe im aktiven Zentrum reduziert zu halten — deshalb manifestiert sich Vitamin-C-Mangel als Skorbut. Aktives Zentrum: Fe²⁺, koordiniert von zwei His- und einem Asp-Rest (2-His-1-Carboxylat-Motiv). α-Ketoglutarat bindet bidentat am Fe; Sauerstoff bindet an eine freie Koordinationsstelle.',
+  diagram:{
+    viewBox:'0 0 660 320',
+    stations:[
+      { id:'oo', x:230, y:80, layout:'chain', spacing:70, bondOrders:[1], entries:[
+        {id:'Oa', label:'O', role:'el'}, {id:'Ob', label:'O', role:'plain'}
+      ]},
+      { id:'c4h', x:110, y:220, layout:'chain', spacing:70, bondOrders:[1], entries:[
+        {id:'C4', label:'C4', role:'plain'}, {id:'H4', label:'H', role:'plain'}
+      ]},
+      { id:'akg', x:400, y:200, layout:'chain', spacing:80, bondOrders:[1], entries:[
+        {id:'C1', label:'C1(COO⁻)', role:'lg'}, {id:'C2', label:'C2', role:'plain'}
+      ]}
+    ],
+    freeAtoms:[
+      {id:'Fe', x:110, y:110, label:'Fe(II)', role:'rad'},
+      {id:'O2k', x:480, y:130, label:'O(C2=O)', role:'nu'},
+      {id:'Asc', x:580, y:250, label:'Ascorbat', role:'nu'}
+    ],
+    extraBonds:[ {id:'feOa', a:'Fe', b:'Oa', order:1}, {id:'c2O2k', a:'C2', b:'O2k', order:2} ],
+    labels:[ {x:110,y:290,text:'Prolyl-Rest (C4-H)'}, {x:400,y:295,text:'α-Ketoglutarat'}, {x:230,y:50,text:'koordiniertes O₂'} ],
+    events:[
+      { step:1, type:'chargeAdd', atom:'Fe', sign:'+' },
+      { step:1, type:'chargeAdd', atom:'Ob', sign:'•' },
+      { step:2, type:'bondAdd', id:'o2kOb', a:'O2k', b:'Ob', order:1 },
+      { step:2, type:'chargeAdd', atom:'O2k', sign:'+' },
+      { step:3, type:'bondRemove', id:'akg_b0' },
+      { step:3, type:'moveAtom', atom:'C1', dx:-70, dy:20 },
+      { step:4, type:'bondRemove', id:'oo_b0' },
+      { step:4, type:'bondOrder', id:'feOa', order:2 },
+      { step:4, type:'moveAtom', atom:'Ob', dx:40, dy:40 },
+      { step:4, type:'moveAtom', atom:'O2k', dx:40, dy:40 },
+      { step:4, type:'moveAtom', atom:'C2', dx:40, dy:60 },
+      { step:4, type:'chargeRemove', atom:'O2k' },
+      { step:5, type:'bondRemove', id:'c4h_b0' },
+      { step:5, type:'bondAdd', id:'h4Oa', a:'H4', b:'Oa', order:1 },
+      { step:5, type:'bondOrder', id:'feOa', order:1 },
+      { step:5, type:'chargeAdd', atom:'C4', sign:'•' },
+      { step:6, type:'bondRemove', id:'feOa' },
+      { step:6, type:'bondAdd', id:'c4Oa', a:'C4', b:'Oa', order:1 },
+      { step:6, type:'chargeRemove', atom:'C4' },
+      { step:7, type:'chargeRemove', atom:'Fe' },
+      { step:7, type:'chargeAdd', atom:'Asc', sign:'•' }
+    ]
+  },
+  steps:[
+    { text:'Ein freies Elektronenpaar am Fe(II) wird auf den ankommenden O₂ übertragen: Elektronentransfer vom Metall zum Sauerstoff, dabei entsteht ein Fe(III)-Superoxid-Komplex (Fe–O–O•). Das ist ein 1-Elektronen-Redoxprozess (Fischhaken).',
+      arrows:[{from:'Fe', to:'Oa', kind:'fishhook'}], gm:['redox'] },
+    { text:'Ein Elektronenpaar am α-Ketoglutarat (C2-Carbonyl) wird als Nucleophil auf den distalen Sauerstoff des Fe–O–O-Komplexes umgeklappt — Angriff am O-O-Ende. Ein 4-Ring-Übergangszustand entsteht (Fe–O–O–C2-α-KG-Ring).',
+      arrows:[{from:'O2k', to:'Ob', kind:'full'}], gm:['nu'] },
+    { text:'Ein π-Elektronenpaar der α-KG-C1-Carboxylat-Gruppe wandert auf den C1, gleichzeitig verlässt CO₂ als Abgangsgruppe. Bindungsbruch: C1–C2 des α-KG.',
+      arrows:[{from:'C2', to:'C1', kind:'full'}], gm:['lg'] },
+    { text:'Simultan bricht die O–O-Bindung heterolytisch: Ein Elektronenpaar bleibt am Fe-nahen Sauerstoff → Fe(IV)=O (Ferryl-Spezies, hochreaktives Oxidans); das andere O wandert mit dem C2 mit — Bildung von Succinat.',
+      arrows:[{from:'Ob', to:'Oa', kind:'full'}], gm:['pi'] },
+    { text:'Die Ferryl-Spezies (Fe(IV)=O) abstrahiert nun radikalisch das C4-H-Wasserstoffatom des Prolyl-Restes: Ein Fischhaken-Elektron der C4–H-σ-Bindung geht auf das Fe(IV)=O, das andere bleibt am C4 → Prolyl-C4-Radikal. Fe(IV)=O wird zu Fe(III)–OH.',
+      arrows:[{from:'H4', to:'Oa', kind:'fishhook'}], gm:['redox'] },
+    { text:'Rebound: Das C4-Kohlenstoff-Radikal (ein Elektron) und das Fe(III)–OH koppeln sich zu einer C4–O–H-Bindung; Fe(III) wird zu Fe(II) zurückreduziert. Ergebnis: 4-Hydroxyprolyl-Rest.',
+      arrows:[{from:'C4', to:'Oa', kind:'fishhook'}], gm:['redox'] },
+    { text:'Rolle des Ascorbats: Gelegentliche „uncoupled turnover" oxidiert Fe(II) zu Fe(III) ohne Substrathydroxylierung. Ascorbat reduziert Fe(III) über einen Ein-Elektronen-Transfer (Ascorbat → Semidehydroascorbat) zurück zu Fe(II) und hält das Enzym aktiv.',
+      arrows:[{from:'Asc', to:'Fe', kind:'fishhook'}], gm:['redox'] }
+  ],
+  netto:'Prolyl-C4-H + O₂ + α-Ketoglutarat → Prolyl-C4-OH + CO₂ + Succinat. Ein O-Atom von O₂ landet im Hydroxyprolin, das andere im Succinat.',
+  querverbindung:'Dieselbe 2-His-1-Carboxylat-Fe(II)/α-KG/O₂-Enzymfamilie ist im Kaffee- und Weinkontext relevant: die Anthocyanidin-Synthase (ANS) im Wein und phenolische Biosynthesegene folgen exakt diesem Ferryl-basierten Hydroxylierungsmechanismus. Auch die Hypoxie-induzierbaren Faktoren (HIF-Regulation) laufen über diese Enzymfamilie.'
+},
+{
+  id:'m11', num:11, teil:'B', blitz:false,
+  title:'Lysyl-Oxidase — Lysin → Allysin (α-Aminoadipin-6-semialdehyd)',
+  zusammenhang:'Lysyloxidase (LOX) ist ein Cu-Enzym mit einer besonderen posttranslationalen Cofaktor-Modifikation: einem Lysyl-Tyrosyl-Chinon (LTQ). LOX oxidiert die ε-Aminogruppe von Lysin/Hydroxylysin zum Aldehyd — der Grundstein aller Kollagen-Quervernetzungen.',
+  diagram:{
+    viewBox:'0 0 600 260',
+    stations:[
+      { id:'ltq', x:300, y:70, layout:'vchain', spacing:70, bondOrders:[2], entries:[
+        {id:'C', label:'C(Chinon)', role:'el'}, {id:'O', label:'O', role:'plain'}
+      ]}
+    ],
+    freeAtoms:[
+      {id:'Nlys', x:110, y:140, label:'ε-NH₂(Lys)', role:'nu'},
+      {id:'Ow', x:450, y:140, label:'H₂O', role:'nu'},
+      {id:'Cu', x:450, y:230, label:'Cu(II)/O₂', role:'rad'}
+    ],
+    labels:[ {x:300,y:190,text:'LTQ-Cofaktor'} ],
+    events:[
+      { step:1, type:'bondAdd', id:'nC', a:'Nlys', b:'C', order:1 },
+      { step:2, type:'bondOrder', id:'ltq_b0', order:1 },
+      { step:3, type:'bondRemove', id:'ltq_b0' },
+      { step:3, type:'moveAtom', atom:'O', dx:-60, dy:-40 },
+      { step:3, type:'bondOrder', id:'nC', order:2 },
+      { step:5, type:'bondAdd', id:'owC', a:'Ow', b:'C', order:1 },
+      { step:5, type:'bondRemove', id:'nC' },
+      { step:5, type:'moveAtom', atom:'Nlys', dx:-60, dy:50 },
+      { step:6, type:'bondOrder', id:'owC', order:2 }
+    ]
+  },
+  steps:[
+    { text:'Die ε-NH₂-Gruppe des Substrat-Lysins greift den Chinon-Carbonyl-C des LTQ-Cofaktors mit ihrem freien Elektronenpaar am N nukleophil an — Angriff am elektrophilen Chinon-C.',
+      arrows:[{from:'Nlys', to:'C', kind:'full'}], gm:['nu'] },
+    { text:'Das π-Elektronenpaar der C=O-Chinon-Doppelbindung klappt auf den O um; tetraedrisches Aminol-Intermediat entsteht. Prototropie: H von N zu O.',
+      arrows:[{from:'C', to:'O', kind:'full'}], gm:['pi','proto'] },
+    { text:'Wasser-Abspaltung: Das freie Elektronenpaar am Substrat-N klappt in eine C=N-Doppelbindung; gleichzeitig verlässt die C–OH-Bindung als H₂O — es entsteht das Substrat–Cofaktor-Schiffbase-Addukt (Substrat-Iminium am Chinon-C).',
+      arrows:[{from:'Nlys', to:'C', kind:'full'}], gm:['lg'] },
+    { text:'Tautomerisierung: Ein α-CH-Proton des Substrat-Lysins (am C ε-1, dem Kohlenstoff direkt neben dem Iminium-N) wird durch eine Base abstrahiert. Die C–H-σ-Bindungselektronen wandern in eine C=C-Doppelbindung; simultan verschiebt sich das Iminium in ein Enamin (Chinon → aromatisch reduzierte Form) — der ehemalige Chinon-C ist jetzt Aminophenol.',
+      arrows:[], gm:['pi','proto'] },
+    { text:'Hydrolyse: Wasser addiert an das Enamin — die C=C-π-Bindung nimmt das Nukleophil auf; Prototropie; Rückbildung des LTQ-Chinons unter Freisetzung eines aliphatischen Aldehyds am ehemaligen ε-C des Lysins → Allysin.',
+      arrows:[{from:'Ow', to:'C', kind:'full'}], gm:['nu'] },
+    { text:'Reoxidation des LTQ: Das reduzierte Aminophenol wird durch Cu(II) und O₂ zurückoxidiert. Aus O₂ entstehen H₂O₂ und NH₃ (aus dem ehemaligen ε-N des Substrats).',
+      arrows:[{from:'Ow', to:'Cu', kind:'fishhook'}], gm:['redox'] }
+  ],
+  netto:'Lysin(ε-NH₂) + LTQ-Chinon + O₂ → Allysin (ε-Aldehyd) + LTQ(reduziert→reoxidiert) + NH₃ + H₂O₂. Analog verläuft die Reaktion an Hydroxylysin — Produkt ist 5-Hydroxyallysin.',
+  querverbindung:null
+},
+{
+  id:'m12', num:12, teil:'B', blitz:false,
+  title:'Kollagen-Quervernetzung I: Aldol-Kondensation zweier Allysin-Reste',
+  zusammenhang:'Zwei Allysin-Aldehyde (aus Kap. 11) kondensieren zum ersten kovalenten Kollagen-Crosslink.',
+  diagram:{
+    viewBox:'0 0 560 220',
+    stations:[
+      { id:'a1', x:110, y:80, layout:'vchain', spacing:70, bondOrders:[2], entries:[
+        {id:'C1', label:'Cα', role:'nu'}, {id:'C1c', label:'C(=O)H', role:'plain'}
+      ]},
+      { id:'a2', x:400, y:80, layout:'vchain', spacing:70, bondOrders:[2], entries:[
+        {id:'C2c', label:'C(=O)H', role:'el'}, {id:'O2', label:'O', role:'plain'}
+      ]}
+    ],
+    freeAtoms:[ {id:'OHm', x:110, y:170, label:'OH⁻', role:'el'}, {id:'Hp', x:400, y:170, label:'H⁺', role:'el'} ],
+    labels:[ {x:110,y:200,text:'Allysin-Rest 1'}, {x:400,y:200,text:'Allysin-Rest 2'} ],
+    events:[
+      { step:1, type:'bondOrder', id:'a1_b0', order:1 },
+      { step:1, type:'chargeAdd', atom:'C1', sign:'-' },
+      { step:2, type:'bondAdd', id:'c1c2', a:'C1', b:'C2c', order:1 },
+      { step:2, type:'chargeRemove', atom:'C1' },
+      { step:3, type:'bondOrder', id:'a2_b0', order:1 },
+      { step:3, type:'chargeAdd', atom:'O2', sign:'-' },
+      { step:3, type:'bondAdd', id:'o2Hp', a:'O2', b:'Hp', order:1 },
+      { step:3, type:'chargeRemove', atom:'O2' },
+      { step:4, type:'bondOrder', id:'a1_b0', order:2 },
+      { step:4, type:'bondRemove', id:'o2Hp' },
+      { step:4, type:'bondOrder', id:'a2_b0', order:1 },
+      { step:4, type:'moveAtom', atom:'O2', dx:60, dy:-40 },
+      { step:4, type:'moveAtom', atom:'Hp', dx:60, dy:-70 }
+    ]
+  },
+  steps:[
+    { text:'In basisch-neutralem Milieu tautomerisiert einer der beiden Allysin-Aldehyde in sein Enol: Ein freies Elektronenpaar am α-C (das α-CH-H) wird durch OH⁻ abstrahiert; die Elektronen wandern in eine C=C-Doppelbindung, das π-Elektronenpaar der C=O klappt auf den O um → Enolat.',
+      arrows:[{from:'OHm', to:'C1', kind:'full'}], gm:['proto'] },
+    { text:'Das freie Elektronenpaar am α-C des Enolats greift den Carbonyl-C des zweiten Allysin-Aldehyds nukleophil an — klassische Aldol-Addition.',
+      arrows:[{from:'C1', to:'C2c', kind:'full'}], gm:['nu'] },
+    { text:'π-Elektronen des zweiten C=O klappen auf O um; tetraedrisches Alkoxid-Intermediat. Protonierung durch Wasser → β-Hydroxyaldehyd (Aldol).',
+      arrows:[{from:'C2c', to:'O2', kind:'full'}], gm:['pi'] },
+    { text:'Wasser-Abspaltung (Kondensation): Base deprotoniert das α-CH; die C–H-Elektronen wandern in eine C=C-Doppelbindung; gleichzeitig verlässt die β-C–OH-Bindung als H₂O — es entsteht ein α,β-ungesättigter Aldehyd (Aldol-Kondensationsprodukt).',
+      arrows:[{from:'C1c', to:'C1', kind:'full'}], gm:['lg'] }
+  ],
+  netto:'2 Allysin → Aldol-Crosslink (α,β-ungesättigter Aldehyd) + H₂O. Dieser Aldol-Crosslink verbindet zwei Kollagenketten kovalent. Weitere Modifikationen (Reduktion, Kondensation mit einer dritten Aminogruppe) führen zu reifen Quervernetzungsstrukturen wie Histidinohydroxylysinonorleucin (HHL) und Pyridinolinen.',
+  querverbindung:null
+},
+{
+  id:'m13', num:13, teil:'B', blitz:false,
+  title:'Kollagen-Quervernetzung II: Schiff-Base Allysin + Hydroxylysin (HLKNL)',
+  zusammenhang:'Die alternative primäre Quervernetzung: Allysin-Aldehyd reagiert mit einer freien ε-NH₂ eines Hydroxylysins. Das Produkt heißt Hydroxylysinonorleucin (HLKNL). Nach Amadori-Umlagerung (analog Maillard) entsteht daraus die reife, altersstabile Quervernetzung.',
+  diagram:{
+    viewBox:'0 0 560 220',
+    stations:[
+      { id:'ald', x:350, y:80, layout:'vchain', spacing:70, bondOrders:[2], entries:[
+        {id:'C', label:'C(Allysin)', role:'el'}, {id:'O', label:'O', role:'plain'}
+      ]}
+    ],
+    freeAtoms:[ {id:'N', x:130, y:110, label:'ε-NH₂(Hydroxylysin)', role:'nu'}, {id:'Nadph', x:350, y:190, label:'NAD(P)H', role:'nu'} ],
+    labels:[ {x:350,y:200,text:'Allysin-Aldehyd'} ],
+    events:[
+      { step:1, type:'bondAdd', id:'nC', a:'N', b:'C', order:1 },
+      { step:2, type:'bondOrder', id:'ald_b0', order:1 },
+      { step:2, type:'chargeAdd', atom:'O', sign:'-' },
+      { step:3, type:'bondRemove', id:'ald_b0' },
+      { step:3, type:'moveAtom', atom:'O', dx:60, dy:-40 },
+      { step:3, type:'bondOrder', id:'nC', order:2 },
+      { step:3, type:'chargeRemove', atom:'O' },
+      { step:4, type:'bondOrder', id:'nC', order:1 }
+    ]
+  },
+  steps:[
+    { text:'Das freie Elektronenpaar am Amin-N (Hydroxylysin-ε-NH₂) greift den Carbonyl-C des Allysins nukleophil an.',
+      arrows:[{from:'N', to:'C', kind:'full'}], gm:['nu'] },
+    { text:'π-Elektronen der C=O klappen auf O um; tetraedrisches Halbaminal (Carbinolamin). Prototropie H von N → O.',
+      arrows:[{from:'C', to:'O', kind:'full'}], gm:['pi','proto'] },
+    { text:'Wasser-Abspaltung: Freies Elektronenpaar am N klappt in C=N-π-Bindung; simultan wandert das Elektronenpaar der C–OH-σ-Bindung mit dem O als H₂O ab → Schiff-Base (Imin, dehydro-HLKNL).',
+      arrows:[{from:'N', to:'C', kind:'full'}], gm:['lg'] },
+    { text:'Reduktion: In vivo unter Beteiligung von NAD(P)H bzw. spontan durch Semi-Reduktion durch andere Gewebekomponenten wird die C=N zur C–N reduziert — Hydridübertragung auf das C, Protonierung am N. Ergebnis: die stabile sekundäre Aminbindung HLKNL.',
+      arrows:[{from:'Nadph', to:'C', kind:'full'}], gm:['redox'] }
+  ],
+  netto:'Allysin + Hydroxylysin-ε-NH₂ → Schiff-Base (dehydro-HLKNL) → [Reduktion] → HLKNL (stabile sekundäre Aminbindung).',
+  querverbindung:null
+},
+{
+  id:'m14', num:14, teil:'B', blitz:false,
+  title:'Kollagen-Alterung: Amadori-Umlagerung an Lysin (AGE-Vorstufen)',
+  zusammenhang:'Bei erhöhter Glucosekonzentration (Diabetes, ältere Tiere) reagiert Glucose mit freien ε-Aminogruppen der Lysine — es entsteht zuerst eine Schiff-Base, die zum stabilen Amadori-Produkt umlagert. Weitere Reaktionen führen zu Advanced Glycation End-products (AGEs), die das Kollagen versteifen — biochemische Grundlage für die zunehmende Zähigkeit alten Fleisches.',
+  diagram:{
+    viewBox:'0 0 600 240',
+    stations:[
+      { id:'glc', x:350, y:80, layout:'chain', spacing:70, bondOrders:[2], entries:[
+        {id:'C2', label:'C2', role:'plain'}, {id:'C1', label:'C1', role:'el'}
+      ]}
+    ],
+    freeAtoms:[
+      {id:'O1', x:420, y:150, label:'O', role:'plain'},
+      {id:'Nlys', x:150, y:110, label:'ε-NH₂(Lys)', role:'nu'},
+      {id:'Base', x:350, y:200, label:'Base', role:'el'}
+    ],
+    extraBonds:[ {id:'c1O1', a:'C1', b:'O1', order:2} ],
+    labels:[ {x:350,y:50,text:'Glucose (offenkettige Aldehydform)'} ],
+    events:[
+      { step:1, type:'bondAdd', id:'nC1', a:'Nlys', b:'C1', order:1 },
+      { step:2, type:'bondOrder', id:'c1O1', order:1 },
+      { step:2, type:'chargeAdd', atom:'O1', sign:'-' },
+      { step:3, type:'bondRemove', id:'c1O1' },
+      { step:3, type:'moveAtom', atom:'O1', dx:60, dy:-50 },
+      { step:3, type:'bondOrder', id:'nC1', order:2 },
+      { step:3, type:'chargeRemove', atom:'O1' },
+      { step:4, type:'bondOrder', id:'glc_b0', order:2 },
+      { step:4, type:'bondOrder', id:'nC1', order:1 },
+      { step:5, type:'bondOrder', id:'glc_b0', order:1 },
+      { step:5, type:'bondAdd', id:'c2O1', a:'C2', b:'O1', order:2 },
+      { step:5, type:'moveAtom', atom:'O1', dx:-40, dy:60 }
+    ]
+  },
+  steps:[
+    { text:'Glucose-C1 (offenkettige Aldehydform) und Lysin-ε-NH₂: Freies Elektronenpaar am N greift Carbonyl-C1 nukleophil an.',
+      arrows:[{from:'Nlys', to:'C1', kind:'full'}], gm:['nu'] },
+    { text:'π-Elektronen der C1=O klappen auf O um → Aminol (Carbinolamin) am C1.',
+      arrows:[{from:'C1', to:'O1', kind:'full'}], gm:['pi'] },
+    { text:'Wasser-Abspaltung: Freies Elektronenpaar am N klappt in C=N-π-Bindung; H₂O verlässt am C1 → Schiff-Base (Glykosylamin, N-Glucosid).',
+      arrows:[{from:'Nlys', to:'C1', kind:'full'}], gm:['lg'] },
+    { text:'Enolisierung (Ausgangspunkt der Amadori-Umlagerung): Base abstrahiert das C2-H-Proton; die C2–H-σ-Bindungselektronen wandern in eine C=C-π-Bindung zwischen C1 und C2; simultan klappt das π-Elektronenpaar der C1=N-Doppelbindung auf den N um. Es entsteht ein Endiol/Endiamin-artiger Übergangszustand: das 1,2-Endiol der Schiff-Base.',
+      arrows:[{from:'Base', to:'C2', kind:'full'}], gm:['proto','pi'] },
+    { text:'Re-Ketonisierung an C2: Protonenaufnahme am C1 (jetzt sp³ mit N und OH); Elektronen der C1–C2-π-Bindung wandern in die C2=O-π-Bindung; Elektronen der C2-Hydroxyl-Bindung liefern das Proton für die Ketonisierung → das stabile 1-Amino-1-desoxy-2-ketose-Derivat: das Amadori-Produkt — ein Fructosamin am Lysin.',
+      arrows:[{from:'C2', to:'O1', kind:'full'}], gm:['pi','proto'] }
+  ],
+  netto:'Glucose + Lysin-ε-NH₂ → Schiff-Base → Amadori-Produkt (Fructosamin am Lysin, C1-Amin/C2-Keto).',
+  querverbindung:'Dies ist der Startpunkt der Maillard-Reaktion in allen Warengruppen: HbA1c in der Diabetes-Diagnostik (Amadori am Hämoglobin-N-Terminus), Fructosamin-Test, Milch-Erwärmung (Lactulosyl-Lysin), Weinreifung (Furfurylierung), Kaffee- und Kakaoröstung. Wer Amadori einmal sauber beherrscht, deckt fünf Kapitel gleichzeitig ab.'
+},
+{
+  id:'m15', num:15, teil:'C', blitz:true,
+  title:'Chloramin-T-Oxidation von 4-Hydroxyprolin zum Pyrrol',
+  zusammenhang:'Nach saurer Hydrolyse der Wurst liegt 4-Hydroxyprolin frei vor. Chloramin T (Natrium-p-toluolsulfon-chlorimid, ArSO₂N(Cl)Na) ist ein mildes, N-halogeniertes Oxidationsmittel. Es dekarboxyliert und dehydratisiert Hydroxyprolin zu einem elektronenreichen, aromatischen Pyrrol — die Voraussetzung für die Ehrlich-Farbreaktion.',
+  diagram:{
+    viewBox:'0 0 680 260',
+    stations:[],
+    freeAtoms:[
+      {id:'N', x:110, y:90, label:'N(Hydroxyprolin)', role:'nu'},
+      {id:'Cl', x:250, y:90, label:'Cl', role:'el'},
+      {id:'Ts', x:250, y:180, label:'Ts–N⁻(Sulfonamid)', role:'lg'},
+      {id:'C2', x:370, y:90, label:'C2(COOH)', role:'plain'},
+      {id:'Cooh', x:460, y:60, label:'COOH', role:'lg'},
+      {id:'H2', x:370, y:180, label:'H', role:'plain'},
+      {id:'C4', x:460, y:150, label:'C4', role:'plain'},
+      {id:'Ohsub', x:550, y:150, label:'OH', role:'lg'}
+    ],
+    extraBonds:[
+      {id:'clTs', a:'Cl', b:'Ts', order:1},
+      {id:'nC2', a:'N', b:'C2', order:1},
+      {id:'c2Cooh', a:'C2', b:'Cooh', order:1},
+      {id:'c2H2', a:'C2', b:'H2', order:1},
+      {id:'c2C4', a:'C2', b:'C4', order:1},
+      {id:'c4Oh', a:'C4', b:'Ohsub', order:1}
+    ],
+    labels:[ {x:110,y:230,text:'Iminstickstoff (Ring)'}, {x:480,y:230,text:'schematisch: Ring C2–C4'} ],
+    events:[
+      { step:1, type:'bondRemove', id:'clTs' },
+      { step:1, type:'moveAtom', atom:'Ts', dx:-50, dy:-40 },
+      { step:1, type:'bondAdd', id:'nCl', a:'N', b:'Cl', order:1 },
+      { step:1, type:'chargeAdd', atom:'N', sign:'+' },
+      { step:2, type:'bondRemove', id:'nCl' },
+      { step:2, type:'moveAtom', atom:'Cl', dx:60, dy:-40 },
+      { step:2, type:'bondOrder', id:'nC2', order:2 },
+      { step:2, type:'bondRemove', id:'c2H2' },
+      { step:2, type:'chargeRemove', atom:'N' },
+      { step:3, type:'bondRemove', id:'c2Cooh' },
+      { step:3, type:'moveAtom', atom:'Cooh', dx:60, dy:-40 },
+      { step:3, type:'bondOrder', id:'c2C4', order:2 },
+      { step:4, type:'bondRemove', id:'c4Oh' },
+      { step:4, type:'moveAtom', atom:'Ohsub', dx:50, dy:-30 }
+    ]
+  },
+  steps:[
+    { text:'Der elektrophile Chlor am Chloramin-T-N reagiert mit dem freien Elektronenpaar am Iminstickstoff des 4-Hydroxyprolins: Das N-Elektronenpaar greift das Cl an, die Cl–N-σ-Bindung von Chloramin bricht heterolytisch → N-Chlor-Hydroxyprolin (elektrophiles Iminium-Chlor) und Sulfonamid als Abgangsgruppe.',
+      arrows:[{from:'N', to:'Cl', kind:'full'}], gm:['nu'] },
+    { text:'Base (Solvatationswasser oder ein zweites Chloramin-Ion) deprotoniert das α-CH (C2 des Prolinrings, das Kohlenstoff mit COOH). Elektronen der C–H-σ-Bindung wandern in eine C=N-π-Bindung; das Chlor verlässt als Cl⁻ mit dem σ-Bindungselektronenpaar → Bildung einer C=N-Doppelbindung im Ring (Δ¹-Pyrrolin-Struktur).',
+      arrows:[{from:'H2', to:'N', kind:'full'}], gm:['pi','lg'] },
+    { text:'Decarboxylierung: Das C2 trägt sowohl COOH als auch die neue C=N. Die C2–C-Bindung zur COOH bricht: Elektronen wandern als CO₂-Abgang; simultan tautomerisiert der Ring — die α-Aminosäure spaltet CO₂ ab, ein Elektronenpaar wandert in den Ring als zusätzliche π-Bindung.',
+      arrows:[{from:'C2', to:'Cooh', kind:'full'}], gm:['lg'] },
+    { text:'Wasser-Abspaltung an C4: Der 4-OH-Substituent verlässt als H₂O; die C4–OH-σ-Bindungselektronen wandern zum O; simultan wird ein α-CH-Proton (C3 oder C5, je nach Tautomerie) abstrahiert und die Elektronen bilden eine neue C=C-π-Bindung. Der Ring wird vollständig aromatisch → Pyrrol-2-carbaldehyd bzw. das entsprechende Pyrrol-Derivat.',
+      arrows:[{from:'C4', to:'Ohsub', kind:'full'}], gm:['lg'] }
+  ],
+  netto:'4-Hydroxyprolin + Chloramin-T → [N-Chlorierung → C=N-Bildung → Decarboxylierung → Wasserabspaltung] → aromatisches, elektronenreiches Pyrrol + CO₂ + H₂O + Sulfonamid + Cl⁻. Dem N wurden Elektronen entzogen (N⁺ im Iminium), dem Substrat entweichen CO₂ und H₂O.',
+  querverbindung:null
+},
+{
+  id:'m16', num:16, teil:'C', blitz:true,
+  title:'Ehrlich-Reaktion: Pyrrol + p-Dimethylaminobenzaldehyd → chinoide Farbe',
+  zusammenhang:'p-Dimethylaminobenzaldehyd (Ehrlich-Reagenz) reagiert mit elektronenreichen Aromaten (Pyrrol, Indol, Furan) unter Bildung eines chinoiden, resonanzstabilisierten Farbstoffs. Photometrische Auswertung, λ_max je nach Substrat 550–580 nm. Denselben Test kennt man aus dem Tryptophan-Nachweis und aus der Van-Urk-Reaktion für Alkaloide (Ergot).',
+  diagram:{
+    viewBox:'0 0 620 260',
+    stations:[
+      { id:'ald', x:400, y:70, layout:'vchain', spacing:70, bondOrders:[2], entries:[
+        {id:'C', label:'C(Ald)', role:'el'}, {id:'O', label:'O', role:'plain'}
+      ]},
+      { id:'pyr', x:110, y:90, layout:'chain', spacing:80, bondOrders:[2], entries:[
+        {id:'C2', label:'C2', role:'nu'}, {id:'C3', label:'C3', role:'plain'}
+      ]}
+    ],
+    freeAtoms:[
+      {id:'Hp', x:400, y:200, label:'H⁺', role:'el'},
+      {id:'Npyr', x:110, y:170, label:'N(Pyrrol)', role:'plain'},
+      {id:'Ndma', x:530, y:200, label:'N(CH₃)₂', role:'nu'}
+    ],
+    extraBonds:[ {id:'c2Npyr', a:'C2', b:'Npyr', order:1} ],
+    labels:[ {x:110,y:230,text:'Pyrrol (α-Position C2)'}, {x:400,y:230,text:'p-Dimethylaminobenzaldehyd'} ],
+    events:[
+      { step:1, type:'bondAdd', id:'oHp', a:'O', b:'Hp', order:1 },
+      { step:1, type:'chargeAdd', atom:'O', sign:'+' },
+      { step:2, type:'bondOrder', id:'pyr_b0', order:1 },
+      { step:2, type:'bondAdd', id:'c2C', a:'C2', b:'C', order:1 },
+      { step:3, type:'bondOrder', id:'ald_b0', order:1 },
+      { step:3, type:'chargeRemove', atom:'O' },
+      { step:3, type:'chargeAdd', atom:'Npyr', sign:'+' },
+      { step:4, type:'chargeRemove', atom:'Npyr' },
+      { step:5, type:'bondRemove', id:'ald_b0' },
+      { step:5, type:'moveAtom', atom:'O', dx:60, dy:-40 },
+      { step:5, type:'moveAtom', atom:'Hp', dx:60, dy:-70 },
+      { step:5, type:'bondOrder', id:'c2C', order:2 },
+      { step:5, type:'chargeAdd', atom:'Npyr', sign:'+' },
+      { step:6, type:'bondAdd', id:'ndmaC', a:'Ndma', b:'C', order:1 },
+      { step:6, type:'chargeAdd', atom:'Ndma', sign:'+' },
+      { step:6, type:'chargeRemove', atom:'Npyr' }
+    ]
+  },
+  steps:[
+    { text:'Protonierung des Aldehyds durch HCl (aus dem sauren Milieu): Ein freies Elektronenpaar am Carbonyl-O nimmt ein Proton auf; die C=O wird zu einer stärker polarisierten C=OH⁺ → Aktivierung des Aldehyd-C als Elektrophil.',
+      arrows:[{from:'O', to:'Hp', kind:'full'}], gm:['proto'] },
+    { text:'Das Pyrrol-π-System ist elektronenreich, insbesondere an den α-Positionen (C2/C5). Das π-Elektronenpaar der C2–C3-Doppelbindung des Pyrrols greift den elektrophilen Carbonyl-C des protonierten Aldehyds nukleophil an — Bildung einer neuen C–C-Bindung.',
+      arrows:[{from:'C2', to:'C', kind:'full'}], gm:['nu'] },
+    { text:'Am angegriffenen Pyrrol-α-C (C2) entsteht sp³-Hybridisierung, der Aromat ist gebrochen; positive Ladung sitzt am Pyrrol-N (Wheland-Intermediat). Am Aldehyd-C ist die C=OH⁺ zu C–OH kollabiert.',
+      arrows:[{from:'C', to:'O', kind:'full'}], gm:['pi'] },
+    { text:'Rearomatisierung: Base (H₂O, Cl⁻) deprotoniert das C2-H; die Elektronen der C–H-σ-Bindung wandern in den Ring — Pyrrol-Aromatizität wiederhergestellt. Zwischenprodukt: 2-(Hydroxymethylen)-Pyrrol-Addukt.',
+      arrows:[], gm:['proto'] },
+    { text:'Wasser-Abspaltung: Das freie Elektronenpaar am Pyrrol-N klappt in eine C=C-Doppelbindung hinaus (Bruch der Aromatizität); simultan wandert das π-Elektronenpaar der C=C-Ring-Bindung zum exocyclischen C; die C–OH verlässt als H₂O. Es entsteht ein 2-Methylenpyrrolenium-Kation, resonanzstabilisiert bis in die Dimethylaminogruppe des Benzolrings.',
+      arrows:[{from:'C2', to:'C', kind:'full'}], gm:['lg'] },
+    { text:'Das freie Elektronenpaar am N(CH₃)₂-Stickstoff des ehemaligen Aldehyd-Restes stabilisiert die positive Ladung mesomer über den Benzolring hinweg — es entsteht ein chinoider Ammoniumsalz-artiger Farbstoff mit ausgedehnter Konjugation vom Pyrrol-Ring durch die Methylenbrücke bis zur para-Dimethylamino-Gruppe. Genau diese Konjugation absorbiert im sichtbaren Bereich.',
+      arrows:[{from:'Ndma', to:'C', kind:'full'}], gm:['pi'] }
+  ],
+  netto:'Pyrrol + p-Me₂N-C₆H₄-CHO + H⁺ → chinoider, resonanzstabilisierter Farbstoff (λmax 550–580 nm) + H₂O. Kreatinin/Kreatinin-Analytik: Kreatinin + Pikrat reagieren 1:1.',
+  querverbindung:'Prolin selbst wird analog nachgewiesen — aber ohne Chloramin-T-Oxidationsschritt, weil Prolin keine 4-OH-Gruppe zur Aromatisierung braucht; die Oxidation liefert direkt das Pyrrol. Damit unterscheidet der Analytiker Prolin und Hydroxyprolin über die Vorbehandlung. Van-Urk-Reaktion (Mutterkornalkaloide, LSD-Nachweis) und der Kovács-Test für Indol in Bakteriologie beruhen auf demselben chinoiden Farbstoffprinzip.'
+},
+{
+  id:'m17', num:17, teil:'D', blitz:true,
+  title:'Edman-Abbau — PITC → PTC-Peptid → ATZ → PTH-Aminosäure',
+  zusammenhang:'Phenylisothiocyanat (PITC, Ph–N=C=S) reagiert mit der freien N-terminalen α-Aminogruppe eines Peptids. Die eigentliche Kunst des Edman-Abbaus ist, dass nur die N-terminale Peptidbindung spaltet, alle inneren Peptidbindungen aber intakt bleiben — der Rest der Kette kann im nächsten Zyklus erneut abgebaut werden. Möglich ist das durch die intramolekulare Cyclisierung des N-terminalen Restes. Drei Schritte: 1) Kupplung (basisch, wasserfrei), 2) Cyclisierung (sauer, wasserfrei, TFA), 3) Umlagerung (wässrig-sauer).',
+  diagram:{
+    viewBox:'0 0 700 340',
+    stations:[
+      { id:'pitc', x:350, y:70, layout:'chain', spacing:80, bondOrders:[2,2], entries:[
+        {id:'Nph', label:'N–Ph', role:'plain'}, {id:'Ccentral', label:'C', role:'el'}, {id:'Sc', label:'S', role:'plain'}
+      ]},
+      { id:'pep2', x:230, y:220, layout:'vchain', spacing:70, bondOrders:[2], entries:[
+        {id:'Ccarbonyl', label:'C', role:'el'}, {id:'Ocarbonyl', label:'O', role:'plain'}
+      ]}
+    ],
+    freeAtoms:[
+      {id:'Npep', x:110, y:70, label:'α-N(Peptid)', role:'nu'},
+      {id:'Nrest', x:320, y:220, label:'N(Restpeptid)', role:'lg'},
+      {id:'Hp', x:150, y:290, label:'H⁺(TFA)', role:'el'},
+      {id:'Ow3', x:600, y:290, label:'H₂O', role:'nu'}
+    ],
+    extraBonds:[ {id:'ccNrest', a:'Ccarbonyl', b:'Nrest', order:1} ],
+    labels:[
+      {x:430,y:40,text:'PITC: Ph–N=C=S'}, {x:230,y:190,text:'1. Peptidbindung (Cyclisierung)'},
+      {x:110,y:100,text:'Schritt 1 · Kupplung'}, {x:230,y:250,text:'Schritt 2 · Cyclisierung'}, {x:600,y:260,text:'Schritt 3 · Umlagerung'}
+    ],
+    events:[
+      { step:1, type:'bondAdd', id:'npepC', a:'Npep', b:'Ccentral', order:1 },
+      { step:2, type:'bondOrder', id:'pitc_b0', order:1 },
+      { step:2, type:'chargeAdd', atom:'Nph', sign:'-' },
+      { step:3, type:'chargeRemove', atom:'Nph' },
+      { step:4, type:'bondAdd', id:'ocHp', a:'Ocarbonyl', b:'Hp', order:1 },
+      { step:4, type:'chargeAdd', atom:'Ocarbonyl', sign:'+' },
+      { step:5, type:'bondAdd', id:'scCcarbonyl', a:'Sc', b:'Ccarbonyl', order:1 },
+      { step:5, type:'bondOrder', id:'pep2_b0', order:1 },
+      { step:6, type:'bondOrder', id:'pep2_b0', order:2 },
+      { step:6, type:'bondRemove', id:'ccNrest' },
+      { step:6, type:'moveAtom', atom:'Nrest', dx:70, dy:-30 },
+      { step:6, type:'chargeRemove', atom:'Ocarbonyl' },
+      { step:8, type:'bondAdd', id:'ow3C', a:'Ow3', b:'Ccarbonyl', order:1 },
+      { step:8, type:'bondOrder', id:'pep2_b0', order:1 },
+      { step:8, type:'chargeAdd', atom:'Ocarbonyl', sign:'-' },
+      { step:9, type:'bondRemove', id:'scCcarbonyl' },
+      { step:9, type:'moveAtom', atom:'Sc', dx:-30, dy:40 },
+      { step:10, type:'bondAdd', id:'scCcarbonyl2', a:'Sc', b:'Ccarbonyl', order:1 },
+      { step:11, type:'bondOrder', id:'pep2_b0', order:2 },
+      { step:11, type:'bondRemove', id:'ow3C' },
+      { step:11, type:'moveAtom', atom:'Ow3', dx:-40, dy:-60 },
+      { step:11, type:'chargeRemove', atom:'Ocarbonyl' }
+    ]
+  },
+  steps:[
+    { text:'[Schritt 1.1 – Kupplung] Das freie Elektronenpaar am N-terminalen α-N des Peptids (im basischen Milieu deprotoniert) greift den Zentral-C des N=C=S-Systems nukleophil an — nukleophile Addition an das mittlere C-Atom.',
+      arrows:[{from:'Npep', to:'Ccentral', kind:'full'}], gm:['nu'] },
+    { text:'[Schritt 1.2] Das π-Elektronenpaar der C=N-Bindung des PITC klappt auf den Phenyl-N um; Bildung einer PhN–H⁻-artigen Struktur; Prototropie: N nimmt das α-NH-H auf.',
+      arrows:[{from:'Ccentral', to:'Nph', kind:'full'}], gm:['pi'] },
+    { text:'[Schritt 1.3] Rearrangement zur stabilen Struktur: Am Zentral-C ist nun eine C=S-Doppelbindung (Thiocarbonyl) und zwei N-H-Bindungen; das C ist sp²-hybridisiert. Ergebnis: das Phenylthiocarbamoyl-Peptid (PTC-Peptid) — Ph–NH–C(=S)–NH–CH(R)–C(=O)–NH-Rest.',
+      arrows:[], gm:['proto'] },
+    { text:'[Schritt 2.1 – Cyclisierung, TFA] Protonierung: TFA protoniert den Carbonyl-O der ersten Peptidbindung. Das π-Elektronenpaar der C=O klappt auf den O um (er trägt jetzt formal H, wird zu C=OH⁺). Das C ist stärker elektrophil.',
+      arrows:[{from:'Ocarbonyl', to:'Hp', kind:'full'}], gm:['proto'] },
+    { text:'[Schritt 2.2] Der Schwefel im PTC-Rest greift intramolekular an: Ein freies Elektronenpaar am S wandert auf den elektrophilen Carbonyl-C der Peptidbindung — Bildung einer neuen C–S-σ-Bindung; 5-Ring-Übergang.',
+      arrows:[{from:'Sc', to:'Ccarbonyl', kind:'full'}], gm:['nu'] },
+    { text:'[Schritt 2.3] Zusammenbruch des tetraedrischen Intermediats: Das Elektronenpaar am C–OH (Carbonyl-Sauerstoff) wandert zurück; simultan bricht die C–N-σ-Bindung der Peptidbindung. Die Elektronen der C–N-Bindung gehen an den Peptid-N — dieser wird zur freien α-NH₂-Gruppe des nun N-1-gekürzten Restpeptids.',
+      arrows:[{from:'Ocarbonyl', to:'Ccarbonyl', kind:'full'},{from:'Ccarbonyl', to:'Nrest', kind:'full'}], gm:['lg'] },
+    { text:'[Schritt 2.4] Umgebauter Ring: 5-Ring mit S, C=O (ehemaliger Carbonyl-C), C-N(H)-Ph, N (ehemaliger α-N des Peptids), C (α-C mit Seitenkette R). Das ist das Anilinothiazolinon (ATZ). Bemerkenswert: die Peptidbindung ist gebrochen, aber die α-Aminosäure ist noch nicht in ihre stabile Form umgelagert — das folgt im nächsten Schritt.',
+      arrows:[], gm:['lg'] },
+    { text:'[Schritt 3.1 – Umlagerung, wässrig-sauer] Wasser-Angriff am elektrophilen Ring-C=N-Kohlenstoff: Freies Elektronenpaar am O des Wassers greift den C an; die C=N-π-Elektronen klappen auf den N um; sp³-Zwischenprodukt.',
+      arrows:[{from:'Ow3', to:'Ccarbonyl', kind:'full'}], gm:['nu'] },
+    { text:'[Schritt 3.2] Ringöffnung: Elektronen der C–S-σ-Bindung wandern auf den S; C=N bildet sich neu; das S trägt jetzt eine freie SH-Gruppe. Es liegt ein offenkettiges α-Anilino-α-thio-Carbonyl-Intermediat vor.',
+      arrows:[{from:'Ccarbonyl', to:'Sc', kind:'full'}], gm:['lg'] },
+    { text:'[Schritt 3.3] Ringschluss neu: Das freie Elektronenpaar am S greift jetzt den Carbonyl-C (ehemaliger α-C) an; die C=O klappt auf O um; tetraedrisches Intermediat.',
+      arrows:[{from:'Sc', to:'Ccarbonyl', kind:'full'}], gm:['nu'] },
+    { text:'[Schritt 3.4] Kollaps: Das Alkoxid am O verlässt als OH⁻ (nach Protonierung als H₂O); der 5-Ring bildet sich als Phenylthiohydantoin — N–C(=S)–N–C(=O)–CH(R). Der Thiocarbonyl und der Carbonyl sind jetzt an verschiedenen Positionen als im ATZ — das ist der Isomerisierungsschritt.',
+      arrows:[{from:'Ocarbonyl', to:'Ccarbonyl', kind:'full'}], gm:['pi'] }
+  ],
+  netto:'PITC + Peptid-α-NH₂ → PTC-Peptid → (TFA) → ATZ + verkürztes Restpeptid → (H₂O/HCl) → PTH-Aminosäure. Das PTH-Derivat ist stabil, farbig, chromatographisch identifizierbar; die Seitenkette R zeigt an, welche Aminosäure am N-Terminus stand. Ausbeute je Zyklus ca. 98 %; nach 70 Zyklen bleiben 0,98⁷⁰ ≈ 24 % Sequenzsignal — die praktische Zyklengrenze. Sanger-Reagenz (DNFB) markiert den N-Terminus nur einmal, weil die saure Hydrolyse alle Peptidbindungen spaltet; Edman lässt die Kette intakt und ermöglicht 50–70 Zyklen.',
+  querverbindung:'Dieselbe Isothiocyanat-Chemie taucht auf bei Sinigrin/Sinalbin (Senföle in Kohl und Senf) — dort spaltet Myrosinase Glucosinolat zu Isothiocyanat, das mit Amin- oder Thiolgruppen im Körper reagiert. Verwandt: DABITC (Dimethylaminoazobenzol-isothiocyanat) — dieselbe Reaktion, nur mit chromogener Gruppe für hochempfindliche PTH-Detektion.'
+},
+{
+  id:'m21', num:21, teil:'F', blitz:false,
+  title:'Bildung des Nitrosierungsagens N₂O₃ (Kap. 19, Pfeil 1 — hier zur Vollständigkeit)',
+  zusammenhang:'Im schwach sauren Milieu dehydratisiert HNO₂ (pKa ≈ 3,4) bimolekular zu N₂O₃ (O=N–O–N=O) — derselbe Schritt wie Kap. 19, Pfeil 1. Alternativ, wenn zusätzliche Nitrit-Ionen vorhanden sind, entsteht N₂O₄. Beide sind milde bis starke Nitrosierungsagenzien. Bei niedrigerem pH (Magensaft!) entsteht auch H₂ONO⁺ (Nitrosonium in Solvatationshülle) — noch reaktiver.',
+  diagram:{
+    viewBox:'0 0 480 220',
+    stations:[
+      { id:'m1', x:90, y:60, layout:'vchain', spacing:60, bondOrders:[2], entries:[
+        {id:'Ot1', label:'O', role:'plain'}, {id:'N1', label:'N', role:'el'}
+      ]},
+      { id:'m2', x:280, y:130, layout:'vchain', spacing:60, bondOrders:[2], entries:[
+        {id:'N2', label:'N', role:'el'}, {id:'Ot2', label:'O', role:'plain'}
+      ]}
+    ],
+    freeAtoms:[ {id:'Oa', x:170, y:150, label:'O', role:'nu'}, {id:'Ob', x:280, y:60, label:'OH', role:'lg'} ],
+    extraBonds:[ {id:'n1Oa', a:'N1', b:'Oa', order:1}, {id:'n2Ob', a:'N2', b:'Ob', order:1} ],
+    labels:[ {x:90,y:195,text:'HNO₂ (Molekül 1)'}, {x:280,y:195,text:'HNO₂ (Molekül 2)'} ],
+    events:[
+      { step:1, type:'bondRemove', id:'n2Ob' },
+      { step:1, type:'moveAtom', atom:'Ob', dx:-40, dy:-40 },
+      { step:1, type:'bondAdd', id:'oaN2', a:'Oa', b:'N2', order:1 }
+    ]
+  },
+  steps:[
+    { text:'2 HNO₂ → N₂O₃ + H₂O: Ein freies Elektronenpaar am O eines HNO₂ greift den elektrophilen N eines zweiten HNO₂ an; die zweite N–OH-Bindung bricht als H₂O-Abgang → gemischtes Nitrit-Anhydrid (O=N–O–N=O).',
+      arrows:[{from:'Oa', to:'N2', kind:'full'}], gm:['nu','lg'] }
+  ],
+  netto:'2 HNO₂ → N₂O₃ + H₂O. N₂O₃ ist das zentrale Nitrosierungsagens für Kap. 19 (Ascorbat) und Kap. 22–24 (Nitrosamine, Diazoniumsalze).',
+  querverbindung:null
+},
+{
+  id:'m22', num:22, teil:'F', blitz:true,
+  title:'Nitrosamin aus sekundärem Amin (Dimethylamin → N-Nitrosodimethylamin, NDMA)',
+  zusammenhang:'Klassisches Modellsystem. Dimethylamin (Me₂NH) reagiert mit N₂O₃ zum stark kanzerogenen NDMA — genau die Reaktion, deretwegen Nitrit gesetzlich streng limitiert ist. Historisch beim direkt befeuerten Malzdarren im Bier ein großes Problem, gelöst durch indirekte Beheizung.',
+  diagram:{
+    viewBox:'0 0 480 240',
+    stations:[],
+    freeAtoms:[
+      {id:'Namin', x:110, y:130, label:'N(Me₂NH)', role:'nu'},
+      {id:'Ncentral', x:280, y:130, label:'N', role:'el'},
+      {id:'Ok', x:280, y:60, label:'O', role:'plain'},
+      {id:'No2', x:380, y:200, label:'NO₂⁻', role:'lg'},
+      {id:'Base', x:110, y:210, label:'Base', role:'el'}
+    ],
+    extraBonds:[ {id:'ncOk', a:'Ncentral', b:'Ok', order:2}, {id:'ncNo2', a:'Ncentral', b:'No2', order:1} ],
+    labels:[ {x:280,y:30,text:'zentrales N von N₂O₃'} ],
+    events:[
+      { step:1, type:'bondAdd', id:'naminNc', a:'Namin', b:'Ncentral', order:1 },
+      { step:1, type:'bondRemove', id:'ncNo2' },
+      { step:1, type:'moveAtom', atom:'No2', dx:60, dy:-40 },
+      { step:2, type:'chargeAdd', atom:'Namin', sign:'+' },
+      { step:3, type:'chargeRemove', atom:'Namin' }
+    ]
+  },
+  steps:[
+    { text:'Das freie Elektronenpaar am sekundären Amin-N (Me₂NH) greift den elektrophilen zentralen N eines N₂O₃-Moleküls (das NO-Ende) nukleophil an. Die N–O-σ-Bindung des N₂O₃ zwischen den beiden Nitrit-Hälften bricht — die Elektronen wandern auf die Abgangsgruppe (NO₂⁻).',
+      arrows:[{from:'Namin', to:'Ncentral', kind:'full'}], gm:['nu','lg'] },
+    { text:'Am Amin-N sitzt jetzt eine positive Ladung (Amino-Nitrosonium, Me₂NH⁺–NO); NO₂⁻ ist frei.',
+      arrows:[], gm:['redox'] },
+    { text:'Deprotonierung: Base (Wasser, Nitrit-Ion) nimmt das N–H auf; das Elektronenpaar der N–H-Bindung verbleibt am Amin-N. Ergebnis: Me₂N–N=O, das neutrale Nitrosamin (NDMA).',
+      arrows:[{from:'Namin', to:'Base', kind:'full'}], gm:['proto'] }
+  ],
+  netto:'Me₂NH + N₂O₃ → NDMA (Me₂N–N=O) + NO₂⁻ + H⁺. NDMA ist chemisch bemerkenswert stabil, aber metabolisch aktivierbar: Cytochrom-P450 hydroxyliert das α-C zu einem α-Hydroxy-Nitrosamin, das spontan in eine Diazoverbindung und einen Aldehyd zerfällt; das Methyldiazonium alkyliert dann DNA — der kanzerogene Wirkmechanismus.',
+  querverbindung:null
+},
+{
+  id:'m23', num:23, teil:'F', blitz:true,
+  title:'Prolin-Nitrosierung — warum Prolin-Nitrosamine schwach toxisch sind',
+  zusammenhang:'Prolin ist eine sekundäre Aminosäure (Iminosäure — der α-Stickstoff ist Teil eines Fünfrings). Also müsste Prolin analog zu Dimethylamin ein Nitrosamin bilden — und tut das auch. Toxikologisch sind Prolin-Nitrosamine aber schwach eingestuft, weil die metabolische Aktivierung nicht in ein einfaches Alkyldiazonium mündet.',
+  diagram:{
+    viewBox:'0 0 480 240',
+    stations:[],
+    freeAtoms:[
+      {id:'Nprolin', x:110, y:130, label:'α-N(Prolin-Ring)', role:'nu'},
+      {id:'Ncentral', x:280, y:130, label:'N', role:'el'},
+      {id:'Ok', x:280, y:60, label:'O', role:'plain'},
+      {id:'No2', x:380, y:200, label:'NO₂⁻', role:'lg'},
+      {id:'Base', x:110, y:210, label:'Base', role:'el'}
+    ],
+    extraBonds:[ {id:'ncOk', a:'Ncentral', b:'Ok', order:2}, {id:'ncNo2', a:'Ncentral', b:'No2', order:1} ],
+    labels:[ {x:280,y:30,text:'zentrales N von N₂O₃ (analog Kap. 22)'} ],
+    events:[
+      { step:1, type:'bondAdd', id:'nprolinNc', a:'Nprolin', b:'Ncentral', order:1 },
+      { step:1, type:'bondRemove', id:'ncNo2' },
+      { step:1, type:'moveAtom', atom:'No2', dx:60, dy:-40 },
+      { step:1, type:'chargeAdd', atom:'Nprolin', sign:'+' },
+      { step:2, type:'chargeRemove', atom:'Nprolin' }
+    ]
+  },
+  steps:[
+    { text:'Das freie Elektronenpaar am Prolin-α-N greift N₂O₃ analog Kap. 22, Pfeil 1 an. Die N–O-Bindung des N₂O₃ bricht, NO₂⁻ verlässt.',
+      arrows:[{from:'Nprolin', to:'Ncentral', kind:'full'}], gm:['nu','lg'] },
+    { text:'Deprotonierung des positiv geladenen Ring-N durch Base — es entsteht das N-Nitrosoprolin.',
+      arrows:[{from:'Nprolin', to:'Base', kind:'full'}], gm:['proto'] }
+  ],
+  netto:'Prolin + N₂O₃ → N-Nitrosoprolin. Metabolische Folgereaktion: Enzymatische α-Oxidation kann das C2 hydroxylieren; die α-Hydroxy-Nitrosoverbindung zerfällt in einen ring-geöffneten Aldehyd + Alkyldiazonium, aber dieses Diazonium ist schwer aktivierbar und zerfällt über Decarboxylierung schnell in N₂ + Cyclobutan-Reste — kein Alkylierungsagens. Anders bei NDMA: dort führt die α-Hydroxylierung direkt zum Methyldiazonium, einem starken DNA-Alkylator (Methylierung an N7 des Guanins) — der klare Toxizitätsunterschied.',
+  querverbindung:null
+},
+{
+  id:'m24', num:24, teil:'F', blitz:true,
+  title:'Zum Vergleich: Nitrosierung eines primären Amins — Diazoniumzerfall',
+  zusammenhang:'Primäre Amine bilden mit N₂O₃ zunächst dieselbe Zwischenstufe wie sekundäre Amine — aber die zweite N–H-Deprotonierung führt zu einer instabilen Struktur, die in ein Diazoniumsalz zerfällt. Deshalb sind primäre Amine keine gefährlichen Nitrosamin-Vorläufer im engeren Sinn — die Endprodukte sind bei aromatischen Aminen sehr stabile Diazoniumsalze, bei aliphatischen ein N₂-Verlust und Kation-Folgechemie.',
+  diagram:{
+    viewBox:'-70 0 610 240',
+    stations:[],
+    freeAtoms:[
+      {id:'Rc', x:30, y:130, label:'R(Alkylrest)', role:'plain'},
+      {id:'Na', x:130, y:130, label:'Nα', role:'nu'},
+      {id:'Nbeta', x:280, y:130, label:'Nβ', role:'el'},
+      {id:'Ok', x:280, y:60, label:'O', role:'lg'},
+      {id:'No2', x:380, y:200, label:'NO₂⁻', role:'lg'}
+    ],
+    extraBonds:[
+      {id:'rcNa', a:'Rc', b:'Na', order:1},
+      {id:'nbetaOk', a:'Nbeta', b:'Ok', order:2},
+      {id:'nbetaNo2', a:'Nbeta', b:'No2', order:1}
+    ],
+    labels:[ {x:280,y:30,text:'N₂O₃ (analog Kap. 22)'}, {x:30,y:170,text:'späteres Carbenium'} ],
+    events:[
+      { step:1, type:'bondAdd', id:'naNbeta', a:'Na', b:'Nbeta', order:1 },
+      { step:1, type:'bondRemove', id:'nbetaNo2' },
+      { step:1, type:'moveAtom', atom:'No2', dx:60, dy:-30 },
+      { step:4, type:'bondRemove', id:'nbetaOk' },
+      { step:4, type:'moveAtom', atom:'Ok', dx:60, dy:-40 },
+      { step:4, type:'bondOrder', id:'naNbeta', order:2 },
+      { step:5, type:'bondRemove', id:'rcNa' },
+      { step:5, type:'moveAtom', atom:'Na', dx:60, dy:-50 },
+      { step:5, type:'moveAtom', atom:'Nbeta', dx:80, dy:-60 },
+      { step:5, type:'chargeAdd', atom:'Rc', sign:'+' }
+    ]
+  },
+  steps:[
+    { text:'R–NH₂ + N₂O₃ → R–NH₂⁺–N=O + NO₂⁻ (analog Kap. 22).',
+      arrows:[{from:'Na', to:'Nbeta', kind:'full'}], gm:['nu','lg'] },
+    { text:'Prototropie: H von N auf O → R–NH–N=O–H (Diazohydroxid).',
+      arrows:[{from:'Na', to:'Ok', kind:'full'}], gm:['proto'] },
+    { text:'Tautomerisierung zur cis-/trans-Diazohydroxid-Struktur; im Sauren erneute Protonierung des OH → Wasser-Abgang.',
+      arrows:[], gm:['proto'] },
+    { text:'Das freie Elektronenpaar am β-N klappt in die α-N–β-N-π-Bindung; die Elektronen der σ-Bindung C–OH wandern mit dem H₂O ab. Es entsteht das Alkyldiazonium R–N₂⁺.',
+      arrows:[{from:'Nbeta', to:'Na', kind:'full'}], gm:['lg'] },
+    { text:'Zerfall: N₂ ist eine ausgezeichnete Abgangsgruppe. Die C–N-σ-Bindung des Alkyldiazoniums bricht; die Elektronen bleiben am N₂ als freies Elektronenpaar; ein Carbenium-Kation R⁺ entsteht.',
+      arrows:[{from:'Rc', to:'Na', kind:'full'}], gm:['lg'] },
+    { text:'R⁺ reagiert weiter: mit Wasser zum Alkohol, mit Halogenid zum Alkylhalogenid, oder eliminiert unter H⁺-Abgang zum Alken. Bei sekundären und tertiären Kationen: Umlagerungen zu stabileren Kationen möglich.',
+      arrows:[], gm:['nu'] }
+  ],
+  netto:'R–NH₂ + N₂O₃ → R–N₂⁺ (Alkyldiazonium) → R⁺ + N₂. Aromatische primäre Amine (Anilin und Derivate) liefern hingegen stabile Aryldiazoniumsalze — Basis der Azofarbstoffchemie. Merksatz: Sekundäre Amine geben stabile Nitrosamine (Gefahr im Fleisch), primäre Amine geben instabile Diazoniumsalze (schnell weg).',
+  querverbindung:'Diese Diazonium-Chemie ist die Grundlage der Griess-Reaktion (Nitrit-Bestimmung in Trinkwasser, Wurst, Pökellake): Nitrit + Sulfanilamid → Aryldiazoniumsalz → Kupplung mit Naphthyl-Aminen (NED) → roter Azofarbstoff, photometrisch messbar. Verwandt: Sanger-Reagenz (Aryldiazonium → aromatische Substitution) sowie Farbreaktionen mit Sulfonamiden.'
+},
+{
+  id:'m25', num:25, teil:'G', blitz:true,
+  title:'Strecker-Abbau: α-Aminosäure + α-Dicarbonyl → Strecker-Aldehyd + Aminoketon + CO₂',
+  zusammenhang:'Beim Braten liefern die Fleischbasen (freie Aminosäuren) die Aminokomponente; α-Dicarbonyle stammen aus der Maillard-Reaktion (3-DG, Methylglyoxal) und aus der Zuckerkaramellisierung. Der Strecker-Abbau ist der Hauptlieferant der klassischen Braten-Aldehyde: Phenylacetaldehyd (aus Phenylalanin), Methional (aus Methionin), 3-Methylbutanal (aus Leucin), 2-Methylbutanal (aus Isoleucin). Ist eine der 5 Pflichtmechanismen bei Glomb. Substrate: α-Aminosäure H₂N–CHR–COOH und ein α-Dicarbonyl (z. B. Methylglyoxal, CH₃–CO–CHO).',
+  diagram:{
+    viewBox:'-60 -20 800 340',
+    stations:[],
+    freeAtoms:[
+      {id:'Naa', x:110, y:100, label:'N(Aminosäure)', role:'nu'},
+      {id:'Calpha', x:110, y:180, label:'Cα', role:'plain'},
+      {id:'Ccooh', x:30, y:250, label:'COOH', role:'lg'},
+      {id:'Cdic', x:320, y:100, label:'C(Dicarbonyl)', role:'el'},
+      {id:'Odic', x:320, y:30, label:'O', role:'plain'},
+      {id:'Cdic2', x:420, y:100, label:'C', role:'plain'},
+      {id:'Oketo', x:420, y:30, label:'O', role:'plain'},
+      {id:'Ow', x:560, y:180, label:'H₂O', role:'nu'},
+      {id:'Base', x:110, y:260, label:'Base', role:'el'}
+    ],
+    extraBonds:[
+      {id:'naaCalpha', a:'Naa', b:'Calpha', order:1},
+      {id:'calphaCcooh', a:'Calpha', b:'Ccooh', order:1},
+      {id:'cdicOdic', a:'Cdic', b:'Odic', order:2},
+      {id:'cdicCdic2', a:'Cdic', b:'Cdic2', order:1},
+      {id:'cdic2Oketo', a:'Cdic2', b:'Oketo', order:2}
+    ],
+    labels:[ {x:110,y:285,text:'α-Aminosäure'}, {x:370,y:280,text:'α-Dicarbonyl (z. B. Methylglyoxal)'} ],
+    events:[
+      { step:1, type:'bondAdd', id:'naaCdic', a:'Naa', b:'Cdic', order:1 },
+      { step:2, type:'bondOrder', id:'cdicOdic', order:1 },
+      { step:2, type:'chargeAdd', atom:'Odic', sign:'-' },
+      { step:3, type:'bondRemove', id:'cdicOdic' },
+      { step:3, type:'moveAtom', atom:'Odic', dx:-60, dy:-30 },
+      { step:3, type:'bondOrder', id:'naaCdic', order:2 },
+      { step:4, type:'bondRemove', id:'calphaCcooh' },
+      { step:4, type:'moveAtom', atom:'Ccooh', dx:-50, dy:40 },
+      { step:4, type:'bondOrder', id:'naaCalpha', order:2 },
+      { step:5, type:'bondOrder', id:'naaCalpha', order:1 },
+      { step:5, type:'bondOrder', id:'cdic2Oketo', order:1 },
+      { step:5, type:'chargeAdd', atom:'Oketo', sign:'-' },
+      { step:6, type:'bondAdd', id:'owCdic', a:'Ow', b:'Cdic', order:1 },
+      { step:6, type:'bondOrder', id:'naaCdic', order:1 },
+      { step:7, type:'bondRemove', id:'naaCdic' },
+      { step:7, type:'moveAtom', atom:'Naa', dx:-80, dy:-20 },
+      { step:7, type:'moveAtom', atom:'Calpha', dx:-80, dy:-20 },
+      { step:7, type:'bondOrder', id:'owCdic', order:2 }
+    ]
+  },
+  steps:[
+    { text:'Das freie Elektronenpaar am α-Aminostickstoff der Aminosäure greift den elektrophilen Carbonyl-C des α-Dicarbonyls (das reaktivere der beiden Carbonyle — beim Methylglyoxal das CHO, bei 1,2-Diketonen das sterisch zugängliche) nukleophil an.',
+      arrows:[{from:'Naa', to:'Cdic', kind:'full'}], gm:['nu'] },
+    { text:'Das π-Elektronenpaar der C=O klappt auf O um; tetraedrisches Halbaminal (Carbinolamin) mit sp³-C. Prototropie: H von N auf O.',
+      arrows:[{from:'Cdic', to:'Odic', kind:'full'}], gm:['pi','proto'] },
+    { text:'Wasser-Abspaltung: Das freie Elektronenpaar am N klappt in eine C=N-π-Bindung; das π-Elektronenpaar der C–OH wandert mit dem O als H₂O ab. Es entsteht die Schiff-Base (Azomethin) der Aminosäure mit dem α-Dicarbonyl.',
+      arrows:[{from:'Naa', to:'Cdic', kind:'full'}], gm:['lg'] },
+    { text:'Decarboxylierung — der eigentliche Strecker-Schritt: Die C–C-σ-Bindung zwischen α-C und COOH-C der Aminosäure bricht. Die Elektronen dieser Bindung wandern in eine C=C-π-Bindung zum Schiff-Base-Kohlenstoff (Delokalisation in das C=N-System hinein); simultan verlassen die Carboxylat-Elektronen als CO₂. Das α-C ist jetzt sp²-hybridisiert.',
+      arrows:[{from:'Calpha', to:'Ccooh', kind:'full'}], gm:['lg'] },
+    { text:'Das entstandene Azomethin-Ylid (bzw. seine Tautomere) wird zum Enaminol umgelagert: Ein α-CH-Proton wird abstrahiert; die Elektronen wandern in ein neues C=C; das π-Elektronenpaar der C=N klappt auf den N um; simultan wandert ein Proton auf den O des α-Dicarbonyl-Rests. Es entsteht das 1,2-Enaminol.',
+      arrows:[{from:'Calpha', to:'Base', kind:'full'}], gm:['proto','pi'] },
+    { text:'Hydrolyse: Wasser greift den Iminium-C (den ehemaligen α-C des Amins, jetzt Aminosäureseitenkette-tragend) an; π-Elektronen der C=N klappen auf N um; sp³-Zwischenprodukt mit Halbaminal.',
+      arrows:[{from:'Ow', to:'Cdic', kind:'full'}], gm:['nu'] },
+    { text:'Rückspaltung: N-Elektronenpaar wandert zurück; C–N-σ-Bindung bricht; die Elektronen bleiben am N (Aminoketon-Produkt). Am ehemaligen α-C sitzt eine Carbonylgruppe → das ist der Strecker-Aldehyd R–CHO mit einem C-Atom weniger als die Ausgangsaminosäure (die COOH ist als CO₂ weg).',
+      arrows:[{from:'Cdic', to:'Naa', kind:'full'}], gm:['lg'] },
+    { text:'Am Dicarbonyl-Rest sitzt jetzt ein α-Aminoketon — der zweite Reaktionspartner für die Pyrazin-Bildung: Zwei α-Aminoketone kondensieren zum Dihydropyrazin, das durch Luftoxidation zum Pyrazin aromatisiert. Das ist der Braten-/Röstgeruch von Kaffee, Kakao, Malz und gebratenem Fleisch.',
+      arrows:[], gm:['redox'] }
+  ],
+  netto:'α-Aminosäure + α-Dicarbonyl → Strecker-Aldehyd (R-CHO, ein C weniger als die Aminosäure) + α-Aminoketon + CO₂.',
+  querverbindung:'Aromatische Konsequenzen im Fleisch-Kontext: Phenylalanin → Phenylacetaldehyd (blumig, honigartig). Methionin → Methional (gekochte Kartoffel, Bratensauce). Cystein → Merkaptoacetaldehyd → weiter zu Thiazolinen und Thiophenen (schwefelige Röstnoten). Leucin → 3-Methylbutanal (malzig). Der Kakao- und Kaffee-Kontext ist chemisch identisch; nur die Auswahl der Ausgangsaminosäuren und die Rösttemperatur differieren.'
+},
+{
+  id:'m26', num:26, teil:'G', blitz:false,
+  title:'Bildung von 2-Methyl-3-furanthiol — der Leitgeruchsstoff gebratenen Fleisches',
+  zusammenhang:'2-Methyl-3-furanthiol (2M3F) hat einen Geruchsschwellenwert im ppb-Bereich; es ist das dominierende Aromamolekül der Bratensauce und der Rindfleischnote. Es entsteht aus Ribose (aus dem IMP-Abbau!) und einer Schwefelquelle (Cystein, GSH, Thiamin). Die Ribose kommt genau aus dem postmortalen Nucleotid-Abbau — deshalb schmeckt gereiftes Fleisch aromatischer als frisches.',
+  diagram:{
+    viewBox:'0 0 560 220',
+    stations:[
+      { id:'fur', x:280, y:110, layout:'chain', spacing:80, bondOrders:[2], entries:[
+        {id:'C3', label:'C3', role:'el'}, {id:'C4', label:'C4', role:'plain'}
+      ]}
+    ],
+    freeAtoms:[
+      {id:'Sh', x:110, y:110, label:'H₂S (aus Cystein/Thiamin)', role:'nu'},
+      {id:'Ohsub', x:380, y:180, label:'OH', role:'lg'}
+    ],
+    extraBonds:[ {id:'c4Oh', a:'C4', b:'Ohsub', order:1} ],
+    labels:[ {x:280,y:60,text:'4-Hydroxy-5-methyl-3(2H)-furanon (Norfuraneol-artig)'} ],
+    events:[
+      { step:4, type:'bondAdd', id:'shC3', a:'Sh', b:'C3', order:1 },
+      { step:4, type:'bondOrder', id:'fur_b0', order:1 },
+      { step:5, type:'bondRemove', id:'c4Oh' },
+      { step:5, type:'moveAtom', atom:'Ohsub', dx:60, dy:-40 },
+      { step:5, type:'bondOrder', id:'fur_b0', order:2 }
+    ]
+  },
+  steps:[
+    { text:'Ribose isomerisiert im Sauren zur Ribulose (Amadori-artige Isomerisierung — Protonentransfer zwischen C1 und C2 mit Endiol-Zwischenstufe). Dehydrierung an C3/C4 unter Wasserabspaltung liefert eine α,β-ungesättigte 4-Hydroxy-5-methyl-3-furanon-Zwischenstufe (Norfuraneol-artig).',
+      arrows:[], gm:['proto'] },
+    { text:'Wasser-Abspaltung an C4: Das freie Elektronenpaar am Ring-O klappt in eine C=C-π-Bindung; die C–OH-σ-Bindung an C4 verlässt als H₂O; Aromatisierung des 5-Ring-Furans.',
+      arrows:[], gm:['lg'] },
+    { text:'Cystein wird über den Strecker-Abbau zu Mercaptoacetaldehyd degradiert; alternativ liefert Thiamin über seine C2-S-C1′-Position ein H₂S-Äquivalent. Freies H₂S ist die eigentliche Schwefelquelle.',
+      arrows:[], gm:['redox'] },
+    { text:'Der Schwefel greift am elektrophilen C3 des 4-Hydroxy-5-methyl-3(2H)-furanons nukleophil an: Das freie Elektronenpaar am S schlägt auf den Michael-Akzeptor-C3; π-Elektronen wandern zum C4-O.',
+      arrows:[{from:'Sh', to:'C3', kind:'full'}], gm:['nu'] },
+    { text:'Prototropie und Aromatisierung: Wasser-Abspaltung am C4 (die C4-OH verlässt); Elektronen reorganisieren sich zum vollaromatischen Furan-Ring mit exocyclischer SH-Gruppe an C3 und Methylgruppe an C2 → 2-Methyl-3-furanthiol.',
+      arrows:[{from:'C4', to:'Ohsub', kind:'full'}], gm:['lg'] }
+  ],
+  netto:'Ribose + H₂S → [Dehydratisierung zu Norfuraneol-artiger Zwischenstufe] → Michael-Addition von H₂S → Wasserabspaltung/Aromatisierung → 2-Methyl-3-furanthiol.',
+  querverbindung:'Analog entstehen 2-Furfurylthiol (Kaffee-Aroma) aus Furfural + H₂S und viele weitere Furanthiole. Die Chemie ist immer dieselbe Michael-Addition eines Schwefels an ein aktives Furanon.'
+},
+{
+  id:'m27', num:27, teil:'G', blitz:false,
+  title:'Sotolon aus Threonin (Aroma der Säurehydrolyse-Würzen)',
+  zusammenhang:'Sotolon (4,5-Dimethyl-3-hydroxy-2(5H)-furanon) ist die Leitverbindung des Aromas von Liebstöckel, Bockshornklee, gealtertem Sherry, alten Süßweinen und der klassischen Fleischbrühe. In der Säurehydrolyse-Würze entsteht Sotolon aus Threonin. Abhexon (2-Ethyl-3-hydroxy-2-methyl-Furanon) entsteht analog aus Serin.',
+  diagram:{
+    viewBox:'0 0 560 220',
+    stations:[],
+    freeAtoms:[
+      {id:'Thr', x:110, y:110, label:'Threonin (3-OH)', role:'el'},
+      {id:'Am1', x:280, y:110, label:'Aminoaceton 1', role:'nu'},
+      {id:'Am2', x:420, y:170, label:'Aminoaceton 2', role:'el'},
+      {id:'Norf', x:420, y:60, label:'Norfuraneol/Acetaldehyd', role:'plain'}
+    ],
+    extraBonds:[],
+    labels:[ {x:110,y:150,text:'saures Milieu: –H₂O, –CO₂'} ],
+    events:[
+      { step:1, type:'moveAtom', atom:'Thr', dx:60, dy:0 },
+      { step:2, type:'bondAdd', id:'am1Am2', a:'Am1', b:'Am2', order:1 },
+      { step:3, type:'bondAdd', id:'norfAm1', a:'Norf', b:'Am1', order:1 }
+    ]
+  },
+  steps:[
+    { text:'Threonin wird im sauren Milieu zu 2-Aminoaceton dehydratisiert und decarboxyliert: Protonierung der 3-OH-Gruppe; Abgang als H₂O; das freie Elektronenpaar am α-N klappt in die C=C-Bindung; CO₂-Abgang. Es entsteht 1-Amino-Propan-2-on (Aminoaceton).',
+      arrows:[{from:'Thr', to:'Am1', kind:'full'}], gm:['lg'] },
+    { text:'Aminoaceton kondensiert bimolekular über die Amino-Ketogruppe: Das freie Elektronenpaar am α-N eines Moleküls greift den Carbonyl-C des zweiten; Schiff-Base-Bildung; π-Elektronen und Prototropie führen zur Dihydropyrazin-Zwischenstufe.',
+      arrows:[{from:'Am1', to:'Am2', kind:'full'}], gm:['nu'] },
+    { text:'Alternativ (der Sotolon-Weg): 4-Hydroxy-5-methyl-3(2H)-furanon (aus Zuckerabbau/Norfuraneol) reagiert mit Acetaldehyd/2-Oxobutanal. Aldol-Kondensation, Ringschluss über das Enol-Sauerstoff am 4-Hydroxy-C, Dehydratisierung → Sotolon-Grundgerüst. Der volle Weg über die Aminoketon-Kaskade läuft parallel — im Wesentlichen sind beides Aldol-Kondensationen mit anschließender Ringschluss-Dehydratisierung.',
+      arrows:[{from:'Norf', to:'Am1', kind:'full'}], gm:['pi'] }
+  ],
+  netto:'Threonin → Aminoaceton → [Kondensation] → Sotolon-Grundgerüst; präparativ entsteht Sotolon auch aus α-Ketobutyrat (aus Threonin durch Deaminierung) plus α-Ketosäuren. Abhexon entsteht analog aus Serin. Beide sind Furanone mit intensivem Würzcharakter, im ppb-Bereich wirksam.',
+  querverbindung:null
+},
+{
+  id:'m28', num:28, teil:'H', blitz:false,
+  title:'Homolytische β-O-4-Spaltung im Lignin',
+  zusammenhang:'Lignin ist ein amorphes Polymer aus Coniferyl-, Sinapyl- und p-Cumarylalkohol, verknüpft über die häufige β-O-4-Bindung (β-Kohlenstoff der Seitenkette — 4-Ethersauerstoff des nächsten Rings). Bei der Pyrolyse (Glimm-, Reibrauch bei 200–500 °C) brechen diese Bindungen homolytisch — Radikalkette, aus der die Rauchphenole (Guajacol, Syringol, Kreosol, Vanillin) entstehen.',
+  diagram:{
+    viewBox:'0 0 560 220',
+    stations:[
+      { id:'link', x:250, y:110, layout:'chain', spacing:110, bondOrders:[1], entries:[
+        {id:'Cb', label:'Cβ', role:'plain'}, {id:'Oar', label:'O(Aryl)', role:'plain'}
+      ]}
+    ],
+    freeAtoms:[
+      {id:'Ca', x:170, y:180, label:'Cα(H, OH)', role:'plain'},
+      {id:'Har', x:400, y:180, label:'H (andere Ligninbindung)', role:'nu'}
+    ],
+    extraBonds:[ {id:'cbCa', a:'Cb', b:'Ca', order:1} ],
+    labels:[ {x:250,y:60,text:'β-O-4-Bindung (Seitenkette – Aromat)'} ],
+    events:[
+      { step:1, type:'bondRemove', id:'link_b0' },
+      { step:1, type:'moveAtom', atom:'Oar', dx:60, dy:-40 },
+      { step:1, type:'chargeAdd', atom:'Cb', sign:'•' },
+      { step:1, type:'chargeAdd', atom:'Oar', sign:'•' },
+      { step:2, type:'bondRemove', id:'cbCa' },
+      { step:2, type:'bondOrder', id:'link_b0', order:0 },
+      { step:2, type:'chargeAdd', atom:'Ca', sign:'•' },
+      { step:2, type:'chargeRemove', atom:'Cb' },
+      { step:3, type:'bondAdd', id:'oarHar', a:'Oar', b:'Har', order:1 },
+      { step:3, type:'chargeRemove', atom:'Oar' }
+    ]
+  },
+  steps:[
+    { text:'Thermische Homolyse: Die β-C–O-σ-Bindung bricht in zwei Radikale — je ein Elektron auf jeder Seite. Am β-C bleibt ein Kohlenstoffradikal (mesomer stabilisiert durch die α-Hydroxymethyl-Gruppe); am O bleibt ein Phenoxy-Radikal (mesomer stabilisiert über den Aromaten).',
+      arrows:[{from:'Cb', to:'Oar', kind:'fishhook'}], gm:['redox'] },
+    { text:'Das Kohlenstoff-Radikal (an der Seitenkette) β-eliminiert das α-H: Ein Fischhaken-Elektron aus der α-C–H-Bindung wandert zum β-C und komplettiert dort eine C=C-π-Bindung; das andere Elektron verbleibt am α-C als neues Radikal. Es entsteht ein Vinylether/Alken-Fragment.',
+      arrows:[{from:'Ca', to:'Cb', kind:'fishhook'}], gm:['redox'] },
+    { text:'Phenoxy-Radikal wird durch Wasserstoffabstraktion (aus anderen Ligninbindungen) zum stabilen Phenol reduziert → Guajacol (2-Methoxyphenol), Syringol (2,6-Dimethoxyphenol), Vanillin (aus Coniferyl-Grundgerüst, wenn die Seitenkette zum Aldehyd oxidiert wird).',
+      arrows:[{from:'Har', to:'Oar', kind:'fishhook'}], gm:['redox'] },
+    { text:'Bei höherer Temperatur (>400 °C) kondensieren Alkenfragmente und Aromaten über Diels-Alder-artige und radikalische Zyklisierungen zu polyzyklischen aromatischen Kohlenwasserstoffen (PAK) — Benzo[a]pyren als Leitsubstanz. PAK sind kanzerogen; Grenzwerte in Räucherwaren sind gesetzlich geregelt.',
+      arrows:[], gm:['redox'] }
+  ],
+  netto:'Lignin-β-O-4-Einheit → homolytische Spaltung → Phenoxy-Radikal + Kohlenstoffradikal → Guajacol/Syringol/Vanillin (nach H-Abstraktion). Bei hoher Temperatur zusätzlich PAK-Bildung.',
+  querverbindung:'Guajacol, Vanillin, Eugenol, 4-Vinylguajacol sind identische Verbindungen im Rauchtee (Lapsang Souchong), im getoasteten Barrique-Fass (Wein), im Räucherkäse und im Räucherfisch. Die Vanillin-Note im Rotwein aus dem Fass beruht auf derselben Chemie wie das Bratenaroma im Räucherschinken.'
+},
+{
+  id:'m29', num:29, teil:'I', blitz:false,
+  title:'3-MCPD-Bildung aus Glycerin/Diglycerid + HCl',
+  zusammenhang:'Bei der Würzenherstellung durch Säurehydrolyse pflanzlicher Proteine mit HCl reagieren mitgeführte Triacylglyceride: Aus Glycerin und HCl entsteht 3-Monochlor-1,2-propandiol (3-MCPD). Analoge Wege existieren bei der Fettdesodorierung (>200 °C, Reste von Chlorid). Genotoxisch/kanzerogen.',
+  diagram:{
+    viewBox:'0 0 520 200',
+    stations:[],
+    freeAtoms:[
+      {id:'O1', x:110, y:100, label:'O(1-OH)', role:'nu'},
+      {id:'C1', x:230, y:100, label:'C1', role:'el'},
+      {id:'Hp', x:110, y:170, label:'H⁺', role:'el'},
+      {id:'Cl', x:380, y:100, label:'Cl⁻', role:'nu'}
+    ],
+    extraBonds:[ {id:'o1C1', a:'O1', b:'C1', order:1} ],
+    labels:[ {x:230,y:60,text:'Glycerin C1'} ],
+    events:[
+      { step:1, type:'bondAdd', id:'o1Hp', a:'O1', b:'Hp', order:1 },
+      { step:1, type:'chargeAdd', atom:'O1', sign:'+' },
+      { step:2, type:'bondAdd', id:'clC1', a:'Cl', b:'C1', order:1 },
+      { step:2, type:'bondRemove', id:'o1C1' },
+      { step:2, type:'moveAtom', atom:'O1', dx:-60, dy:-40 },
+      { step:2, type:'moveAtom', atom:'Hp', dx:-60, dy:-70 }
+    ]
+  },
+  steps:[
+    { text:'Protonierung: Ein freies Elektronenpaar am O der 1-OH-Gruppe des Glycerins nimmt ein Proton auf; die C–OH wird zur C–OH₂⁺ (bessere Abgangsgruppe).',
+      arrows:[{from:'O1', to:'Hp', kind:'full'}], gm:['proto'] },
+    { text:'Chlorid-Angriff: Das freie Elektronenpaar am Cl⁻ greift das C1 des Glycerins von der Rückseite an — SN2. Simultan verlässt Wasser mit den Elektronen der C–O-Bindung. Konfigurationsumkehr am C1 (bei Glycerin nicht sichtbar, da symmetrisch, aber bei Diglyceriden relevant).',
+      arrows:[{from:'Cl', to:'C1', kind:'full'}], gm:['nu','lg'] },
+    { text:'Ergebnis: 3-Chlor-1,2-propandiol (3-MCPD). Analoge Reaktion an C3 möglich (identisches Molekül wegen Symmetrie).',
+      arrows:[], gm:['lg'] }
+  ],
+  netto:'Glycerin + HCl → 3-MCPD + H₂O (SN2 an C1/C3). Bei Partialglyceriden verläuft die Reaktion oft über eine Acyloxonium-Zwischenstufe: Der Acylrest des benachbarten Fettsäure-Esters bildet nach Protonierung einen 5-Ring-Acyloxonium-Ring; Chlorid öffnet diesen Ring und wandert an die andere Position — dadurch entstehen 3-MCPD-Ester, die in der Lebensmittelanalytik über alkalische Verseifung ins freie 3-MCPD überführt werden.',
+  querverbindung:null
+},
+{
+  id:'m30', num:30, teil:'I', blitz:false,
+  title:'Glycidol-Bildung aus 3-MCPD-Estern (intramolekulare Substitution)',
+  zusammenhang:'Bei hoher Temperatur (Desodorierung, > 200 °C) verlieren 3-MCPD-Ester Chlorid unter Ringschluss zum Epoxid — dem Glycidyl-Ester. Freies Glycidol ist ein starkes Alkylierungsmittel, ähnlich Ethylenoxid. Deshalb gelten für Glycidyl-Ester eigene Grenzwerte in Speisefetten.',
+  diagram:{
+    viewBox:'0 0 480 200',
+    stations:[],
+    freeAtoms:[
+      {id:'O2', x:110, y:100, label:'O2(freie OH)', role:'nu'},
+      {id:'C3', x:280, y:100, label:'C3(Cl)', role:'el'},
+      {id:'Cl', x:380, y:100, label:'Cl', role:'lg'}
+    ],
+    extraBonds:[ {id:'c3Cl', a:'C3', b:'Cl', order:1} ],
+    labels:[ {x:200,y:60,text:'3-MCPD-Ester (C1 = Fettsäureester)'} ],
+    events:[
+      { step:2, type:'bondAdd', id:'o2C3', a:'O2', b:'C3', order:1 },
+      { step:2, type:'bondRemove', id:'c3Cl' },
+      { step:2, type:'moveAtom', atom:'Cl', dx:60, dy:-40 }
+    ]
+  },
+  steps:[
+    { text:'Deprotonierung/Aktivierung: Bei hoher Temperatur ist die α-Hydroxy-Gruppe ausreichend acide oder wird durch Spuren von Katalysatoren aktiviert. Das freie Elektronenpaar am 2-Sauerstoff (die freie OH-Gruppe) klappt in einen 3-Ring-Angriff auf das benachbarte C3, an dem das Chlorid sitzt.',
+      arrows:[], gm:['nu'] },
+    { text:'SN2-artig, intramolekular: Elektronenpaar am O greift C3; die C3–Cl-σ-Bindung bricht, die Elektronen verlassen mit dem Chlorid. Es entsteht ein 3-Ring — das Epoxid.',
+      arrows:[{from:'O2', to:'C3', kind:'full'}], gm:['nu','lg'] },
+    { text:'Am ehemaligen C1 hängt der Fettsäurerest als Ester noch dran → Glycidyl-Ester. Nach Verseifung liegt freies Glycidol vor.',
+      arrows:[], gm:['lg'] }
+  ],
+  netto:'3-MCPD-Ester → Glycidyl-Ester + Cl⁻ (intramolekularer Ringschluss zum Epoxid). Glycidol wirkt in vivo wie ein Ethylenoxid-Analog: SN2 an DNA-Nucleobasen unter Ringöffnung des Epoxids — Alkylierung, Mutation, Kanzerogenität.',
+  querverbindung:null
+},
+{
+  id:'m31', num:31, teil:'J', blitz:false,
+  title:'Glucono-δ-lacton (GdL) — kontrollierte chemische Ansäuerung',
+  zusammenhang:'GdL ersetzt in der Rohwurst-Schnellreifung die Milchsäurebakterien. Das Lacton hydrolysiert in Wasser langsam und stetig zur Gluconsäure — kontrollierte, gleichmäßige pH-Absenkung.',
+  diagram:{
+    viewBox:'0 0 520 200',
+    stations:[
+      { id:'lac', x:280, y:100, layout:'chain', spacing:90, bondOrders:[2], entries:[
+        {id:'C', label:'C(Lacton)', role:'el'}, {id:'O', label:'O', role:'plain'}
+      ]}
+    ],
+    freeAtoms:[ {id:'Ow', x:110, y:100, label:'H₂O', role:'nu'}, {id:'Or', x:380, y:170, label:'O(Ring)', role:'plain'} ],
+    extraBonds:[ {id:'cOr', a:'C', b:'Or', order:1} ],
+    labels:[ {x:280,y:60,text:'δ-Lacton-Ring'} ],
+    events:[
+      { step:1, type:'bondAdd', id:'owC', a:'Ow', b:'C', order:1 },
+      { step:2, type:'bondOrder', id:'lac_b0', order:1 },
+      { step:2, type:'chargeAdd', atom:'O', sign:'-' },
+      { step:3, type:'bondRemove', id:'cOr' },
+      { step:3, type:'moveAtom', atom:'Or', dx:60, dy:-40 },
+      { step:3, type:'bondOrder', id:'lac_b0', order:2 },
+      { step:3, type:'chargeRemove', atom:'O' },
+      { step:3, type:'chargeAdd', atom:'Or', sign:'-' },
+      { step:4, type:'chargeRemove', atom:'Or' }
+    ]
+  },
+  steps:[
+    { text:'Ein freies Elektronenpaar am O eines Wassermoleküls greift den Carbonyl-C des δ-Lactons nukleophil an.',
+      arrows:[{from:'Ow', to:'C', kind:'full'}], gm:['nu'] },
+    { text:'Das π-Elektronenpaar der C=O klappt auf den O um; tetraedrisches Intermediat mit sp³-C.',
+      arrows:[{from:'C', to:'O', kind:'full'}], gm:['pi'] },
+    { text:'Zusammenbruch: Elektronen am O des ehemaligen Carbonyl-C wandern zurück in die C=O; gleichzeitig bricht die C–O-σ-Bindung des Ring-Sauerstoffs — die Elektronen dieser Bindung verbleiben am Ring-O und lassen dort ein Alkoxid entstehen (5-Ring wird geöffnet).',
+      arrows:[{from:'O', to:'C', kind:'full'}], gm:['pi','lg'] },
+    { text:'Prototropie: Das Wasserproton wird an das Alkoxid übergeben (aus dem Wasser-H über eine Base). Ergebnis: offenkettige Gluconsäure mit 5-OH und freier COOH.',
+      arrows:[], gm:['proto'] }
+  ],
+  netto:'GdL + H₂O → Gluconsäure (offenkettig, 5-OH + COOH). Die freigesetzten Protonen senken den pH — eine Milchsäure-ähnliche Absenkung, aber ohne Mikroorganismen. Vorteil: Prozesssicherheit, kein Risiko durch Fehlgärung; Nachteil: der typische Rohwurst-Aromabeitrag der Milchsäurebakterien fehlt.',
+  querverbindung:null
+},
+{
+  id:'m32', num:32, teil:'J', blitz:false,
+  title:'Bakterielle Nitratreduktion (Nitratreduktase der Starterkulturen)',
+  zusammenhang:'Wenn Salpeter (Nitrat) statt Nitritpökelsalz verwendet wird, muss Nitrat erst zu Nitrit reduziert werden — biologisch durch Nitratreduktasen der Mikrokokken. Chemisch: Zwei-Elektronen-Reduktion. Enzymzentrum: Molybdopterin, analog Xanthinoxidase (Kap. 6).',
+  diagram:{
+    viewBox:'0 0 520 200',
+    stations:[
+      { id:'no3', x:280, y:100, layout:'chain', spacing:90, bondOrders:[2], entries:[
+        {id:'N', label:'N(Nitrat)', role:'el'}, {id:'O', label:'O', role:'lg'}
+      ]}
+    ],
+    freeAtoms:[ {id:'Mo', x:110, y:100, label:'Mo(IV)', role:'rad'}, {id:'Nadh', x:110, y:170, label:'NADH/Menaquinol', role:'nu'} ],
+    labels:[ {x:280,y:60,text:'koordiniertes Nitrat am Mo'} ],
+    events:[
+      { step:1, type:'bondOrder', id:'no3_b0', order:1 },
+      { step:1, type:'chargeAdd', atom:'Mo', sign:'+' },
+      { step:2, type:'bondRemove', id:'no3_b0' },
+      { step:2, type:'moveAtom', atom:'O', dx:60, dy:-40 },
+      { step:3, type:'chargeRemove', atom:'Mo' }
+    ]
+  },
+  steps:[
+    { text:'Das Mo(IV) des reduzierten Enzyms überträgt zwei Elektronen auf ein koordiniertes Nitrat: Elektronen wandern vom Mo in ein antibindendes π*-Orbital der N=O-Bindung; eine der N–O-Bindungen bricht heterolytisch. Der austretende Sauerstoff wird als Oxid am Mo(VI) gebunden.',
+      arrows:[{from:'Mo', to:'N', kind:'full'}], gm:['redox'] },
+    { text:'Freisetzung: Nitrit (NO₂⁻) verlässt das aktive Zentrum; Mo(VI) trägt eine zusätzliche Oxo-Gruppe.',
+      arrows:[{from:'N', to:'O', kind:'full'}], gm:['lg'] },
+    { text:'Reoxidation des Elektronenzugriffs: Elektronen vom NADH (bzw. Menaquinol, je nach Bakterienart) fließen über eine Elektronentransportkette (Fe/S-Cluster, Häm, Cytochrome) auf das Mo(VI) zurück; das Mo(VI)=O wird durch Protonierung und Elektronenaufnahme zu Mo(IV)–OH₂ reduziert. Die Wasserabspaltung schließt den Zyklus.',
+      arrows:[{from:'Nadh', to:'Mo', kind:'fishhook'}], gm:['redox'] }
+  ],
+  netto:'NO₃⁻ + Mo(IV) → NO₂⁻ + Mo(VI)=O; Mo(VI) + NADH/Menaquinol (via Fe/S, Häm) → Mo(IV) + H₂O. Das freigesetzte Nitrit reduziert dann Myoglobin (Kap. 19–20). Damit ist die Verkettung vollständig: Salpeter → Nitrit (mikrobiell) → NO (ascorbat/mikrobiell) → Nitrosomyoglobin → Nitrosomyochromogen (hitzestabil).',
+  querverbindung:null
+},
+{
+  id:'m18', num:18, teil:'E', blitz:true,
+  title:'Autoxidation Oxymyoglobin → Metmyoglobin (Fe²⁺ → Fe³⁺)',
+  zusammenhang:'Der zentrale Redoxprozess der Fleischverbräunung. Er läuft langsam bei niedrigem O₂-Partialdruck, beschleunigt bei niedrigem pH und bei Hitze. Genau diese Reaktion soll durch die sauerstoffdurchlässige PVC-Frischfleischfolie verlangsamt werden. Ausgangspunkt: Oxymyoglobin, Fe²⁺–O₂, oszillierend zwischen der neutralen Superoxo-Grenzstruktur (Fe²⁺–O₂) und der reaktiven Superoxo-Fe(III)-Grenzstruktur (Fe³⁺–O₂•⁻, „Weiss-Modell“).',
+  diagram:{
+    viewBox:'0 0 620 220',
+    stations:[
+      { id:'fe', x:130, y:120, layout:'point', entries:[{id:'Fe', label:'Fe', role:'rad'}] },
+      { id:'o2', x:230, y:90, layout:'chain', spacing:60, bondOrders:[2], entries:[
+        {id:'Oa', label:'O', role:'el'}, {id:'Ob', label:'O', role:'plain'}
+      ]},
+      { id:'wat', x:130, y:200, layout:'point', entries:[{id:'Ow', label:'H₂O', role:'nu'}] }
+    ],
+    freeAtoms:[],
+    extraBonds:[ { id:'feOa', a:'Fe', b:'Oa', order:1 } ],
+    labels:[
+      {x:130, y:150, text:'Häm-Fe, Position 6', size:10},
+      {x:290, y:35, text:'koordiniertes O₂', size:10}
+    ],
+    events:[
+      {step:1, type:'bondRemove', id:'feOa'},
+      {step:2, type:'bondAdd', id:'feOw', a:'Fe', b:'Ow', order:1},
+      {step:2, type:'moveAtom', atom:'Oa', dx:70, dy:-25},
+      {step:2, type:'moveAtom', atom:'Ob', dx:95, dy:-40}
+    ]
+  },
+  steps:[
+    { text:'Ein d-Elektron des Fe wird als Fischhaken auf das π*-Orbital des koordinierten O₂ übertragen (Ein-Elektronen-Transfer, Metall → Ligand). Ergebnis: Fe³⁺ (jetzt Metmyoglobin-Zentrum) und Superoxid-Radikal O₂•⁻.',
+      arrows:[{from:'Fe', to:'Ob', kind:'fishhook', bend:-40}],
+      gm:['redox'] },
+    { text:'Das Superoxid-Radikal löst sich von der Bindungsstelle: Die σ-Bindung Fe–O geht als Ein-Elektronen-Prozess auseinander. An der 6. Koordinationsstelle des Häm-Fe(III) bindet stattdessen ein Wassermolekül (im Fleisch) oder Hydroxid (bei höherem pH) — die klassische Aquamet-/Hydroxymet-Form.',
+      arrows:[{from:'Ow', to:'Fe', kind:'full', bend:0}],
+      gm:['nu','lg'] },
+    { text:'Das freigesetzte Superoxid dismutiert (spontan oder enzymatisch) zu H₂O₂ und O₂; H₂O₂ kann weitere Fe²⁺-Zentren via Fenton-Chemie oxidieren — Kaskadeneffekt.',
+      arrows:[], gm:['redox'] }
+  ],
+  netto:'Fe²⁺–O₂ (Oxymyoglobin, leuchtend rot) → Fe³⁺ + O₂•⁻ (Metmyoglobin, braun) + H₂O/OH⁻ an Position 6. Bei hohem O₂-Partialdruck bleibt Grenzstruktur 1 (Fe²⁺–O₂) stabilisiert und die Autoxidation ist langsam; bei niedrigem Partialdruck wechselt der Komplex öfter zwischen O₂-gebunden und -frei, und in jeder Pause kann Wasser statt Sauerstoff binden.',
+  querverbindung:'Der Wasser-/Hydroxid-Austausch an Position 6 ist derselbe Ligandenwechsel, der bei Kap. 20 (NO-Bindung) die Farbstabilität von Nitrosomyoglobin gegenüber Metmyoglobin erklärt — dort verdrängt NO dauerhaft, hier verdrängt nur Wasser reversibel.'
+},
+{
+  id:'m20', num:20, teil:'E', blitz:true,
+  title:'NO-Bindung ans Häm — Nitrosomyoglobin und Nitrosomyochromogen',
+  zusammenhang:'NO ist ein besserer σ-Donor und π-Akzeptor als O₂ und CO — daher die außerordentliche Stabilität des Fe–NO-Komplexes. Beim Erhitzen denaturiert das Globin, das Fe bleibt aber im Häm koordiniert; der Komplex heißt dann Nitrosomyochromogen. Das ist die Farbe des Kochschinkens.',
+  diagram:{
+    viewBox:'0 0 600 250',
+    stations:[
+      { id:'fe', x:150, y:120, layout:'point', entries:[{id:'Fe', label:'Fe²⁺', role:'rad'}] },
+      { id:'no', x:270, y:90, layout:'chain', spacing:60, bondOrders:[2], entries:[
+        {id:'N', label:'N', role:'nu'}, {id:'O', label:'O', role:'plain'}
+      ]}
+    ],
+    freeAtoms:[
+      { id:'His', x:150, y:195, label:'His (Pos. 5)', role:'plain' },
+      { id:'Sub', x:290, y:195, label:'H₂O / Cl⁻', role:'nu' }
+    ],
+    extraBonds:[ { id:'feHis', a:'Fe', b:'His', order:1 } ],
+    labels:[
+      {x:270, y:35, text:'Stickstoffmonoxid (NO)', size:10},
+      {x:150, y:175, text:'proximales Histidin', size:10}
+    ],
+    events:[
+      { step:1, type:'bondAdd', id:'feN', a:'Fe', b:'N', order:1 },
+      { step:3, type:'bondRemove', id:'feHis' },
+      { step:3, type:'moveAtom', atom:'His', dx:-45, dy:25 },
+      { step:3, type:'bondAdd', id:'feSub', a:'Fe', b:'Sub', order:1 }
+    ]
+  },
+  steps:[
+    { text:'Ein freies Elektronenpaar am Stickstoff des NO (das Radikal-Elektron und ein Elektronenpaar am N koexistieren) wird als σ-Donation auf ein leeres d-Orbital des Fe übertragen — klassische Metall-Ligand-σ-Bindung.',
+      arrows:[{from:'N', to:'Fe', kind:'full'}], gm:['nu'] },
+    { text:'Simultan gibt das Fe d-Elektronen in ein antibindendes π*-Orbital des NO zurück (π-Rückbindung). Dieser synergistische Bindungsmodus (Dewar-Chatt-Duncanson) verkürzt die Fe–N-Bindung und erhöht die Komplexstabilität deutlich gegenüber O₂ oder CO — deshalb ist Umrötung irreversibel bezüglich Sauerstoffkonkurrenz.',
+      arrows:[{from:'Fe', to:'O', kind:'full', bend:-46}], gm:['pi'] },
+    { text:'Beim Erhitzen ändert sich am Häm selbst nichts, aber das Globin denaturiert: Die Histidin-koordinierte 5. Bindungsstelle wird durch die Streckung der Proteinkette instabil; manchmal ersetzt eine Wasser-/Chlorid-Koordination diese Position. Der Fe(II)-NO-Komplex bleibt in der 6. Position stabil — die Farbe bleibt leuchtend rot: Nitrosomyochromogen.',
+      arrows:[{from:'Sub', to:'Fe', kind:'full'}], gm:['lg'] }
+  ],
+  netto:'Fe(II) + •NO → stabiler Fe(II)–NO-Komplex (σ-Donation + π-Rückbindung). Roh: Nitrosomyoglobin. Erhitzt (Globin denaturiert, Position 5 tauscht His gegen H₂O/Cl⁻, Position 6 bleibt NO-besetzt): Nitrosomyochromogen — die hitzestabile, leuchtend rote Farbe des Kochschinkens.',
+  querverbindung:'Chlorophyll: Beim Kochen von Gemüse in saurem Wasser tauscht das Mg²⁺ im Chlorophyll gegen zwei H⁺ aus — Phäophytin, olivgrau. Elektronisch derselbe Vorgang wie bei Metmyoglobin: Verlust der Metall-Ligand-Koordination führt zum Farbverlust. In sehr weichem, leicht alkalisiertem Wasser bleibt Gemüse grüner — genauso wie unter kontrollierter O₂-Atmosphäre Rindfleisch länger rot bleibt.'
+},
+{
+  id:'m19', num:19, teil:'E', blitz:true,
+  title:'Nitrit → NO (Ascorbat-assistierte Reduktion)',
+  zusammenhang:'Der eigentliche Umrötungsagens ist Stickoxid (NO), das aus Nitrit durch Ein-Elektronen-Reduktion entsteht. Zwei Wege: mikrobiell über Nitritreduktasen (Rohwurst) und chemisch über Ascorbinsäure. Nitrit im schwach sauren Milieu (pH 5,5–6) liegt teils als HNO₂ vor; zwei HNO₂ dehydratisieren zum gemischten Anhydrid N₂O₃ = O=N–O–N=O, dem eigentlichen Nitrosierungsagens.',
+  diagram:{
+    viewBox:'0 -25 640 320',
+    stations:[
+      { id:'m1', x:90, y:60, layout:'vchain', spacing:55, bondOrders:[2], entries:[
+        {id:'Ot1', label:'O', role:'plain'}, {id:'N1', label:'N', role:'el'}
+      ]},
+      { id:'oa', x:170, y:140, layout:'point', entries:[{id:'Oa', label:'O', role:'nu'}] },
+      { id:'m2', x:260, y:140, layout:'vchain', spacing:55, bondOrders:[2], entries:[
+        {id:'N2', label:'N', role:'el'}, {id:'Ot2', label:'O', role:'plain'}
+      ]},
+      { id:'ob', x:260, y:60, layout:'point', entries:[{id:'Ob', label:'OH', role:'lg'}] },
+      { id:'asc', x:410, y:140, layout:'point', entries:[{id:'AscO', label:'O⁻(Asc)', role:'nu'}] },
+      { id:'fe2', x:410, y:55, layout:'point', entries:[{id:'Fe2', label:'Fe²⁺', role:'rad'}] }
+    ],
+    freeAtoms:[],
+    extraBonds:[
+      { id:'n1Oa', a:'N1', b:'Oa', order:1 },
+      { id:'n2Ob', a:'N2', b:'Ob', order:1 }
+    ],
+    labels:[
+      {x:90, y:278, text:'HNO₂ (Molekül 1)', size:10},
+      {x:280, y:278, text:'HNO₂ (Molekül 2)', size:10},
+      {x:490, y:278, text:'Ascorbat-Monoanion', size:10},
+      {x:490, y:-10, text:'Häm-Fe (parallel)', size:10}
+    ],
+    events:[
+      { step:1, type:'bondRemove', id:'n2Ob' },
+      { step:1, type:'moveAtom', atom:'Ob', dx:-40, dy:-45 },
+      { step:1, type:'bondAdd', id:'oaN2', a:'Oa', b:'N2', order:1 },
+      { step:2, type:'bondAdd', id:'ascN1', a:'AscO', b:'N1', order:1 },
+      { step:2, type:'bondRemove', id:'n1Oa' },
+      { step:2, type:'moveAtom', atom:'Oa', dx:-30, dy:70 },
+      { step:2, type:'moveAtom', atom:'N2', dx:-30, dy:70 },
+      { step:2, type:'moveAtom', atom:'Ot2', dx:-30, dy:70 },
+      { step:2, type:'chargeAdd', atom:'Oa', sign:'-' },
+      { step:4, type:'bondRemove', id:'ascN1' },
+      { step:4, type:'moveAtom', atom:'N1', dx:60, dy:-50 },
+      { step:4, type:'moveAtom', atom:'Ot1', dx:60, dy:-50 },
+      { step:4, type:'chargeAdd', atom:'N1', sign:'•' },
+      { step:4, type:'chargeAdd', atom:'AscO', sign:'•' },
+      { step:5, type:'chargeAdd', atom:'Fe2', sign:'+' }
+    ]
+  },
+  steps:[
+    { text:'2 HNO₂ → N₂O₃ + H₂O: Ein freies Elektronenpaar am O eines HNO₂ greift den elektrophilen N eines zweiten HNO₂ an; die zweite N–OH-Bindung bricht als H₂O-Abgang → gemischtes Nitrit-Anhydrid (O=N–O–N=O).',
+      arrows:[{from:'Oa', to:'N2', kind:'full', bend:60}], gm:['nu','lg'] },
+    { text:'Ascorbat greift N₂O₃ an: Das Endiol-Elektronenpaar am C2-OH von Ascorbat (pKa ≈ 4,2, als Monoanion) greift nukleophil an einem der Stickstoffe an. Ein NO⁺ wandert als Elektrophil auf das Ascorbat, ein NO₂⁻ verbleibt als Abgangsgruppe.',
+      arrows:[{from:'AscO', to:'N1', kind:'full', bend:-50}], gm:['nu','lg'] },
+    { text:'Am Ascorbat sitzt jetzt eine C–O–N=O-Verknüpfung (Nitrosoascorbat). Die Endiol-Struktur tautomerisiert zur α-Diketon-Form; die Protonen verschieben sich. In diesem Übergang wird die O–N=O-Bindung labil.',
+      arrows:[], gm:['proto'] },
+    { text:'Homolytische Spaltung: Die C–O-Bindung zwischen Ascorbat-Sauerstoff und Stickstoff bricht; ein Elektron bleibt am NO (radikalisches Stickstoffmonoxid, NO•), das andere geht als Fischhaken auf das Ascorbat-Radikal. Ascorbat wird schrittweise zu Dehydroascorbinsäure oxidiert; NO ist frei.',
+      arrows:[{from:'N1', to:'AscO', kind:'fishhook', bend:40}], gm:['redox'] },
+    { text:'Parallel läuft die intrinsische Reduktion: Fe²⁺ des Myoglobins gibt ein Elektron an Nitrit (bzw. N₂O₃); Fe wird zu Fe³⁺ (Metmyoglobin), NO wird freigesetzt. Ascorbat beschleunigt den Prozess, weil es Metmyoglobin zurück zu Myoglobin (Fe²⁺) reduziert und so den Kreislauf am Laufen hält.',
+      arrows:[{from:'Fe2', to:'N2', kind:'fishhook', bend:-30}], gm:['redox'] }
+  ],
+  netto:'2 HNO₂ → N₂O₃ + H₂O; N₂O₃ + Ascorbat⁻ → Nitrosoascorbat → NO• + Dehydroascorbat-Radikal. Parallel: Fe²⁺(Mb) + Nitrit → Fe³⁺(Mb) + NO. Ascorbat treibt beide Wege an und regeneriert Fe²⁺ zurück aus Metmyoglobin.',
+  querverbindung:'Dieselbe N₂O₃-Chemie ist der Ausgangspunkt für die Nitrosamin-Bildung (Kap. 22–24) — hier reagiert N₂O₃ statt mit Ascorbat mit sekundären/primären Aminen.'
+}
+];
+</script>
+
+<script>
+/* ======================================================================
+   APP — navigation, rendering, theme toggle
+   ====================================================================== */
+const TEIL_TITLES = {
+  A: 'Post-mortem-Prozesse',
+  B: 'Bindegewebe: Kollagen-Aufbau und -Alterung',
+  C: 'Bindegewebe-Analytik: Hydroxyprolin-Nachweis (BEFFE)',
+  D: 'Sequenzanalytik: Edman-Abbau',
+  E: 'Fleischfarbe: Autoxidation und Umrötung',
+  F: 'Pökeln-Nebenreaktionen: Nitrosamin-Bildung',
+  G: 'Fleischaroma: Strecker-Abbau und Furanthiole',
+  H: 'Räuchern: Lignin-Pyrolyse',
+  I: 'Würzen: Prozesskontaminanten (3-MCPD und Glycidyl-Ester)',
+  J: 'Rohwurst-Reifung: Glucono-δ-lacton und Nitratreduktion'
+};
+const TEIL_ORDER = ['A','B','C','D','E','F','G','H','I','J'];
+
+let state = { activeId: null, step: 0, blitzOnly: false };
+
+function teilGroups(){
+  const groups = {};
+  MECHANISMS.forEach(m=>{ (groups[m.teil]=groups[m.teil]||[]).push(m); });
+  return groups;
+}
+
+function renderSidebar(){
+  const groups = teilGroups();
+  let html = `<div class="sidebar-intro">32 Mechanismen · jeder Pfeil einzeln. Klicke einen Mechanismus oder nutze den Filter für die zehn „Glomb-Blitz“-Pflichtmechanismen.</div>`;
+  html += `<div class="filter-row">
+    <button class="filter-chip" id="chipAll" aria-pressed="${!state.blitzOnly}">Alle 32</button>
+    <button class="filter-chip" id="chipBlitz" aria-pressed="${state.blitzOnly}">★ Glomb-Blitz (${MECHANISMS.filter(m=>m.blitz).length})</button>
+  </div>`;
+  TEIL_ORDER.forEach(t=>{
+    const list = (groups[t]||[]).filter(m=> !state.blitzOnly || m.blitz);
+    if(!list.length) return;
+    html += `<div class="teil-group"><div class="teil-header">Teil ${t} <span class="teil-name">${TEIL_TITLES[t]}</span></div>`;
+    list.forEach(m=>{
+      html += `<button class="mech-link" data-id="${m.id}" aria-current="${state.activeId===m.id}">
+        <span class="num">${m.num}</span>
+        ${m.blitz?'<span class="star" title="Glomb-Blitz">★</span>':''}
+        <span class="t">${m.title}</span>
+      </button>`;
+    });
+    html += `</div>`;
+  });
+  document.getElementById('sidebar').innerHTML = html;
+  document.querySelectorAll('.mech-link').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ selectMechanism(btn.dataset.id); closeSidebarMobile(); });
+  });
+  document.getElementById('chipAll').addEventListener('click', ()=>{ state.blitzOnly=false; renderSidebar(); });
+  document.getElementById('chipBlitz').addEventListener('click', ()=>{ state.blitzOnly=true; renderSidebar(); });
+}
+
+function renderWelcome(){
+  let html = `<div class="welcome"><span class="kicker" style="font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--text-muted);font-weight:700;">Zur Benutzung</span>
+  <h2 style="margin-top:6px;">Jeder Pfeil einzeln beschrieben</h2>
+  <p class="lede">Dieses Kompendium enthält ausschließlich Mechanismen — nach dem Muster: welches Elektronenpaar / welche Bindung greift an welchem Zentrum an, wie lautet die Pfeilrichtung, was wird gebrochen, was wird geknüpft, welche Ladung entsteht wo? Wähle links einen Mechanismus und blättere unten mit „Weiter“ Pfeil für Pfeil durch die Elektronenverschiebung. Am Ende jedes Mechanismus stehen Querverbindungen zu anderen Warengruppen.</p>
+  <div class="legend">
+    <div class="item"><span class="swatch" style="background:var(--nucleophile)"></span> Nukleophil</div>
+    <div class="item"><span class="swatch" style="background:var(--electrophile)"></span> Elektrophil</div>
+    <div class="item"><span class="swatch" style="background:var(--radical)"></span> Radikal / Metallzentrum</div>
+    <div class="item"><span class="swatch" style="background:var(--leaving)"></span> Abgangsgruppe</div>
+    <div class="item"><span class="swatch" style="background:var(--accent)"></span> aktiver Pfeil dieses Schritts</div>
+  </div>
+  <h3 style="margin-top:28px;font-family:var(--sans);font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);">★ Glomb-Blitz — zuerst abrufbereit haben</h3>
+  <div class="grid">`;
+  MECHANISMS.filter(m=>m.blitz).forEach(m=>{
+    html += `<a data-id="${m.id}"><div class="tt">${m.num} · ${m.title}</div><div class="ss">Teil ${m.teil} — ${TEIL_TITLES[m.teil]}</div></a>`;
+  });
+  html += `</div></div>`;
+  document.getElementById('stage').innerHTML = html;
+  document.querySelectorAll('.welcome .grid a').forEach(a=>{
+    a.addEventListener('click', ()=> selectMechanism(a.dataset.id));
+  });
+}
+
+function selectMechanism(id){
+  state.activeId = id;
+  state.step = 0;
+  renderSidebar();
+  renderStage();
+  document.getElementById('stage').scrollIntoView({behavior:'instant', block:'start'});
+  window.scrollTo(0,0);
+}
+
+function renderStage(){
+  const mech = MECHANISMS.find(m=>m.id===state.activeId);
+  if(!mech){ renderWelcome(); return; }
+  const totalSteps = mech.steps.length;
+  const isResult = state.step >= totalSteps;
+  const gmKeys = isResult ? [] : (mech.steps[state.step].gm || []);
+
+  let html = `<div class="stage-inner">`;
+  html += `<div class="mech-head">
+    <div class="mech-tags">
+      <span class="tag">Teil ${mech.teil} · ${TEIL_TITLES[mech.teil]}</span>
+      ${mech.blitz?'<span class="tag blitz">★ Glomb-Blitz</span>':''}
+    </div>
+    <h2>${mech.num} · ${mech.title}</h2>
+    <div class="zusammenhang">${mech.zusammenhang||''}</div>
+  </div>`;
+
+  html += `<div class="card diagram-card">
+    <div class="diagram-toolbar">
+      <span class="step-pill">${isResult ? '<b>Ergebnis</b>' : `Pfeil <b>${state.step+1}</b> / ${totalSteps}`}</span>
+      <span>${gmKeys.map(gmChip).join(' ')}</span>
+    </div>
+    <div class="diagram-wrap">${renderMechSVG(mech, state.step, true)}</div>
+    <div class="step-text${isResult?' is-result':''}">
+      <span class="arrow-badge">${isResult?'Netto':'Pfeil '+(state.step+1)}</span>
+      ${isResult ? (mech.netto||'') : mech.steps[state.step].text}
+    </div>
+    <div class="step-nav">
+      <button class="step-btn" id="prevBtn" ${state.step===0?'disabled':''}>← Zurück</button>
+      <div class="step-dots">`;
+  for(let i=0;i<totalSteps;i++){
+    html += `<button class="step-dot" data-i="${i}" aria-current="${state.step===i}" title="Pfeil ${i+1}"></button>`;
+  }
+  html += `<button class="step-dot is-result" data-i="${totalSteps}" aria-current="${state.step===totalSteps}" title="Ergebnis"></button>`;
+  html += `</div>
+      <button class="step-btn" id="nextBtn" ${state.step>=totalSteps?'disabled':''}>${isResult?'Fertig':'Weiter →'}</button>
+      <span class="kbd-hint"><kbd>←</kbd> <kbd>→</kbd> zum Blättern</span>
+    </div>
+  </div>`;
+
+  html += `<div class="recap"><h3>Alle Schritte im Überblick</h3><ul class="recap-list">`;
+  mech.steps.forEach((s,i)=>{
+    html += `<li data-i="${i}" class="${state.step===i?'active':''}">
+      <span class="n">${i+1}</span>
+      <span>${s.text}</span>
+    </li>`;
+  });
+  html += `</ul></div>`;
+
+  html += `<div class="endboxes">
+    <div class="endbox netto"><h4>Netto / Ergebnis</h4>${mech.netto||'—'}</div>
+    <div class="endbox quer"><h4>Querverbindung</h4>${mech.querverbindung||'—'}</div>
+  </div>`;
+
+  html += `</div>`;
+  document.getElementById('stage').innerHTML = html;
+
+  document.getElementById('prevBtn').addEventListener('click', ()=> setStep(state.step-1));
+  document.getElementById('nextBtn').addEventListener('click', ()=> setStep(state.step+1));
+  document.querySelectorAll('.step-dot').forEach(d=> d.addEventListener('click', ()=> setStep(parseInt(d.dataset.i,10))));
+  document.querySelectorAll('.recap-list li').forEach(li=> li.addEventListener('click', ()=> setStep(parseInt(li.dataset.i,10))));
+}
+
+function setStep(i){
+  const mech = MECHANISMS.find(m=>m.id===state.activeId);
+  if(!mech) return;
+  state.step = Math.max(0, Math.min(mech.steps.length, i));
+  renderStage();
+}
+
+document.addEventListener('keydown', (e)=>{
+  if(!state.activeId) return;
+  if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
+  if(e.key==='ArrowRight'){ setStep(state.step+1); }
+  if(e.key==='ArrowLeft'){ setStep(state.step-1); }
+});
+
+/* ---------- theme toggle ---------- */
+function applyTheme(mode){
+  const root = document.documentElement;
+  if(mode==='dark'){ root.setAttribute('data-theme','dark'); }
+  else if(mode==='light'){ root.setAttribute('data-theme','light'); }
+  else { root.removeAttribute('data-theme'); }
+  const isDark = mode==='dark' || (mode==='system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  document.getElementById('themeToggle').setAttribute('aria-pressed', String(isDark));
+  document.getElementById('themeKnob').textContent = isDark ? '☾' : '☀';
+  document.getElementById('themeLabel').textContent = isDark ? 'Dunkel' : 'Hell';
+  try{ localStorage.setItem('lmc-theme', mode); }catch(e){}
+}
+function initTheme(){
+  let saved = 'system';
+  try{ saved = localStorage.getItem('lmc-theme') || 'system'; }catch(e){}
+  applyTheme(saved);
+}
+document.getElementById('themeToggle').addEventListener('click', ()=>{
+  const current = document.documentElement.getAttribute('data-theme');
+  const isDarkNow = current==='dark' || (!current && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  applyTheme(isDarkNow ? 'light' : 'dark');
+});
+
+/* ---------- mobile sidebar ---------- */
+document.getElementById('menuBtn').addEventListener('click', ()=>{
+  const sb = document.getElementById('sidebar');
+  const open = sb.classList.toggle('open');
+  document.getElementById('menuBtn').setAttribute('aria-expanded', String(open));
+});
+function closeSidebarMobile(){
+  if(window.innerWidth<=900){ document.getElementById('sidebar').classList.remove('open'); }
+}
+
+/* ---------- boot ---------- */
+initTheme();
+renderSidebar();
+renderWelcome();
+</script>
+</body>
+</html>
