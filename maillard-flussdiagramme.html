@@ -1,55 +1,76 @@
 <title>Maillard — sechs Flussdiagramme</title>
 <style>
 :root{
-  --paper:#F4F1EF; --surface:#FFFFFF; --line:#E4DBD8; --line-2:#EFE7E4;
-  --ink:#241C1D; --muted:#77696A; --shade:#F0EAE7;
-  --arrow:#BE2637; --arrow-soft:rgba(190,38,55,.13);
-  --teal:#0D6A65; --teal-soft:rgba(13,106,101,.12);
-  --gold:#87680F; --gold-soft:rgba(135,104,15,.10);
+  --paper:#F6F3EC; --surface:#FFFFFF; --line:#E3DECF; --line-2:#EDE9DC;
+  --ink:#3E4632; --muted:#5F6650; --shade:#EFE9DA;
+  --heading:#6B8C0C;
+  --accent:#E2185E; --accent-soft:rgba(226,24,94,.13);
+  --accent2:#4C7A9E; --accent2-soft:rgba(76,122,158,.13);
   --ff-head:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --ff-body:Charter,"Bitstream Charter","Iowan Old Style",Georgia,serif;
   --ff-ui:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
   --ff-struct:Charter,Georgia,"Times New Roman",serif;
 }
 @media (prefers-color-scheme:dark){
-  :root{
-    --paper:#161213; --surface:#1E191A; --line:#372E2F; --line-2:#2A2324;
-    --ink:#ECE4E2; --muted:#A2918F; --shade:#241E1F;
-    --arrow:#FF7C87; --arrow-soft:rgba(255,124,135,.15);
-    --teal:#4FD5C5; --teal-soft:rgba(79,213,197,.14);
-    --gold:#D8AC52; --gold-soft:rgba(216,172,82,.12);
+  :root:not([data-theme="light"]){
+    --paper:#1B1D15; --surface:#232619; --line:#3A3E2C; --line-2:#2C2F21;
+    --ink:#E4E3D3; --muted:#AEB39A; --shade:#282B1D;
+    --heading:#A7D131;
+    --accent:#FF5C8A; --accent-soft:rgba(255,92,138,.16);
+    --accent2:#86C3FF; --accent2-soft:rgba(134,195,255,.14);
   }
 }
 :root[data-theme="dark"]{
-  --paper:#161213; --surface:#1E191A; --line:#372E2F; --line-2:#2A2324;
-  --ink:#ECE4E2; --muted:#A2918F; --shade:#241E1F;
-  --arrow:#FF7C87; --arrow-soft:rgba(255,124,135,.15);
-  --teal:#4FD5C5; --teal-soft:rgba(79,213,197,.14);
-  --gold:#D8AC52; --gold-soft:rgba(216,172,82,.12);
+  --paper:#1B1D15; --surface:#232619; --line:#3A3E2C; --line-2:#2C2F21;
+  --ink:#E4E3D3; --muted:#AEB39A; --shade:#282B1D;
+  --heading:#A7D131;
+  --accent:#FF5C8A; --accent-soft:rgba(255,92,138,.16);
+  --accent2:#86C3FF; --accent2-soft:rgba(134,195,255,.14);
 }
 :root[data-theme="light"]{
-  --paper:#F4F1EF; --surface:#FFFFFF; --line:#E4DBD8; --line-2:#EFE7E4;
-  --ink:#241C1D; --muted:#77696A; --shade:#F0EAE7;
-  --arrow:#BE2637; --arrow-soft:rgba(190,38,55,.13);
-  --teal:#0D6A65; --teal-soft:rgba(13,106,101,.12);
-  --gold:#87680F; --gold-soft:rgba(135,104,15,.10);
+  --paper:#F6F3EC; --surface:#FFFFFF; --line:#E3DECF; --line-2:#EDE9DC;
+  --ink:#3E4632; --muted:#5F6650; --shade:#EFE9DA;
+  --heading:#6B8C0C;
+  --accent:#E2185E; --accent-soft:rgba(226,24,94,.13);
+  --accent2:#4C7A9E; --accent2-soft:rgba(76,122,158,.13);
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);
   font-family:var(--ff-body);font-size:17px;line-height:1.6;
   -webkit-text-size-adjust:100%}
 .wrap{max-width:63rem;margin:0 auto;padding:0 1.35rem 5rem}
-h1,h2,h3,.eyebrow,.tg,.pf,.badge,table,.tag{font-family:var(--ff-head)}
+h1,h2,h3,.eyebrow,table,.tag{font-family:var(--ff-head)}
+h1,h2,h3{color:var(--heading)}
 h1{font-size:clamp(2.05rem,5.2vw,3rem);line-height:1.06;letter-spacing:-.028em;
   font-weight:750;margin:0 0 .6rem;text-wrap:balance}
 h2{font-size:clamp(1.35rem,2.6vw,1.7rem);letter-spacing:-.018em;font-weight:700;
   margin:0 0 .35rem;text-wrap:balance}
 h3{font-size:1.02rem;letter-spacing:-.005em;font-weight:700;margin:2.1rem 0 .5rem}
 p{margin:0 0 1rem;max-width:64ch}
-a{color:inherit}
+a{color:var(--accent)}
 strong{font-weight:700}
 .eyebrow{font-family:var(--ff-ui);font-size:.7rem;letter-spacing:.19em;
   text-transform:uppercase;color:var(--muted)}
+
+/* ---- theme toggle ---- */
+.theme-toggle{position:fixed;top:1.1rem;right:1.1rem;z-index:30;
+  width:2.6rem;height:2.6rem;border-radius:50%;padding:0;
+  display:grid;place-items:center;cursor:pointer;
+  background:var(--surface);color:var(--ink);border:1px solid var(--line);
+  box-shadow:0 1px 3px rgba(0,0,0,.1);
+  transition:border-color .15s ease,transform .12s ease}
+.theme-toggle:hover{border-color:var(--accent)}
+.theme-toggle:active{transform:scale(.93)}
+.theme-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.theme-toggle svg{position:absolute;width:1.2rem;height:1.2rem;
+  transition:opacity .2s ease,transform .3s ease}
+.theme-toggle .ic-sun{opacity:1;transform:rotate(0deg) scale(1)}
+.theme-toggle .ic-moon{opacity:0;transform:rotate(-90deg) scale(.5)}
+:root[data-theme="dark"] .theme-toggle .ic-sun{opacity:0;transform:rotate(90deg) scale(.5)}
+:root[data-theme="dark"] .theme-toggle .ic-moon{opacity:1;transform:rotate(0deg) scale(1)}
+@media (max-width:640px){.theme-toggle{top:.75rem;right:.75rem;width:2.3rem;height:2.3rem}
+  .theme-toggle svg{width:1.05rem;height:1.05rem}}
+@media (prefers-reduced-motion:reduce){.theme-toggle,.theme-toggle svg{transition:none}}
 
 /* ---- header ---- */
 header.top{padding:3.4rem 0 1.6rem;border-bottom:1px solid var(--line)}
@@ -57,20 +78,8 @@ header.top{padding:3.4rem 0 1.6rem;border-bottom:1px solid var(--line)}
 .metastrip{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;align-items:center;
   font-family:var(--ff-ui);font-size:.74rem;letter-spacing:.06em;color:var(--muted)}
 .metastrip b{color:var(--ink);font-weight:600}
-
-/* ---- practice toggle ---- */
-.tg{display:inline-flex;align-items:center;gap:.6rem;cursor:pointer;
-  background:var(--surface);color:var(--ink);border:1px solid var(--line);
-  border-radius:3px;padding:.5rem .85rem;font-size:.8rem;font-weight:600;
-  letter-spacing:.01em}
-.tg:hover{border-color:var(--arrow)}
-.tg:focus-visible,.mech:focus-visible,summary:focus-visible{outline:2px solid var(--arrow);outline-offset:3px}
-.tg .dot{width:.55rem;height:.55rem;border-radius:50%;background:var(--line);
-  border:1px solid var(--muted)}
-body.practice .tg .dot{background:var(--arrow);border-color:var(--arrow)}
-.tg-state{font-family:var(--ff-ui);font-size:.72rem;color:var(--muted)}
-.tg-hint{font-size:.82rem;color:var(--muted);margin:.6rem 0 0;display:none}
-body.practice .tg-hint{display:block}
+.hint{font-size:.85rem;color:var(--muted);margin:.9rem 0 0;max-width:56ch}
+.hint b{color:var(--ink)}
 
 /* ---- sections ---- */
 section{padding-top:3.2rem}
@@ -81,39 +90,9 @@ section{padding-top:3.2rem}
 .goal{font-family:var(--ff-ui);font-size:.74rem;color:var(--muted);
   letter-spacing:.04em;white-space:nowrap}
 
-/* ---- mechanism card ---- */
-.mech{margin:1.5rem 0 0;padding:1.35rem 1.4rem 1.5rem;background:var(--surface);
-  border:1px solid var(--line);border-radius:3px;
-  display:grid;grid-template-columns:minmax(0,430px) minmax(0,1fr);
-  gap:1.6rem 2rem;align-items:start}
-.mech svg{width:100%;height:auto;display:block;color:var(--ink)}
-.mech figcaption{min-width:0}
-.cap-head{display:flex;align-items:center;gap:.7rem;margin-bottom:.7rem;
-  padding-bottom:.6rem;border-bottom:1px solid var(--line-2)}
-.cap-head{flex-wrap:wrap}
-.cap-head .idx{font-family:var(--ff-ui);font-size:.7rem;letter-spacing:.12em;
-  color:var(--muted);text-transform:uppercase;white-space:nowrap}
-.cap-head .ttl{font-family:var(--ff-head);font-weight:700;font-size:.98rem;
-  letter-spacing:-.01em}
-ul.arrows{list-style:none;margin:0 0 .2rem;padding:0;display:flex;
-  flex-direction:column;gap:.6rem}
-ul.arrows li{display:grid;grid-template-columns:1.35rem 1fr;gap:.65rem;
-  font-size:.94rem;line-height:1.48}
-.pf{display:grid;place-items:center;width:1.35rem;height:1.35rem;border-radius:50%;
-  background:var(--arrow);color:var(--surface);font-size:.72rem;font-weight:700;
-  margin-top:.13rem;font-variant-numeric:tabular-nums}
-.pf.q{background:var(--muted)}
-.why{margin:.85rem 0 0;font-size:.9rem;color:var(--muted);max-width:48ch}
-.why b{color:var(--ink)}
-.result{margin-top:.9rem;padding-top:.75rem;border-top:1px solid var(--line-2);
-  font-size:.9rem}
-.result .tag{display:inline-block;font-size:.63rem;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--teal);border:1px solid var(--teal);
-  border-radius:2px;padding:.1rem .38rem;margin-right:.5rem;vertical-align:.08em;
-  font-weight:600}
-@media (max-width:780px){.mech{grid-template-columns:1fr;gap:1.1rem}}
-
 /* wide figures */
+.chart{margin:0 0 2.6rem}
+.chart .q{font-size:.9rem;color:var(--muted);margin:0 0 .9rem;max-width:62ch}
 .wide{margin:1.5rem 0 0;padding:1.35rem 1.4rem 1.2rem;background:var(--surface);
   border:1px solid var(--line);border-radius:3px}
 .scroller{overflow-x:auto;padding-bottom:.35rem}
@@ -121,38 +100,20 @@ ul.arrows li{display:grid;grid-template-columns:1.35rem 1fr;gap:.65rem;
 .wide figcaption{margin-top:.9rem;font-size:.9rem;color:var(--muted);max-width:70ch}
 .wide figcaption b{color:var(--ink)}
 
-/* ---- callouts ---- */
-.merk{margin:1.4rem 0;padding:.95rem 1.1rem;border-left:3px solid var(--gold);
-  background:var(--gold-soft);font-size:.96rem}
-.merk .lbl{font-family:var(--ff-ui);font-size:.66rem;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--gold);display:block;margin-bottom:.28rem}
-.merk em{font-style:italic}
-.fix{margin:1.4rem 0;padding:.95rem 1.1rem;border:1px dashed var(--teal);
-  background:var(--teal-soft);font-size:.93rem;border-radius:3px}
-.fix .lbl{font-family:var(--ff-ui);font-size:.66rem;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--teal);display:block;margin-bottom:.28rem}
-.merk p,.fix p{margin:0;max-width:60ch}
-
-/* ---- table ---- */
-.tbl{overflow-x:auto}
-table{min-width:24rem;width:100%;border-collapse:collapse;font-size:.92rem;margin:1.1rem 0}
-th,td{text-align:left;padding:.6rem .7rem;border-bottom:1px solid var(--line)}
-th{font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
-  font-weight:600}
-td:first-child{font-family:var(--ff-ui);font-size:.82rem}
-
-/* ---- checklist ---- */
-.check{list-style:none;margin:1rem 0 0;padding:0;display:grid;gap:.75rem}
-.check li{display:grid;grid-template-columns:auto 1fr;gap:.7rem;font-size:.96rem;
-  padding-bottom:.75rem;border-bottom:1px solid var(--line-2)}
-.check .k{font-family:var(--ff-ui);font-size:.7rem;color:var(--arrow);
-  letter-spacing:.08em;padding-top:.22rem}
+/* ---- legend ---- */
+.legend{display:flex;flex-wrap:wrap;gap:.9rem 1.6rem;margin:1.2rem 0 0;padding:.9rem 1.1rem;
+  background:var(--surface);border:1px solid var(--line);border-radius:3px;
+  font-size:.84rem;align-items:center;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:.5rem}
+.key{width:1.5rem;height:.95rem;border-radius:2px;background:var(--shade);
+  border:1px solid var(--line);flex:none}
+.key.k2{border-color:var(--accent);border-width:1.5px}
+.key.k3{border-style:dashed;background:none}
+.key.k4{border:none;background:none;width:1.6rem;height:0;border-top:1.5px solid var(--ink);
+  opacity:.75}
 
 /* ---- svg drawing primitives ---- */
 .dg text{font-family:var(--ff-struct);fill:currentColor}
-.at{font-size:19px;text-anchor:middle;dominant-baseline:central}
-.at-s{font-size:15.5px;text-anchor:middle;dominant-baseline:central}
-.at-t{font-size:13px;text-anchor:middle;dominant-baseline:central}
 .num{font-family:var(--ff-ui);font-size:9.5px;fill:var(--muted);text-anchor:middle;
   dominant-baseline:central}
 .lab{font-family:var(--ff-head);font-size:11.5px;fill:var(--muted);
@@ -160,52 +121,49 @@ td:first-child{font-family:var(--ff-ui);font-size:.82rem}
 .lab-i{font-family:var(--ff-head);font-size:11.5px;fill:var(--ink);
   text-anchor:middle;dominant-baseline:central;font-weight:600}
 .bond{stroke:currentColor;stroke-width:1.7;stroke-linecap:round;fill:none}
-.bond-f{stroke-width:3.6}
-.bond-d{stroke-dasharray:4 3.5;opacity:.55}
-.lp{fill:var(--teal)}
-.chg{font-family:var(--ff-head);font-size:14px;fill:var(--teal);text-anchor:middle;
-  dominant-baseline:central;font-weight:700}
-.hot{fill:var(--arrow-soft)}
-.cool{fill:var(--teal-soft)}
-.arw{stroke:var(--arrow);stroke-width:2.1;fill:none;stroke-linecap:round}
-.ahd{fill:var(--arrow)}
-.bdg{fill:var(--arrow)}
-.bdg-t{font-family:var(--ff-head);font-size:10px;font-weight:700;fill:var(--surface);
-  text-anchor:middle;dominant-baseline:central}
-.gone{stroke:var(--muted);stroke-width:1.6;fill:none;stroke-dasharray:4 3;opacity:.8}
 .box{fill:none;stroke:currentColor;stroke-width:1.4;opacity:.55}
 .box-f{fill:var(--shade);stroke:var(--line);stroke-width:1}
-.box-key{stroke:var(--arrow);stroke-width:1.6}
+.box-key{stroke:var(--accent);stroke-width:1.6}
 .flow{stroke:currentColor;stroke-width:1.5;fill:none;opacity:.75}
 
-/* practice mode */
-.arrows-layer{transition:opacity .18s ease}
-body.practice .mech .arrows-layer{opacity:0}
-body.practice .mech.revealed .arrows-layer{opacity:1}
-body.practice .mech{cursor:pointer}
-@media (prefers-reduced-motion:reduce){.arrows-layer{transition:none}}
+/* ---- interactive path tracing ---- */
+svg[data-trace] .box-f,svg[data-trace] .box{cursor:pointer}
+svg[data-trace] rect:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.dg .box-f,.dg .box,.dg .flow,.dg text{transition:opacity .16s ease,stroke .16s ease}
+.trace-dim{opacity:.26}
+.box-f.trace-self,.box.trace-self{stroke:var(--accent)!important;stroke-width:2px;
+  fill:var(--accent-soft)!important}
+.box-f.trace-on,.box.trace-on{stroke:var(--accent2)!important;stroke-width:1.6px}
+.flow.trace-hot{stroke:var(--accent)!important;opacity:1;stroke-width:2px}
+text.trace-hi{opacity:1}
+@media (prefers-reduced-motion:reduce){.dg *{transition:none!important}}
 
 @media print{
   body{background:#fff}
-  body.practice .mech .arrows-layer{opacity:1}
-  .mech,.wide{break-inside:avoid;page-break-inside:avoid}
-  .tg,.tg-hint{display:none}
+  .theme-toggle{display:none}
+  .wide{break-inside:avoid;page-break-inside:avoid}
 }
-
-.chart{margin:0 0 2.6rem}
-.chart h3{margin:0 0 .25rem;font-size:1.06rem}
-.chart .q{font-size:.9rem;color:var(--muted);margin:0 0 .9rem;max-width:62ch}
-.legend{display:flex;flex-wrap:wrap;gap:.9rem 1.6rem;margin:1.2rem 0 0;padding:.9rem 1.1rem;
-  background:var(--surface);border:1px solid var(--line);border-radius:3px;
-  font-size:.84rem;align-items:center}
-.legend span{display:inline-flex;align-items:center;gap:.5rem}
-.key{width:1.5rem;height:.95rem;border-radius:2px;background:var(--shade);
-  border:1px solid var(--line);flex:none}
-.key.k2{border-color:var(--arrow);border-width:1.5px}
-.key.k3{border-style:dashed;background:none}
-.key.k4{border:none;background:none;width:1.6rem;height:0;border-top:1.5px solid var(--ink);
-  opacity:.75}
 </style>
+
+<button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false"
+  aria-label="Zu dunklem Erscheinungsbild wechseln">
+  <svg class="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+    stroke-linecap="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4.2"/>
+    <line x1="12" y1="1.8" x2="12" y2="4.6"/>
+    <line x1="12" y1="19.4" x2="12" y2="22.2"/>
+    <line x1="1.8" y1="12" x2="4.6" y2="12"/>
+    <line x1="19.4" y1="12" x2="22.2" y2="12"/>
+    <line x1="4.6" y1="4.6" x2="6.6" y2="6.6"/>
+    <line x1="17.4" y1="17.4" x2="19.4" y2="19.4"/>
+    <line x1="4.6" y1="19.4" x2="6.6" y2="17.4"/>
+    <line x1="17.4" y1="6.6" x2="19.4" y2="4.6"/>
+  </svg>
+  <svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M20.2 14.6A8.4 8.4 0 1 1 9.4 3.8a6.6 6.6 0 0 0 10.8 10.8Z"/>
+  </svg>
+</button>
 
 <div class="wrap">
 
@@ -225,6 +183,9 @@ body.practice .mech{cursor:pointer}
     <span><i class="key k3" aria-hidden="true"></i> entsteht erst bei der Analytik</span>
     <span><i class="key k4" aria-hidden="true"></i> Pfeilbeschriftung = Bedingung</span>
   </div>
+  <p class="hint"><b>Interaktiv:</b> Kästen antippen oder mit der Maus berühren hebt den
+  zugehörigen Pfad hervor — bei den Tabellen (Diagramm 1 und 6) die ganze Zeile. Antippen
+  fixiert die Markierung, erneutes Antippen oder Klick daneben löst sie wieder.</p>
 </header>
 
 <section id="gesamt">
@@ -238,7 +199,7 @@ body.practice .mech{cursor:pointer}
     <p class="q">Frage: In welcher Phase bin ich gerade — und woran sieht bzw. misst man das?</p>
     <figure class="wide">
       <div class="scroller">
-      <svg class="dg" viewBox="0 0 900 430" role="img"
+      <svg class="dg" data-trace="row" viewBox="0 0 900 430" role="img"
         aria-label="Die drei Maillard-Phasen als Tabelle: Frühphase farblos mit Glykosylamin und Amadori-Produkt, Marker Furosin; Zwischenphase gelb und UV-aktiv mit Desoxyosonen, Fragmentierung und Strecker-Abbau, Marker HMF und Aromastoffe; Endphase braun mit Cyclisierung, AGEs und Melanoidinen, Marker CML und Extinktion bei 420 Nanometer.">
         <defs><marker id="c1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
           markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth">
@@ -322,7 +283,7 @@ body.practice .mech{cursor:pointer}
     dem Amadori-Produkt — und welche davon sind noch umkehrbar?</p>
     <figure class="wide">
       <div class="scroller">
-      <svg class="dg" viewBox="0 0 900 330" role="img"
+      <svg class="dg" data-trace="graph" viewBox="0 0 900 330" role="img"
         aria-label="Flussdiagramm der Frühphase: Pyranose öffnet sich säurekatalysiert zur offenen Kette, reagiert mit Amin zum N-Glykosid im Gleichgewicht mit der Schiff-Base, geht über das 1,2-Enaminol zum Amadori-Produkt aus Aldosen oder zum Heyns-Produkt aus Ketosen; aus dem Amadori-Produkt entsteht bei saurer Hydrolyse der Marker Furosin.">
         <defs><marker id="c2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
           markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth">
@@ -399,7 +360,7 @@ body.practice .mech{cursor:pointer}
     Furaneol — und wo entstehen die reaktiven kurzkettigen Dicarbonyle?</p>
     <figure class="wide">
       <div class="scroller">
-      <svg class="dg" viewBox="0 0 900 470" role="img"
+      <svg class="dg" data-trace="graph" viewBox="0 0 900 470" role="img"
       aria-label="Verzweigungsdiagramm: das Amadori-Produkt geht bei pH bis 7 über die 1,2-Enolisierung zum 3-Desoxyoson und weiter zu HMF und Pyrralin, bei pH über 7 über die 2,3-Enolisierung zum 1-Desoxyoson und weiter zu Furaneol und Diacetyl; beide Desoxyosone liefern per Retro-Aldol kurzkettige alpha-Dicarbonyle, die den Strecker-Abbau und die AGE-Bildung speisen; aus Aminoketonen entstehen Pyrazine.">
       <defs><marker id="c3" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
         markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth">
@@ -494,7 +455,7 @@ body.practice .mech{cursor:pointer}
     warum riecht das Ergebnis nach Malz, Kartoffel oder Honig?</p>
     <figure class="wide">
       <div class="scroller">
-      <svg class="dg" viewBox="0 0 900 350" role="img"
+      <svg class="dg" data-trace="graph" viewBox="0 0 900 350" role="img"
         aria-label="Flussdiagramm des Strecker-Abbaus: alpha-Dicarbonyl und Aminosäure bilden unter Wasserabspaltung eine Schiff-Base, diese decarboxyliert zum Ylid und liefert nach Hydrolyse den Strecker-Aldehyd, Kohlendioxid und ein alpha-Aminoketon; zwei Aminoketone kondensieren zu Pyrazinen.">
         <defs><marker id="c4" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
           markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth">
@@ -571,7 +532,7 @@ body.practice .mech{cursor:pointer}
     vernetzen zwei Proteinketten?</p>
     <figure class="wide">
       <div class="scroller">
-      <svg class="dg" viewBox="0 0 900 340" role="img"
+      <svg class="dg" data-trace="graph" viewBox="0 0 900 340" role="img"
         aria-label="Flussdiagramm der Endphase: alpha-Dicarbonyle reagieren mit Lysin- und Argininseitenketten über Addition, Cyclisierung und Oxidation zu Lysin-Addukten wie CML und Pyrralin, Arginin-Addukten wie MG-H1 und Argpyrimidin sowie zu Crosslinks wie Pentosidin und Glucosepan; parallel entstehen braune Melanoidine.">
         <defs><marker id="c5" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5"
           markerHeight="5" orient="auto-start-reverse" markerUnits="strokeWidth">
@@ -650,7 +611,7 @@ body.practice .mech{cursor:pointer}
     beschreibt er, und welche nicht?</p>
     <figure class="wide">
       <div class="scroller">
-      <svg class="dg" viewBox="0 0 900 400" role="img"
+      <svg class="dg" data-trace="row" viewBox="0 0 900 400" role="img"
         aria-label="Zuordnung von Markern: Furosin aus dem Amadori-Produkt nach Säurehydrolyse per HPLC misst die Wärmebelastung von Milch; HMF aus dem 3-Desoxyoson misst Erhitzung und Lagerung; Strecker-Aldehyde per GC-MS zeigen die Aromabildung; CML und Pentosidin per LC-MS/MS die AGE-Last; Melanoidine über die Extinktion bei 420 Nanometer den Bräunungsgrad.">
         <text class="num" x="95" y="30">MARKER</text>
         <text class="num" x="332" y="30">ENTSTEHT AUS</text>
@@ -734,7 +695,154 @@ body.practice .mech{cursor:pointer}
 
 <script>
 (function(){
-  var tg=document.getElementById('practice');
-  if(!tg)return;
+  var root=document.documentElement;
+  var btn=document.getElementById('theme-toggle');
+  var KEY='lmc-maillard-flow-theme';
+  function prefersDark(){return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);}
+  function labelFor(mode){return mode==='dark' ? 'Zu hellem Erscheinungsbild wechseln' : 'Zu dunklem Erscheinungsbild wechseln';}
+  function apply(mode){
+    root.setAttribute('data-theme',mode);
+    if(btn){
+      btn.setAttribute('aria-pressed',mode==='dark'?'true':'false');
+      btn.setAttribute('aria-label',labelFor(mode));
+    }
+  }
+  var stored=null;
+  try{stored=localStorage.getItem(KEY);}catch(e){}
+  apply(stored==='light'||stored==='dark' ? stored : (prefersDark()?'dark':'light'));
+  if(btn){
+    btn.addEventListener('click',function(){
+      var next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+      apply(next);
+      try{localStorage.setItem(KEY,next);}catch(e){}
+    });
+  }
+})();
+</script>
+<script>
+(function(){
+  var PAD=7, ROW_TOL=30;
+  var diagrams=Array.prototype.slice.call(document.querySelectorAll('svg.dg[data-trace]'));
+
+  diagrams.forEach(function(svg){
+    var mode=svg.getAttribute('data-trace');
+    var nodeEls=Array.prototype.slice.call(svg.querySelectorAll('rect.box-f,rect.box'));
+    var edgeEls=Array.prototype.slice.call(svg.querySelectorAll('.flow'));
+    var textEls=Array.prototype.slice.call(svg.querySelectorAll('text'));
+    if(!nodeEls.length) return;
+
+    var nodes=nodeEls.map(function(el){
+      var x=parseFloat(el.getAttribute('x')), y=parseFloat(el.getAttribute('y')),
+          w=parseFloat(el.getAttribute('width')), h=parseFloat(el.getAttribute('height'));
+      return {el:el, x0:x-PAD, y0:y-PAD, x1:x+w+PAD, y1:y+h+PAD,
+        cy:y+h/2, texts:[], edges:[], rowmates:null};
+    });
+    function within(n,x,y){return x>=n.x0&&x<=n.x1&&y>=n.y0&&y<=n.y1;}
+
+    textEls.forEach(function(t){
+      var x=parseFloat(t.getAttribute('x')), y=parseFloat(t.getAttribute('y'));
+      if(isNaN(x)||isNaN(y))return;
+      for(var i=0;i<nodes.length;i++){
+        if(within(nodes[i],x,y)){ nodes[i].texts.push(t); return; }
+      }
+    });
+
+    nodes.forEach(function(n){
+      var lbl=n.texts.map(function(t){return t.textContent;}).join(' — ');
+      n.el.setAttribute('tabindex','0');
+      n.el.setAttribute('role','button');
+      if(lbl) n.el.setAttribute('aria-label',lbl+' — Pfad hervorheben');
+    });
+
+    function pointOf(el,which){
+      if(el.tagName.toLowerCase()==='line'){
+        return which==='a'
+          ? {x:parseFloat(el.getAttribute('x1')),y:parseFloat(el.getAttribute('y1'))}
+          : {x:parseFloat(el.getAttribute('x2')),y:parseFloat(el.getAttribute('y2'))};
+      }
+      try{
+        var len=el.getTotalLength();
+        var p=el.getPointAtLength(which==='a'?0:len);
+        return {x:p.x,y:p.y};
+      }catch(e){ return {x:NaN,y:NaN}; }
+    }
+    var edges=edgeEls.map(function(el){
+      var a=pointOf(el,'a'), b=pointOf(el,'b'), conn=[];
+      nodes.forEach(function(n){ if(within(n,a.x,a.y)||within(n,b.x,b.y)) conn.push(n); });
+      return {el:el, nodes:conn};
+    });
+    edges.forEach(function(e){ e.nodes.forEach(function(n){ n.edges.push(e); }); });
+
+    if(mode==='row'){
+      var byRow=nodes.slice().sort(function(a,b){return a.cy-b.cy;});
+      var groups=[];
+      byRow.forEach(function(n){
+        var g=groups[groups.length-1];
+        if(g && Math.abs(g.cy-n.cy)<ROW_TOL){ g.list.push(n); }
+        else { groups.push({cy:n.cy, list:[n]}); }
+      });
+      groups.forEach(function(g){ g.list.forEach(function(n){ n.rowmates=g.list; }); });
+    }
+
+    var pinned=false;
+
+    function paint(n){
+      clear();
+      svg.classList.add('trace-active');
+      n.el.classList.add('trace-self');
+      n.texts.forEach(function(t){t.classList.add('trace-hi');});
+
+      var related=[];
+      if(mode==='row'){
+        related=(n.rowmates||[n]).filter(function(m){return m!==n;});
+      } else {
+        n.edges.forEach(function(e){
+          e.el.classList.add('trace-hot');
+          e.nodes.forEach(function(m){ if(m!==n && related.indexOf(m)<0) related.push(m); });
+        });
+      }
+      related.forEach(function(m){
+        m.el.classList.add('trace-on');
+        m.texts.forEach(function(t){t.classList.add('trace-hi');});
+      });
+
+      var keep=[n].concat(related);
+      nodes.forEach(function(m){
+        if(keep.indexOf(m)<0){
+          m.el.classList.add('trace-dim');
+          m.texts.forEach(function(t){t.classList.add('trace-dim');});
+        }
+      });
+      edges.forEach(function(e){
+        if(!e.el.classList.contains('trace-hot')) e.el.classList.add('trace-dim');
+      });
+    }
+    function clear(){
+      svg.classList.remove('trace-active');
+      nodes.forEach(function(n){
+        n.el.classList.remove('trace-self','trace-on','trace-dim');
+        n.texts.forEach(function(t){t.classList.remove('trace-hi','trace-dim');});
+      });
+      edges.forEach(function(e){ e.el.classList.remove('trace-hot','trace-dim'); });
+    }
+
+    nodes.forEach(function(n){
+      n.el.addEventListener('pointerenter',function(){ if(!pinned) paint(n); });
+      n.el.addEventListener('pointerleave',function(){ if(!pinned) clear(); });
+      n.el.addEventListener('focus',function(){ paint(n); });
+      n.el.addEventListener('blur',function(){ if(!pinned) clear(); });
+      n.el.addEventListener('click',function(ev){
+        ev.stopPropagation();
+        if(pinned && n.el.classList.contains('trace-self')){ pinned=false; clear(); }
+        else { pinned=true; paint(n); }
+      });
+      n.el.addEventListener('keydown',function(ev){
+        if(ev.key==='Escape' && pinned){ pinned=false; clear(); }
+      });
+    });
+    svg.addEventListener('click',function(ev){
+      if(ev.target===svg && pinned){ pinned=false; clear(); }
+    });
+  });
 })();
 </script>
