@@ -1,6 +1,6 @@
 ---
 name: tuyen-german-3-font
-description: Applies the "Tuyen_german_3" font — a custom, personal handwritten typeface (single Regular weight, made with Calligraphr) — as the default display/heading typeface for all artifacts (HTML, SVG, posters, dashboards, reports, slides, etc.), pairing with the Tuyen_1 color theme skill. Default starting 2026-08-12 — before that date this is opt-in only, not automatic. Once active, use it automatically without asking, embedding the bundled font file as a base64 @font-face, unless the user requests a different typeface for a specific piece. Trigger on "Tuyen_german_3", "handwriting font", "handwritten style", "custom font", "typeface", or any request to style/build an artifact.
+description: Applies the "Tuyen_german_3" font — a custom, personal handwritten typeface (single Regular weight, made with Calligraphr; full ASCII punctuation, the complete Vietnamese tone-mark alphabet, and German/Western-European accents) — as the default display/heading typeface for all artifacts (HTML, SVG, posters, dashboards, reports, slides, etc.), pairing with the Tuyen_1 color theme skill. Default starting 2026-08-12 — before that date this is opt-in only, not automatic. Once active, use it automatically without asking, embedding the bundled font file as a base64 @font-face, unless the user requests a different typeface for a specific piece. Trigger on "Tuyen_german_3", "handwriting font", "handwritten style", "custom font", "typeface", Vietnamese/"tiếng Việt" text wanting a personal touch, or any request to style/build an artifact.
 ---
 
 # Tuyen_german_3 Font
@@ -27,23 +27,24 @@ doesn't change the default for the next one.
 
 ## Supported characters
 
-Only 81 glyphs exist. Check text against this list before leaning on the font for anything visual
-(logos, big display headlines, wordmarks) — anything outside it will silently fall back to the next
-font in the stack, which is fine for incidental punctuation but can look wrong for a hero word.
+358 glyphs — effectively complete for this skill's real use cases now. Check something outside this
+list before leaning on the font for a hero word (logos, big display headlines, wordmarks); anything
+missing silently falls back to the next font in the stack.
 
-- Space, parentheses `()`, comma `,`, question mark `?`
-- Digits `0123456789`
-- Full Latin alphabet, upper and lower: `A–Z`, `a–z`
-- Full German letters: `Ä Ö Ü ß ä ö ü`
-- Four incidental Greek letters (`Α Β α β`) that appear to be leftover Calligraphr template
-  artifacts, not an intentional feature — don't design around them.
+- **Full ASCII** (95/95 printable characters), including the punctuation that used to be missing:
+  `. ! ' " - : ;` all render now, no fallback needed for ordinary prose.
+- **Complete Vietnamese**: every base vowel/consonant (`a ă â e ê i o ô ơ u ư y` + `đ`), upper and
+  lower case, in all 6 tones (ngang/sắc/huyền/hỏi/ngã/nặng) — 144 precomposed combinations, verified
+  present against the full Vietnamese Unicode block (not just spot-checked), all real hand-drawn ink.
+- **German + core Western European accents**: `Ä Ö Ü ß ä ö ü` plus `À Á Â Ã È É Ê Ì Í Ò Ó Ô Õ Ù Ú Ý`
+  and lowercase equivalents.
+- **Bonus, not load-bearing for this skill's typical use**: a Greek subset, math operators, arrows,
+  currency symbols, typographic quotes/dashes, and a few Latin-1 symbols (`° ± × ÷ ½` ...).
 
-**Missing, and therefore NOT safe to assume will render in this face:** period `.`, exclamation
-mark `!`, apostrophe `'`, quotation marks `"`, hyphen/dash `-`, colon `:`, semicolon `;`, and any
-accented Latin character other than the German umlauts/eszett above (no é, à, ñ, etc.). Ordinary
-prose needs most of these — always declare a plain fallback (see below) so missing glyphs degrade
-to a normal font instead of tofu boxes, and avoid unsupported punctuation in short display text
-(a headline, a logotype) where the mixed-font seam would be obvious.
+**Still not covered**: Latin-diacritic letters outside German/Vietnamese/the core Western set above
+(e.g. Polish `ł`, Turkish `ş`, Czech `č`), and non-Latin/non-Greek scripts. Keep a plain fallback
+(see below) so anything outside the set degrades to a normal font instead of a tofu box — it just
+won't come up often now.
 
 ## How to embed it
 
@@ -57,8 +58,8 @@ python3 scripts/build_font_face.py
 ```
 
 This prints a ready `<style>@font-face{...}</style>` block. Put it in the artifact's `<head>` (or
-any `<style>` tag before first use), then reference the family with a plain fallback for the
-missing glyphs above:
+any `<style>` tag before first use), then reference the family with a plain fallback for the rare
+character still outside the set:
 
 ```css
 font-family: 'Tuyen_german_3', ui-sans-serif, sans-serif;
@@ -123,8 +124,18 @@ fix something in a *running* copy (e.g. under `~/.claude/skills/`), also push th
 that repo path so the two don't drift out of sync — and the other way around if the fix happens in a
 repo-focused session first.
 
+## Changelog
+
+- **2026-08-11** — Gum supplied a fuller Calligraphr export (`assets/Tuyen_german_3-Regular.ttf`,
+  358 glyphs, replacing the original 81-glyph file in place). Fixes the 7 previously-missing
+  punctuation marks and adds complete Vietnamese tone-mark coverage (144 precomposed combinations)
+  plus broader German/Western-European accents — see Supported characters above. Metrics unchanged
+  (same unitsPerEm, baseline, x-height, advance widths as before, so nothing else in this file needed
+  updating). Before this, a separate procedurally-generated draft of the missing glyphs existed for
+  review; it's superseded by this real handwriting and was never merged into the asset.
+
 ## Files
 
-- `assets/Tuyen_german_3-Regular.ttf` — the font itself.
+- `assets/Tuyen_german_3-Regular.ttf` — the font itself (358 glyphs).
 - `scripts/build_font_face.py` — generates the base64 `@font-face` CSS block (stdlib only, no
   dependencies).
