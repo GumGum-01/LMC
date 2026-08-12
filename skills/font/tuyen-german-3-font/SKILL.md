@@ -1,12 +1,12 @@
 ---
 name: tuyen-german-3-font
-description: Applies the "Tuyen_german_3" font — a custom, personal handwritten typeface (single Regular weight, made with Calligraphr; full ASCII punctuation, the complete Vietnamese tone-mark alphabet, and German/Western-European accents) — as the default display/heading typeface for all artifacts (HTML, SVG, posters, dashboards, reports, slides, etc.) AND real documents (.docx, with genuine OOXML font embedding so it renders throughout the whole file for any reader, not just Gum's machine), pairing with the Tuyen_1 color theme skill. Default starting 2026-08-12 — before that date this is opt-in only, not automatic. Once active, use it automatically without asking, unless the user requests a different typeface for a specific piece. Trigger on "Tuyen_german_3", "handwriting font", "handwritten style", "custom font", "typeface", Vietnamese/"tiếng Việt" text wanting a personal touch, or any request to style/build an artifact or document.
+description: Applies the "Tuyen_formal_font_VN_EN_DE_final" font — a custom, personal handwritten typeface (single Regular weight, made with Calligraphr; full ASCII punctuation, the complete Vietnamese tone-mark alphabet, and German/Western-European accents) — as the default display/heading typeface for all artifacts (HTML, SVG, posters, dashboards, reports, slides, etc.) AND real documents (.docx, with genuine OOXML font embedding so it renders throughout the whole file for any reader, not just Gum's machine), pairing with the Tuyen_1 color theme skill. Default starting 2026-08-12 — before that date this is opt-in only, not automatic. Once active, use it automatically without asking, unless the user requests a different typeface for a specific piece. Trigger on "Tuyen_formal_font_VN_EN_DE_final", "handwriting font", "handwritten style", "custom font", "typeface", Vietnamese/"tiếng Việt" text wanting a personal touch, or any request to style/build an artifact or document.
 compatibility: Core use (HTML/SVG artifacts, PIL, reportlab) is stdlib-only. scripts/embed_font_docx.py additionally needs `lxml` and `python-docx` (pip install lxml python-docx) — install them if missing rather than skipping real embedding.
 ---
 
-# Tuyen_german_3 Font
+# Tuyen_formal_font_VN_EN_DE_final Font
 
-A custom handwritten typeface, digitized with Calligraphr (`assets/Tuyen_german_3-Regular.ttf`).
+A custom handwritten typeface, digitized with Calligraphr (`assets/Tuyen_formal_font_VN_EN_DE_final.ttf`).
 It exists in a single Regular weight only — there is no bold or italic cut, so never set
 `font-weight: bold` or `font-style: italic` on text using this family; browsers "fake" those by
 squashing/slanting the glyphs, which looks broken on a handwriting face. Use size, color, or
@@ -14,7 +14,7 @@ letter-spacing for emphasis instead.
 
 ## Sizing: matching Arial's apparent size
 
-At the same declared font-size, Tuyen_german_3 renders visibly smaller than Arial/system-sans — a
+At the same declared font-size, Tuyen_formal_font_VN_EN_DE_final renders visibly smaller than Arial/system-sans — a
 bare `font-size: 32px` looks noticeably weaker than Arial at 32px next to it. Measured directly
 (fontTools glyph ink bounds, cross-checked by rendering both in Chromium and pixel-measuring the
 result — **not** the font's own OS/2 `sxHeight`/`sCapHeight` metadata, which overstates this font's
@@ -22,14 +22,14 @@ x-height by ~24% versus its actual hand-drawn ink and would under-compensate if 
 CSS `font-size-adjust: from-font`): x-height ratio 1.336, cap-height ratio 1.302 versus Liberation
 Sans (the Arial-metric-compatible substitute used for the measurement). **Use 1.34** as the default
 compensation — take the size you'd use for Arial/system-sans at the intended visual weight and
-multiply it by 1.34 for Tuyen_german_3, by default, not just when someone complains it looks small.
+multiply it by 1.34 for Tuyen_formal_font_VN_EN_DE_final, by default, not just when someone complains it looks small.
 
-`scripts/build_font_face.py`'s output already defines this as a `--tuyen-german-3-scale` CSS custom
+`scripts/build_font_face.py`'s output already defines this as a `--tuyen-formal-font-vn-en-de-final-scale` CSS custom
 property — use it instead of a bare `1.34` so a future re-measurement (e.g. if the font asset is
 ever swapped for a redrawn version) only has to change in one place:
 
 ```css
-font-size: calc(32px * var(--tuyen-german-3-scale)); /* 32px = the Arial-equivalent target size */
+font-size: calc(32px * var(--tuyen-formal-font-vn-en-de-final-scale)); /* 32px = the Arial-equivalent target size */
 ```
 
 The same 1.34× applies wherever else a size is specified for this font — PIL `size=`, reportlab
@@ -95,14 +95,14 @@ Don't hand-roll the base64 — run the bundled script and paste its output:
 python3 scripts/build_font_face.py
 ```
 
-This prints a ready `<style>@font-face{...}</style>` block (including the `--tuyen-german-3-scale`
+This prints a ready `<style>@font-face{...}</style>` block (including the `--tuyen-formal-font-vn-en-de-final-scale`
 custom property from Sizing above). Put it in the artifact's `<head>` (or any `<style>` tag before
 first use), then reference the family with a plain fallback for the rare character still outside
 the set, and size it through the scale variable rather than a bare pixel value:
 
 ```css
-font-family: 'Tuyen_german_3', ui-sans-serif, sans-serif;
-font-size: calc(32px * var(--tuyen-german-3-scale)); /* 32px = the Arial-equivalent target size */
+font-family: 'Tuyen_formal_font_VN_EN_DE_final', ui-sans-serif, sans-serif;
+font-size: calc(32px * var(--tuyen-formal-font-vn-en-de-final-scale)); /* 32px = the Arial-equivalent target size */
 ```
 
 The same `<style>` block works verbatim inside an inline `<svg>` for SVG-based artifacts.
@@ -113,19 +113,19 @@ No base64 needed — pass the asset file directly:
 
 ```python
 from PIL import ImageFont
-font = ImageFont.truetype("assets/Tuyen_german_3-Regular.ttf", size=72)
+font = ImageFont.truetype("assets/Tuyen_formal_font_VN_EN_DE_final.ttf", size=72)
 ```
 
 ```python
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-pdfmetrics.registerFont(TTFont("Tuyen_german_3", "assets/Tuyen_german_3-Regular.ttf"))
+pdfmetrics.registerFont(TTFont("Tuyen_formal_font_VN_EN_DE_final", "assets/Tuyen_formal_font_VN_EN_DE_final.ttf"))
 ```
 
 ### Word documents (docx) — real embedding, applies throughout the whole file
 
 `python-docx` alone only sets a font *name* on a run; it doesn't embed the file, so the document
-falls back to a generic font for anyone without "Tuyen_german_3" installed — that used to be this
+falls back to a generic font for anyone without "Tuyen_formal_font_VN_EN_DE_final" installed — that used to be this
 skill's default behavior here (name-only, heading-only, "ask Gum first"). That's fixed now:
 `scripts/embed_font_docx.py` does real OOXML font embedding (the same mechanism Word itself uses —
 ECMA-376 §17.8.6: the font bytes go into the package as an obfuscated part, declared in
@@ -136,7 +136,7 @@ install.
 Workflow: build the `.docx` normally first (the `docx` skill / `python-docx`), then post-process it:
 
 ```bash
-python3 scripts/embed_font_docx.py input.docx output.docx assets/Tuyen_german_3-Regular.ttf Tuyen_german_3
+python3 scripts/embed_font_docx.py input.docx output.docx assets/Tuyen_formal_font_VN_EN_DE_final.ttf Tuyen_formal_font_VN_EN_DE_final
 ```
 
 The script self-checks before it prints success: the obfuscation round-trips back to the exact
@@ -163,7 +163,7 @@ everything else in this skill applies), rather than quietly shipping name-only a
 
 Once both skills are active (2026-08-12 onward for this one; 2026-08-10 onward for `tuyen-1-theme`),
 combine them the way `tuyen-1-theme`'s own Typography section already anticipates: use
-`Tuyen_german_3` for the bold-serif heading role it describes (titles, section headers, pull quotes,
+`Tuyen_formal_font_VN_EN_DE_final` for the bold-serif heading role it describes (titles, section headers, pull quotes,
 labels, a signature-like accent), colored with `tuyen-1-theme`'s heading/accent hexes, and keep body
 copy in a clean system sans-serif — the handwriting face is a display face, not a body face: single
 weight, small glyph set, and legibility drops fast at paragraph sizes.
@@ -198,9 +198,9 @@ repo-focused session first.
 - **2026-08-12** — Gum asked for the default size to match Arial's. Measured the mismatch precisely
   instead of guessing a round number: fontTools glyph-ink bounds against Liberation Sans, cross-
   checked by rendering both fonts in Chromium and pixel-measuring the actual output (deliberately
-  not trusting Tuyen_german_3's own OS/2 metadata, which turned out to overstate its x-height by
+  not trusting Tuyen_formal_font_VN_EN_DE_final's own OS/2 metadata, which turned out to overstate its x-height by
   ~24% versus real ink — would have produced a wrong, under-sized compensation). Landed on a 1.34×
-  scale, exposed as `--tuyen-german-3-scale` in `build_font_face.py`'s output; see Sizing above.
+  scale, exposed as `--tuyen-formal-font-vn-en-de-final-scale` in `build_font_face.py`'s output; see Sizing above.
 - **2026-08-12** — Gum reported that `.docx` output only used the font on the heading and fell back
   everywhere else, and asked whether this skill even applies outside Claude Code artifacts (it does
   — see Scope above). Root cause was two things bundled together: a real technical gap
@@ -210,7 +210,7 @@ repo-focused session first.
   LibreOffice end-to-end (rendered to PDF, read the pages back, confirmed heading *and* body both
   show the actual handwriting, not just that the file opens) — not merely "the code ran." PPTX still
   name-only; noted as available on request rather than silently left as-is.
-- **2026-08-11** — Gum supplied a fuller Calligraphr export (`assets/Tuyen_german_3-Regular.ttf`,
+- **2026-08-11** — Gum supplied a fuller Calligraphr export (`assets/Tuyen_formal_font_VN_EN_DE_final.ttf`,
   358 glyphs, replacing the original 81-glyph file in place). Fixes the 7 previously-missing
   punctuation marks and adds complete Vietnamese tone-mark coverage (144 precomposed combinations)
   plus broader German/Western-European accents — see Supported characters above. Metrics unchanged
@@ -220,7 +220,7 @@ repo-focused session first.
 
 ## Files
 
-- `assets/Tuyen_german_3-Regular.ttf` — the font itself (358 glyphs).
+- `assets/Tuyen_formal_font_VN_EN_DE_final.ttf` — the font itself (358 glyphs).
 - `scripts/build_font_face.py` — generates the base64 `@font-face` CSS block (stdlib only, no
   dependencies).
 - `scripts/embed_font_docx.py` — real OOXML font embedding for `.docx`, applied to every run (needs

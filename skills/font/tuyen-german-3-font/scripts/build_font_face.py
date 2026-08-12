@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
-"""Print a ready-to-paste <style> block that embeds Tuyen_german_3 as a base64 data URI.
+"""Print a ready-to-paste <style> block that embeds Tuyen_formal_font_VN_EN_DE_final as a base64 data URI.
 
 Usage: python3 scripts/build_font_face.py
 Paste the output into the artifact's <head> (or an inline <style> tag), then
-reference `font-family: 'Tuyen_german_3'` wherever the handwriting face is used.
+reference `font-family: 'Tuyen_formal_font_VN_EN_DE_final'` wherever the handwriting face is used.
 
-Includes a --tuyen-german-3-scale custom property (see ARIAL_SCALE below):
-Tuyen_german_3's actual ink is meaningfully smaller than Arial/system-sans at
+Includes a --tuyen-formal-font-vn-en-de-final-scale custom property (see ARIAL_SCALE below):
+Tuyen_formal_font_VN_EN_DE_final's actual ink is meaningfully smaller than Arial/system-sans at
 the same declared font-size, so a bare `font-size: 32px` looks weaker than
 Arial at 32px. Multiply the Arial-equivalent target size by this scale
-whenever sizing this font -- e.g. `font-size: calc(32px * var(--tuyen-german-3-scale))`.
+whenever sizing this font -- e.g. `font-size: calc(32px * var(--tuyen-formal-font-vn-en-de-final-scale))`.
 """
 import base64
 from pathlib import Path
 
-FONT_PATH = Path(__file__).resolve().parent.parent / "assets" / "Tuyen_german_3-Regular.ttf"
+FONT_PATH = Path(__file__).resolve().parent.parent / "assets" / "Tuyen_formal_font_VN_EN_DE_final.ttf"
 
 # Measured empirically (Chromium pixel measurement of rendered 'H'/'x' ink,
 # cross-checked against fontTools glyph bounding boxes -- NOT the font's own
@@ -32,14 +32,14 @@ def main() -> None:
     b64 = base64.b64encode(data).decode("ascii")
     print(f"""<style>
 @font-face {{
-  font-family: 'Tuyen_german_3';
+  font-family: 'Tuyen_formal_font_VN_EN_DE_final';
   src: url(data:font/ttf;base64,{b64}) format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }}
 :root {{
-  --tuyen-german-3-scale: {ARIAL_SCALE};
+  --tuyen-formal-font-vn-en-de-final-scale: {ARIAL_SCALE};
 }}
 </style>""")
 
