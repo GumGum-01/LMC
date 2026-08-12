@@ -1,6 +1,7 @@
 ---
 name: tuyen-german-3-font
-description: Applies the "Tuyen_german_3" font — a custom, personal handwritten typeface (single Regular weight, made with Calligraphr; full ASCII punctuation, the complete Vietnamese tone-mark alphabet, and German/Western-European accents) — as the default display/heading typeface for all artifacts (HTML, SVG, posters, dashboards, reports, slides, etc.), pairing with the Tuyen_1 color theme skill. Default starting 2026-08-12 — before that date this is opt-in only, not automatic. Once active, use it automatically without asking, embedding the bundled font file as a base64 @font-face, unless the user requests a different typeface for a specific piece. Trigger on "Tuyen_german_3", "handwriting font", "handwritten style", "custom font", "typeface", Vietnamese/"tiếng Việt" text wanting a personal touch, or any request to style/build an artifact.
+description: Applies the "Tuyen_german_3" font — a custom, personal handwritten typeface (single Regular weight, made with Calligraphr; full ASCII punctuation, the complete Vietnamese tone-mark alphabet, and German/Western-European accents) — as the default display/heading typeface for all artifacts (HTML, SVG, posters, dashboards, reports, slides, etc.) AND real documents (.docx, with genuine OOXML font embedding so it renders throughout the whole file for any reader, not just Gum's machine), pairing with the Tuyen_1 color theme skill. Default starting 2026-08-12 — before that date this is opt-in only, not automatic. Once active, use it automatically without asking, unless the user requests a different typeface for a specific piece. Trigger on "Tuyen_german_3", "handwriting font", "handwritten style", "custom font", "typeface", Vietnamese/"tiếng Việt" text wanting a personal touch, or any request to style/build an artifact or document.
+compatibility: Core use (HTML/SVG artifacts, PIL, reportlab) is stdlib-only. scripts/embed_font_docx.py additionally needs `lxml` and `python-docx` (pip install lxml python-docx) — install them if missing rather than skipping real embedding.
 ---
 
 # Tuyen_german_3 Font
@@ -10,6 +11,19 @@ It exists in a single Regular weight only — there is no bold or italic cut, so
 `font-weight: bold` or `font-style: italic` on text using this family; browsers "fake" those by
 squashing/slanting the glyphs, which looks broken on a handwriting face. Use size, color, or
 letter-spacing for emphasis instead.
+
+## Scope: this is not a Claude-Code-only or "Artifact panel"-only thing
+
+The font works anywhere Claude actually controls the byte-level output and can put the real font
+data *inside* the deliverable: HTML/Markdown artifacts, inline SVG, generated images and PDFs, and
+now `.docx` (see below) — all of these carry the font with them, so they display correctly for
+anyone who opens them, on any device, not just this account.
+
+The one real constraint is per-format, not per-surface: **can the library that builds this file type
+actually embed the font bytes, or does it only let you write a font *name*?** That's the axis that
+matters — "artifact vs. normal chat" isn't. A `.docx` produced in a normal chat reply and an HTML
+artifact in the side panel are equally capable of carrying the real typeface; a `.pptx` is currently
+the one exception (see below).
 
 ## Activation
 
@@ -82,13 +96,42 @@ from reportlab.pdfbase.ttfonts import TTFont
 pdfmetrics.registerFont(TTFont("Tuyen_german_3", "assets/Tuyen_german_3-Regular.ttf"))
 ```
 
-### Word / PowerPoint documents (docx, pptx)
+### Word documents (docx) — real embedding, applies throughout the whole file
 
-Skip it here by default. `python-docx`/`python-pptx` set a font *name* but don't embed the file, so
-the document only renders correctly on a machine that already has this font installed — which,
-per this skill's whole premise, is basically nobody but Gum's own environment. If a doc/deck really
-wants the handwritten look, ask Gum first rather than shipping something that silently reverts to
-Times New Roman for the recipient.
+`python-docx` alone only sets a font *name* on a run; it doesn't embed the file, so the document
+falls back to a generic font for anyone without "Tuyen_german_3" installed — that used to be this
+skill's default behavior here (name-only, heading-only, "ask Gum first"). That's fixed now:
+`scripts/embed_font_docx.py` does real OOXML font embedding (the same mechanism Word itself uses —
+ECMA-376 §17.8.6: the font bytes go into the package as an obfuscated part, declared in
+`word/fontTable.xml`), **and** forces every run in the document to use it, not just headings. The
+result displays the actual handwriting for any reader, in Word or LibreOffice, with nothing to
+install.
+
+Workflow: build the `.docx` normally first (the `docx` skill / `python-docx`), then post-process it:
+
+```bash
+python3 scripts/embed_font_docx.py input.docx output.docx assets/Tuyen_german_3-Regular.ttf Tuyen_german_3
+```
+
+The script self-checks before it prints success: the obfuscation round-trips back to the exact
+original font bytes, every relationship it adds resolves to a real part, all touched XML is
+well-formed, and `python-docx` — an independent reader — can re-open the result. Verified end-to-end
+against LibreOffice (an independent, real OOXML consumer): both the heading and body render in the
+actual handwriting, confirmed by rendering to PDF and reading the pages back, not just by the file
+opening without error. If that self-check ever fails, don't hand back the file silently substituting
+name-only mode — surface the failure so it gets fixed, since a wrong obfuscation key produces a
+`.docx` that looks done but quietly falls back for the recipient, which is worse than the old honest
+limitation.
+
+### PowerPoint documents (pptx) — not yet extended, name-only for now
+
+Same limitation the old docx guidance described: `python-pptx` sets a font name only. PPTX supports
+real font embedding via the same ECMA-376 mechanism (under `ppt/fonts/` and
+`ppt/presentation.xml`'s `<p:embeddedFontLst>` instead of Word's `fontTable.xml`), but that hasn't
+been built or verified here yet — don't assume `embed_font_docx.py`'s approach transfers as-is
+without checking the PPTX-specific XML shape first. If a deck needs the handwritten look throughout,
+say so and offer to build + verify the pptx equivalent (same bug-fix/new-requirement authority as
+everything else in this skill applies), rather than quietly shipping name-only and calling it done.
 
 ## Pairing with the Tuyen_1 theme
 
@@ -126,6 +169,15 @@ repo-focused session first.
 
 ## Changelog
 
+- **2026-08-12** — Gum reported that `.docx` output only used the font on the heading and fell back
+  everywhere else, and asked whether this skill even applies outside Claude Code artifacts (it does
+  — see Scope above). Root cause was two things bundled together: a real technical gap
+  (`python-docx` can't embed font files, only reference a name) and a design choice of mine
+  (restricting it to headings) that I'd stated as if it were the same hard limitation. Added
+  `scripts/embed_font_docx.py`: real OOXML font embedding, forced onto every run. Verified against
+  LibreOffice end-to-end (rendered to PDF, read the pages back, confirmed heading *and* body both
+  show the actual handwriting, not just that the file opens) — not merely "the code ran." PPTX still
+  name-only; noted as available on request rather than silently left as-is.
 - **2026-08-11** — Gum supplied a fuller Calligraphr export (`assets/Tuyen_german_3-Regular.ttf`,
   358 glyphs, replacing the original 81-glyph file in place). Fixes the 7 previously-missing
   punctuation marks and adds complete Vietnamese tone-mark coverage (144 precomposed combinations)
@@ -139,3 +191,5 @@ repo-focused session first.
 - `assets/Tuyen_german_3-Regular.ttf` — the font itself (358 glyphs).
 - `scripts/build_font_face.py` — generates the base64 `@font-face` CSS block (stdlib only, no
   dependencies).
+- `scripts/embed_font_docx.py` — real OOXML font embedding for `.docx`, applied to every run (needs
+  `lxml` + `python-docx`; see `compatibility` above).
