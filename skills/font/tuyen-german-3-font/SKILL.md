@@ -12,6 +12,30 @@ It exists in a single Regular weight only — there is no bold or italic cut, so
 squashing/slanting the glyphs, which looks broken on a handwriting face. Use size, color, or
 letter-spacing for emphasis instead.
 
+## Sizing: matching Arial's apparent size
+
+At the same declared font-size, Tuyen_german_3 renders visibly smaller than Arial/system-sans — a
+bare `font-size: 32px` looks noticeably weaker than Arial at 32px next to it. Measured directly
+(fontTools glyph ink bounds, cross-checked by rendering both in Chromium and pixel-measuring the
+result — **not** the font's own OS/2 `sxHeight`/`sCapHeight` metadata, which overstates this font's
+x-height by ~24% versus its actual hand-drawn ink and would under-compensate if trusted, e.g. via
+CSS `font-size-adjust: from-font`): x-height ratio 1.336, cap-height ratio 1.302 versus Liberation
+Sans (the Arial-metric-compatible substitute used for the measurement). **Use 1.34** as the default
+compensation — take the size you'd use for Arial/system-sans at the intended visual weight and
+multiply it by 1.34 for Tuyen_german_3, by default, not just when someone complains it looks small.
+
+`scripts/build_font_face.py`'s output already defines this as a `--tuyen-german-3-scale` CSS custom
+property — use it instead of a bare `1.34` so a future re-measurement (e.g. if the font asset is
+ever swapped for a redrawn version) only has to change in one place:
+
+```css
+font-size: calc(32px * var(--tuyen-german-3-scale)); /* 32px = the Arial-equivalent target size */
+```
+
+The same 1.34× applies wherever else a size is specified for this font — PIL `size=`, reportlab
+point sizes, docx half-points — it's a property of the font's own proportions, not a CSS quirk, so
+don't skip the compensation just because a particular surface isn't CSS.
+
 ## Scope: this is not a Claude-Code-only or "Artifact panel"-only thing
 
 The font works anywhere Claude actually controls the byte-level output and can put the real font
@@ -71,12 +95,14 @@ Don't hand-roll the base64 — run the bundled script and paste its output:
 python3 scripts/build_font_face.py
 ```
 
-This prints a ready `<style>@font-face{...}</style>` block. Put it in the artifact's `<head>` (or
-any `<style>` tag before first use), then reference the family with a plain fallback for the rare
-character still outside the set:
+This prints a ready `<style>@font-face{...}</style>` block (including the `--tuyen-german-3-scale`
+custom property from Sizing above). Put it in the artifact's `<head>` (or any `<style>` tag before
+first use), then reference the family with a plain fallback for the rare character still outside
+the set, and size it through the scale variable rather than a bare pixel value:
 
 ```css
 font-family: 'Tuyen_german_3', ui-sans-serif, sans-serif;
+font-size: calc(32px * var(--tuyen-german-3-scale)); /* 32px = the Arial-equivalent target size */
 ```
 
 The same `<style>` block works verbatim inside an inline `<svg>` for SVG-based artifacts.
@@ -169,6 +195,12 @@ repo-focused session first.
 
 ## Changelog
 
+- **2026-08-12** — Gum asked for the default size to match Arial's. Measured the mismatch precisely
+  instead of guessing a round number: fontTools glyph-ink bounds against Liberation Sans, cross-
+  checked by rendering both fonts in Chromium and pixel-measuring the actual output (deliberately
+  not trusting Tuyen_german_3's own OS/2 metadata, which turned out to overstate its x-height by
+  ~24% versus real ink — would have produced a wrong, under-sized compensation). Landed on a 1.34×
+  scale, exposed as `--tuyen-german-3-scale` in `build_font_face.py`'s output; see Sizing above.
 - **2026-08-12** — Gum reported that `.docx` output only used the font on the heading and fell back
   everywhere else, and asked whether this skill even applies outside Claude Code artifacts (it does
   — see Scope above). Root cause was two things bundled together: a real technical gap
